@@ -11,7 +11,7 @@ export default function Home({articles}) {
                 <title>Joe Badaczewski | Front-End Engineer</title>
                 <link rel="icon" href="/favicon.ico"/>
                 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin/>
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true"/>
                 <link href="https://fonts.googleapis.com/css2?family=Pridi:wght@300;600&display=swap"
                       rel="stylesheet"/>
             </Head>
