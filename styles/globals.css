@@ -11,19 +11,16 @@ main {
 }
 
 html {
-  background: #3b24d9;
   padding: 20px;
 }
 
 h1 {
   font-size: 50px;
   font-family: "Pridi", serif;
-  color: white;
 }
 
 h2 {
   font-size: 30px;
-  color: white;
 }
 
 main {

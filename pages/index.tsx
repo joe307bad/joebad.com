@@ -9,6 +9,7 @@ import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
 import Image from "next/image";
 import Link from "next/link";
+import MostRecentMovie from "../components/widgets/MostRecentMovie";
 
 export default function Home({ articles }) {
   return (
@@ -28,54 +29,56 @@ export default function Home({ articles }) {
         />
       </Head>
 
-      <main>
-        <div
-          id="info"
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
-          <div style={{ position: "relative", width: 100, marginTop: 10 }}>
+      <main style={{ paddingLeft: 50, textAlign: "center" }}>
+        <div style={{ paddingLeft: 50 }}>
+          <div
+            style={{
+              position: "relative",
+              width: 100,
+              height: 100,
+              margin: "0 auto",
+            }}
+          >
             <Image src="/joebad-logo.png" layout="fill" objectFit="contain" />
           </div>
-          <div style={{ paddingLeft: 50 }}>
-            <h1>
-              <strong
-                style={{ color: "#67BDFF", textShadow: "1px 2px 0px #FF6767" }}
-              >
-                Joe
-              </strong>{" "}
-              Badaczewski
-            </h1>
-            <h2>
-              Pittsburgh-based Front-End Engineer at{" "}
-              <Link href={"https://aws.amazon.com/"}>AWS</Link>
-            </h2>
-            <div
-              style={{
-                marginTop: 10,
-                display: "flex",
-                fontSize: 30,
-                gap: 10,
-                color: "#67BDFF",
-                columnGap: 20,
-              }}
-            >
-              <Link href="https://www.linkedin.com/in/joebad/">
-                <a>
-                  <FontAwesomeIcon icon={faLinkedin} />
-                </a>
-              </Link>
-              <Link href="https://twitter.com/joe307bad">
-                <a>
-                  <FontAwesomeIcon icon={faTwitter} />
-                </a>
-              </Link>
-              <Link href="https://github.com/joe307bad/">
-                <a>
-                  <FontAwesomeIcon icon={faGithub} />
-                </a>
-              </Link>
-            </div>
+          <h1>
+            <strong>Joe</strong> Badaczewski
+          </h1>
+          <h2>
+            Pittsburgh-based Front-End Engineer at{" "}
+            <Link href={"https://aws.amazon.com/"}>AWS</Link>
+          </h2>
+          <div
+            style={{
+              marginTop: 10,
+              display: "flex",
+              fontSize: 40,
+              gap: 10,
+              columnGap: 20,
+              justifyContent: "center",
+            }}
+          >
+            <Link href="https://www.linkedin.com/in/joebad/">
+              <a>
+                <FontAwesomeIcon icon={faLinkedin} />
+              </a>
+            </Link>
+            <Link href="https://twitter.com/joe307bad">
+              <a>
+                <FontAwesomeIcon icon={faTwitter} />
+              </a>
+            </Link>
+            <Link href="https://github.com/joe307bad/">
+              <a>
+                <FontAwesomeIcon icon={faGithub} />
+              </a>
+            </Link>
           </div>
+          <MostRecentMovie
+            title="Hey"
+            thumbnail="https://picsum.photos/seed/picsum/200/300"
+            description="Hey there"
+          />
         </div>
       </main>
     </>
