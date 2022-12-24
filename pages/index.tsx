@@ -10,8 +10,23 @@ import { select } from "../utils/select";
 import Image from "next/image";
 import Link from "next/link";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
+import { useEffect, useState } from "react";
 
 export default function Home({ articles }) {
+  const [movieDetails, setMovieDetails] = useState<{
+    name?: string;
+    description?: string;
+    photoSrc?: string;
+  }>({});
+
+  useEffect(() => {
+      // TODO move this to SSR
+    fetch("/api/most-recent-movie/").then(async (response) => {
+      const movieDetailsRes = await response.json();
+      setMovieDetails(movieDetailsRes);
+    });
+  }, []);
+
   return (
     <>
       <Head>
@@ -75,9 +90,9 @@ export default function Home({ articles }) {
             </Link>
           </div>
           <MostRecentMovie
-            title="Hey"
-            thumbnail="https://picsum.photos/seed/picsum/200/300"
-            description="Hey there"
+            title={movieDetails?.name}
+            thumbnail={movieDetails?.photoSrc}
+            description={movieDetails?.description}
           />
         </div>
       </main>

@@ -3,7 +3,7 @@
 const {withContentlayer} = require('next-contentlayer');
 
 const nextConfig = {
-    reactStrictMode: true,
+    reactStrictMode: false,
     exportTrailingSlash: true,
     images: {
         domains: ['images.unsplash.com', 'media-exp1.licdn.com'],
