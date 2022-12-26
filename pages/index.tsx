@@ -1,32 +1,53 @@
 import Head from "next/head";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLinkedin,
-  faTwitter,
-  faGithub,
-} from "@fortawesome/free-brands-svg-icons";
 import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
-import Image from "next/image";
-import Link from "next/link";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
-import { useEffect, useState } from "react";
+import Landing from "../components/Landing";
 
-export default function Home({ articles }) {
-  const [movieDetails, setMovieDetails] = useState<{
+const getTmdbIdOfMostRecentlyWatchedMovie = async (): Promise<
+  string | undefined
+> => {
+  const tracktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
+  const watchedHistory = await fetch(
+    "https://api.trakt.tv/users/joe307bad/history/movies",
+    { headers: { "trakt-api-key": tracktTvApiKey } }
+  );
+  const [mostRecentMovie] = (await watchedHistory.json()) || [];
+  return mostRecentMovie?.movie?.ids?.tmdb;
+};
+
+const getMovieDetailsByTmdbId = async (
+  tmdbId: string
+): Promise<
+  { name?: string; description?: string; photoSrc?: string } | undefined
+> => {
+  const tmdbApiKey = process.env.TMDB_API_KEY || "";
+  const movieDetails = await fetch(
+    `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
+  );
+  const {
+    overview: description,
+    backdrop_path: photo,
+    title: name,
+  } = (await movieDetails.json()) || {};
+  return {
+    name,
+    description,
+    photoSrc: photo ? `https://image.tmdb.org/t/p/w500/${photo}` : undefined,
+  };
+};
+
+export default function Home({
+  mostRecentMovie: movieDetails,
+  articles,
+}: {
+  mostRecentMovie: {
     name?: string;
     description?: string;
     photoSrc?: string;
-  }>({});
-
-  useEffect(() => {
-      // TODO move this to SSR
-    fetch("/api/most-recent-movie/").then(async (response) => {
-      const movieDetailsRes = await response.json();
-      setMovieDetails(movieDetailsRes);
-    });
-  }, []);
-
+  };
+  articles: any[];
+}) {
   return (
     <>
       <Head>
@@ -46,49 +67,7 @@ export default function Home({ articles }) {
 
       <main style={{ paddingLeft: 50, textAlign: "center" }}>
         <div style={{ paddingLeft: 50 }}>
-          <div
-            style={{
-              position: "relative",
-              width: 100,
-              height: 100,
-              margin: "0 auto",
-            }}
-          >
-            <Image src="/joebad-logo.png" layout="fill" objectFit="contain" />
-          </div>
-          <h1>
-            <strong>Joe</strong> Badaczewski
-          </h1>
-          <h2>
-            Pittsburgh-based Front-End Engineer at{" "}
-            <Link href={"https://aws.amazon.com/"}>AWS</Link>
-          </h2>
-          <div
-            style={{
-              marginTop: 10,
-              display: "flex",
-              fontSize: 40,
-              gap: 10,
-              columnGap: 20,
-              justifyContent: "center",
-            }}
-          >
-            <Link href="https://www.linkedin.com/in/joebad/">
-              <a>
-                <FontAwesomeIcon icon={faLinkedin} />
-              </a>
-            </Link>
-            <Link href="https://twitter.com/joe307bad">
-              <a>
-                <FontAwesomeIcon icon={faTwitter} />
-              </a>
-            </Link>
-            <Link href="https://github.com/joe307bad/">
-              <a>
-                <FontAwesomeIcon icon={faGithub} />
-              </a>
-            </Link>
-          </div>
+          <Landing />
           <MostRecentMovie
             title={movieDetails?.name}
             thumbnail={movieDetails?.photoSrc}
@@ -100,7 +79,22 @@ export default function Home({ articles }) {
   );
 }
 
-export function getStaticProps() {
+export async function getServerSideProps(context) {
+  const mostRecentMovie = await (async () => {
+    const tmdbId = await getTmdbIdOfMostRecentlyWatchedMovie();
+
+    if (!tmdbId) {
+      return { error: "No recent movie found from Trakt.tv" };
+    }
+
+    const movieDetails = await getMovieDetailsByTmdbId(tmdbId);
+
+    if (!movieDetails) {
+      return { error: `No movie details found from TMDB with id: ${tmdbId}` };
+    }
+
+    return movieDetails;
+  })();
   const articles = allArticles
     .map((article) =>
       select(article, [
@@ -119,5 +113,7 @@ export function getStaticProps() {
         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
     );
 
-  return { props: { articles } };
+  return {
+    props: { mostRecentMovie, articles },
+  };
 }
