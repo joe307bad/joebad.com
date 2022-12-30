@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
-import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import Landing from "../components/Landing";
 
 const getTmdbIdOfMostRecentlyWatchedMovie = async (): Promise<
@@ -68,11 +67,6 @@ export default function Home({
       <main style={{ paddingLeft: 50, textAlign: "center" }}>
         <div style={{ paddingLeft: 50 }}>
           <Landing />
-          <MostRecentMovie
-            title={movieDetails?.name}
-            thumbnail={movieDetails?.photoSrc}
-            description={movieDetails?.description}
-          />
         </div>
       </main>
     </>
