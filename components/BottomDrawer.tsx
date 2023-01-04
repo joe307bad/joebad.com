@@ -13,7 +13,6 @@ export default function BottomDrawer() {
 
       <div
         className="offcanvas offcanvas-bottom fixed bottom-0 flex flex-col max-w-full bg-white invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 left-0 right-0 border-none h-1/3 max-h-full"
-        tabIndex="-1"
         id="offcanvasBottom"
         aria-labelledby="offcanvasBottomLabel"
       >
