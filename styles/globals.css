@@ -8,31 +8,34 @@ body,
 #__next,
 main {
   height: 100%;
+  background: #bd4b4b;
 }
 
 html {
-  background: #3b24d9;
   padding: 20px;
 }
 
 h1 {
   font-size: 50px;
-  font-family: "Pridi", serif;
-  color: white;
 }
 
 h2 {
   font-size: 30px;
-  color: white;
 }
 
 main {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #4ce0b3;
 }
 
 a {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.offcanvas-backdrop{
+  display: none;
+  background-color:transparent;
 }
