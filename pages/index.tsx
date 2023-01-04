@@ -64,8 +64,8 @@ export default function Home({
         />
       </Head>
 
-      <main style={{ paddingLeft: 50, textAlign: "center" }}>
-        <div style={{ paddingLeft: 50 }}>
+      <main style={{ textAlign: "center" }}>
+        <div>
           <Landing />
         </div>
       </main>

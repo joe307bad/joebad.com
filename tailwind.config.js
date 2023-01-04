@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme  = require('tailwindcss/defaultTheme');
 // tailwind.config.js
 module.exports = {
   content: [
@@ -7,7 +8,11 @@ module.exports = {
     "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
   plugins: [
     require("tw-elements/dist/plugin"),

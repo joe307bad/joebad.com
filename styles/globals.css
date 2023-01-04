@@ -8,6 +8,7 @@ body,
 #__next,
 main {
   height: 100%;
+  background: #bd4b4b;
 }
 
 html {
@@ -26,6 +27,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #4ce0b3;
 }
 
 a {
