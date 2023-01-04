@@ -72,42 +72,42 @@ export default function Home({
     </>
   );
 }
-
-export async function getServerSideProps(context) {
-  const mostRecentMovie = await (async () => {
-    const tmdbId = await getTmdbIdOfMostRecentlyWatchedMovie();
-
-    if (!tmdbId) {
-      return { error: "No recent movie found from Trakt.tv" };
-    }
-
-    const movieDetails = await getMovieDetailsByTmdbId(tmdbId);
-
-    if (!movieDetails) {
-      return { error: `No movie details found from TMDB with id: ${tmdbId}` };
-    }
-
-    return movieDetails;
-  })();
-  const articles = allArticles
-    .map((article) =>
-      select(article, [
-        "slug",
-        "title",
-        "description",
-        "publishedAt",
-        "readingTime",
-        "author",
-        "category",
-        "image",
-      ])
-    )
-    .sort(
-      (a, b) =>
-        Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
-    );
-
-  return {
-    props: { mostRecentMovie, articles },
-  };
-}
+//
+// export async function getServerSideProps(context) {
+//   const mostRecentMovie = await (async () => {
+//     const tmdbId = await getTmdbIdOfMostRecentlyWatchedMovie();
+//
+//     if (!tmdbId) {
+//       return { error: "No recent movie found from Trakt.tv" };
+//     }
+//
+//     const movieDetails = await getMovieDetailsByTmdbId(tmdbId);
+//
+//     if (!movieDetails) {
+//       return { error: `No movie details found from TMDB with id: ${tmdbId}` };
+//     }
+//
+//     return movieDetails;
+//   })();
+//   const articles = allArticles
+//     .map((article) =>
+//       select(article, [
+//         "slug",
+//         "title",
+//         "description",
+//         "publishedAt",
+//         "readingTime",
+//         "author",
+//         "category",
+//         "image",
+//       ])
+//     )
+//     .sort(
+//       (a, b) =>
+//         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
+//     );
+//
+//   return {
+//     props: { mostRecentMovie, articles },
+//   };
+// }

@@ -27,7 +27,7 @@ export default function Landing() {
           margin: "0 auto",
         }}
       >
-        <Image src="/joebad-logo.png" layout="fill" objectFit="contain" />
+        <Image src="/joebad-logo.png" layout="fill" objectFit="contain"  alt="Joe Bad's logo"/>
       </div>
       <h1 className={font.className}>
         <strong>Joe</strong> Badaczewski
