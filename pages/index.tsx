@@ -62,9 +62,13 @@ export default function Home({
           href="https://fonts.googleapis.com/css2?family=Pridi:wght@300;600&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
-      <main style={{ textAlign: "center" }}>
+      <main style={{ textAlign: "center", backgroundColor: "#bd4b4b" }}>
         <div>
           <Landing />
         </div>

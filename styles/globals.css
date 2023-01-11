@@ -2,17 +2,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap');
 
 html,
 body,
 #__next,
 main {
   height: 100%;
-  background: #bd4b4b;
 }
 
 html {
-  padding: 20px;
+  background: #bd4b4b;
 }
 
 h1 {
@@ -27,6 +27,10 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #4ce0b3;
+}
+
+p {
   color: #4ce0b3;
 }
 

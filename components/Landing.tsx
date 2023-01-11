@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import localFont from "@next/font/local";
 import { Roboto } from "@next/font/google";
+import MostRecentMovie from "./widgets/MostRecentMovie";
 
 const font = localFont({ src: "../fonts/payback-webfont.woff2" });
 
@@ -27,7 +28,12 @@ export default function Landing() {
           margin: "0 auto",
         }}
       >
-        <Image src="/joebad-logo.png" layout="fill" objectFit="contain"  alt="Joe Bad's logo"/>
+        <Image
+          src="/joebad-logo.png"
+          layout="fill"
+          objectFit="contain"
+          alt="Joe Bad's logo"
+        />
       </div>
       <h1 className={font.className}>
         <strong>Joe</strong> Badaczewski
@@ -55,6 +61,13 @@ export default function Landing() {
         <Link href="https://github.com/joe307bad/">
           <FontAwesomeIcon icon={faGithub} />
         </Link>
+      </div>
+      <div style={{ justifyContent: "center", padding:20 }}>
+        <MostRecentMovie
+          description={"A Christmas Carol"}
+          title={"@jo307bad on trakt.tv"}
+          date={"Jan. 4th"}
+        />
       </div>
     </>
   );
