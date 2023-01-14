@@ -4,6 +4,18 @@ import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO } from "date-fns";
+import { Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
+Amplify.configure({
+  Logging: {
+    logGroupName: "joebad.com",
+    logStreamName: "amplify-logs",
+    region: "us-east-1",
+  },
+});
+
+const logger = new Logger("JoesLogger", "DEBUG");
+Amplify.register(logger);
+logger.addPluggable(new AWSCloudWatchProvider());
 
 const traktApi = () => {
   const traktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
@@ -15,7 +27,7 @@ const traktApi = () => {
         init
       );
       const [mostRecentMovie] = (await watchedHistory?.json()) || [];
-      console.log({ mostRecentMovie });
+      logger.log({ mostRecentMovie });
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
     },
@@ -25,7 +37,7 @@ const traktApi = () => {
         init
       );
       const ratings = await allRatings?.json();
-      console.log({ ratings });
+      logger.log({ ratings });
       const { rating, rated_at } =
         (ratings ?? []).find((r) => r?.movie?.ids?.trakt == traktId) ?? {};
 
@@ -46,7 +58,7 @@ const tmdbApi = () => {
         backdrop_path: photo,
         title: name,
       } = (await movieDetails.json()) || {};
-      console.log({
+      logger.log({
         overview: description,
         backdrop_path: photo,
         title: name,
@@ -132,7 +144,7 @@ export async function getServerSideProps({ req, res }) {
   //   "Cache-Control",
   //   "public, s-maxage=86400, stale-while-revalidate"
   // );
-  const mostRecentMovie = await(async () => {
+  const mostRecentMovie = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
       return null;
     }
