@@ -16,6 +16,6 @@ const Template: ComponentStory<typeof MostRecentMovie> = (args) => <MostRecentMo
 export const Default = Template.bind({});
 Default.args = {
     title: "A Christmas Carol",
-    thumbnail: "https://picsum.photos/seed/picsum/200/300",
+    date: "Jan. 4th",
     description: "Hey there"
 };
