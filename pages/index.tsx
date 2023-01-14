@@ -15,6 +15,7 @@ const traktApi = () => {
         init
       );
       const [mostRecentMovie] = (await watchedHistory?.json()) || [];
+      console.log({ mostRecentMovie });
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
     },
@@ -24,6 +25,7 @@ const traktApi = () => {
         init
       );
       const ratings = await allRatings?.json();
+      console.log({ ratings });
       const { rating, rated_at } =
         (ratings ?? []).find((r) => r?.movie?.ids?.trakt == traktId) ?? {};
 
@@ -44,6 +46,11 @@ const tmdbApi = () => {
         backdrop_path: photo,
         title: name,
       } = (await movieDetails.json()) || {};
+      console.log({
+        overview: description,
+        backdrop_path: photo,
+        title: name,
+      });
       return {
         name,
         description,
@@ -121,11 +128,11 @@ export default function Home({
 }
 
 export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=86400, stale-while-revalidate"
-  );
-  const mostRecentMovie = await (async () => {
+  // res.setHeader(
+  //   "Cache-Control",
+  //   "public, s-maxage=86400, stale-while-revalidate"
+  // );
+  const mostRecentMovie = await(async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
       return null;
     }
