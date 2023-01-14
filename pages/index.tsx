@@ -105,7 +105,7 @@ export default function Home({
           <div
             style={{ justifyContent: "center", display: "flex", padding: 20 }}
           >
-            {mostRecentMovie.name ? (
+            {mostRecentMovie?.name ? (
               <MostRecentMovie
                 description={mostRecentMovie.name}
                 title={"@joe307bad on trakt.tv"}
