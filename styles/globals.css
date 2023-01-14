@@ -2,17 +2,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap");
+
+@font-face {
+  font-family: "Payback";
+  font-style: normal;
+  src: url("/payback-webfont.woff2") format("woff2"),
+    url("/payback-webfont.woff") format("woff");
+}
 
 html,
 body,
 #__next,
 main {
   height: 100%;
-  background: #bd4b4b;
 }
 
 html {
-  padding: 20px;
+  background: #bd4b4b;
 }
 
 h1 {
@@ -30,12 +37,16 @@ main {
   color: #4ce0b3;
 }
 
+p {
+  color: #4ce0b3;
+}
+
 a {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.offcanvas-backdrop{
+.offcanvas-backdrop {
   display: none;
-  background-color:transparent;
+  background-color: transparent;
 }

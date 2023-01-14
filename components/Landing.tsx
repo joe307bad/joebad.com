@@ -6,10 +6,7 @@ import {
   faLinkedin,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import localFont from "@next/font/local";
 import { Roboto } from "@next/font/google";
-
-const font = localFont({ src: "../fonts/payback-webfont.woff2" });
 
 const roboto = Roboto({
   weight: "100",
@@ -27,9 +24,14 @@ export default function Landing() {
           margin: "0 auto",
         }}
       >
-        <Image src="/joebad-logo.png" layout="fill" objectFit="contain"  alt="Joe Bad's logo"/>
+        <Image
+          src="/joebad-logo.png"
+          layout="fill"
+          objectFit="contain"
+          alt="Joe Bad's logo"
+        />
       </div>
-      <h1 className={font.className}>
+      <h1 style={{ fontFamily: "Payback" }}>
         <strong>Joe</strong> Badaczewski
       </h1>
       <h2 className={roboto.className}>
