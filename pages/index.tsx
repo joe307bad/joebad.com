@@ -11,13 +11,7 @@ import {
   AWSCloudWatchProvider,
 } from "aws-amplify";
 
-Amplify.configure({
-  Logging: {
-    logGroupName: "joebad.com",
-    logStreamName: "amplify-logs",
-    region: "us-east-1",
-  },
-});
+Amplify.configure();
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
 
@@ -26,6 +20,9 @@ const sak = process.env.SECRET_ACCESS_KEY;
 if (aki && sak) {
   logger.addPluggable(
     new AWSCloudWatchProvider({
+      logGroupName: "joebad.com",
+      logStreamName: "amplify-logs",
+      region: "us-east-1",
       credentials: {
         accessKeyId: aki,
         secretAccessKey: sak,
