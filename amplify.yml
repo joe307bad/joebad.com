@@ -6,6 +6,7 @@ frontend:
         - yarn
     build:
       commands:
+        - env | grep -e TRACKT_TV_API_KEY -e TMDB_API_KEY >> .env.production
         - yarn build
   artifacts:
     baseDirectory: .next
