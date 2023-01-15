@@ -5,6 +5,11 @@ import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO, addDays } from "date-fns";
 import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
+Amplify.configure({
+  Logging: {
+    region: "us-east-1",
+  },
+});
 
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
