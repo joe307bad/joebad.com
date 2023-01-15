@@ -155,11 +155,7 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=86400, stale-while-revalidate"
-  );
+export async function getStaticProps({ req, res }) {
   const mostRecentMovie = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
       logger?.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
@@ -218,5 +214,6 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: { mostRecentMovie, articles },
+    revalidate: 86400,
   };
 }
