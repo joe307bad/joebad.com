@@ -152,6 +152,7 @@ export async function getServerSideProps({ req, res }) {
     const cachedMovieDetails = Cache.getItem("movieDetails");
 
     if (cachedMovieDetails) {
+      log({ "using-cache": cachedMovieDetails });
       return cachedMovieDetails;
     }
 
