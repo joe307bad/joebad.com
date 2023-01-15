@@ -5,6 +5,7 @@ import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO, addDays } from "date-fns";
 import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
+
 Amplify.configure({
   Logging: {
     logGroupName: "joebad.com",
@@ -12,11 +13,21 @@ Amplify.configure({
     region: "us-east-1",
   },
 });
-
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
-logger.addPluggable(new AWSCloudWatchProvider());
-const log = (d: any) => logger.log(JSON.stringify(d));
+let aws;
+if (aws) {
+  logger.addPluggable(
+    new AWSCloudWatchProvider({
+      credentials: {
+        accessKeyId: aws.config.credentials.accessKeyId,
+        secretAccessKey: aws.config.credentials.secretAccessKey,
+      },
+    })
+  );
+}
+
+const log = (d: any) => logger?.log(JSON.stringify(d));
 
 const traktApi = () => {
   const traktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
@@ -93,6 +104,10 @@ export default function Home({
   return (
     <>
       <Head>
+        <script
+          src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+          charSet="utf-8"
+        ></script>
         <title>Joe Badaczewski | Front-End Engineer</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -147,7 +162,7 @@ export async function getServerSideProps({ req, res }) {
   );
   const mostRecentMovie = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
-      logger.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
+      logger?.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
       return null;
     }
 
