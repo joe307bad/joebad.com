@@ -4,7 +4,12 @@ import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO, addDays } from "date-fns";
-import {Cache, Logger, Amplify, AWSCloudWatchProvider, Auth} from "aws-amplify";
+import {
+  Cache,
+  Logger,
+  Amplify,
+  AWSCloudWatchProvider,
+} from "aws-amplify";
 
 Amplify.configure({
   Logging: {
@@ -15,17 +20,19 @@ Amplify.configure({
 });
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
-// const creds = Auth.Credentials.get()
-// if (creds?.accessKeyId) {
-//   logger.addPluggable(
-//     new AWSCloudWatchProvider({
-//       credentials: {
-//         accessKeyId: creds.accessKeyId,
-//         secretAccessKey: creds.secretAccessKey,
-//       },
-//     })
-//   );
-// }
+
+const aki = process.env.ACCESS_KEY_ID;
+const sak = process.env.SECRET_ACCESS_KEY;
+if (aki && sak) {
+  logger.addPluggable(
+    new AWSCloudWatchProvider({
+      credentials: {
+        accessKeyId: aki,
+        secretAccessKey: sak,
+      },
+    })
+  );
+}
 
 const log = (d: any) => logger?.log(JSON.stringify(d));
 
