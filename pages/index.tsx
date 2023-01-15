@@ -146,6 +146,7 @@ export async function getServerSideProps({ req, res }) {
   // );
   const mostRecentMovie = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
+      logger.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
       return null;
     }
     const trakt = traktApi();
