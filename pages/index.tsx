@@ -104,10 +104,6 @@ export default function Home({
   return (
     <>
       <Head>
-        <script
-          src="https://unpkg.com/@popperjs/core@2.9.1/dist/umd/popper.min.js"
-          charSet="utf-8"
-        ></script>
         <title>Joe Badaczewski | Front-End Engineer</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
