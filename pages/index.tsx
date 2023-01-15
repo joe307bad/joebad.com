@@ -3,8 +3,8 @@ import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
-import { format, parseISO } from "date-fns";
-import { Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
+import { format, parseISO, addDays } from "date-fns";
+import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
 
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
@@ -143,6 +143,13 @@ export async function getServerSideProps({ req, res }) {
       logger.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
       return null;
     }
+
+    const cachedMovieDetails = Cache.getItem("movieDetails");
+
+    if (cachedMovieDetails) {
+      return cachedMovieDetails;
+    }
+
     const trakt = traktApi();
     const tmdb = tmdbApi();
 
@@ -161,6 +168,10 @@ export async function getServerSideProps({ req, res }) {
 
     movieDetails.rating = rating ?? null;
     movieDetails.date = date ?? null;
+
+    Cache.setItem("movieDetails", movieDetails, {
+      expires: addDays(Date.now(), 1).getTime(),
+    });
 
     return movieDetails;
   })();
