@@ -9,6 +9,7 @@ import { Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
 logger.addPluggable(new AWSCloudWatchProvider());
+const log = (d: any) => logger.log(JSON.stringify(d));
 
 const traktApi = () => {
   const traktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
@@ -20,7 +21,7 @@ const traktApi = () => {
         init
       );
       const [mostRecentMovie] = (await watchedHistory?.json()) || [];
-      logger.log({ mostRecentMovie });
+      log({ mostRecentMovie });
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
     },
@@ -30,7 +31,7 @@ const traktApi = () => {
         init
       );
       const ratings = await allRatings?.json();
-      logger.log({ ratings });
+      log({ ratings });
       const { rating, rated_at } =
         (ratings ?? []).find((r) => r?.movie?.ids?.trakt == traktId) ?? {};
 
@@ -51,7 +52,7 @@ const tmdbApi = () => {
         backdrop_path: photo,
         title: name,
       } = (await movieDetails.json()) || {};
-      logger.log({
+      log({
         overview: description,
         backdrop_path: photo,
         title: name,
