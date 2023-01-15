@@ -7,6 +7,8 @@ import { format, parseISO, addDays } from "date-fns";
 import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
 Amplify.configure({
   Logging: {
+    logGroupName: "joebad.com",
+    logStreamName: "amplify-logs",
     region: "us-east-1",
   },
 });
