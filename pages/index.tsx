@@ -15,17 +15,17 @@ Amplify.configure({
 });
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
-const creds = Auth.Credentials.get()
-if (creds?.accessKeyId) {
-  logger.addPluggable(
-    new AWSCloudWatchProvider({
-      credentials: {
-        accessKeyId: creds.accessKeyId,
-        secretAccessKey: creds.secretAccessKey,
-      },
-    })
-  );
-}
+// const creds = Auth.Credentials.get()
+// if (creds?.accessKeyId) {
+//   logger.addPluggable(
+//     new AWSCloudWatchProvider({
+//       credentials: {
+//         accessKeyId: creds.accessKeyId,
+//         secretAccessKey: creds.secretAccessKey,
+//       },
+//     })
+//   );
+// }
 
 const log = (d: any) => logger?.log(JSON.stringify(d));
 
