@@ -4,7 +4,7 @@ import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO, addDays } from "date-fns";
-import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
+import {Cache, Logger, Amplify, AWSCloudWatchProvider, Auth} from "aws-amplify";
 
 Amplify.configure({
   Logging: {
@@ -15,13 +15,13 @@ Amplify.configure({
 });
 const logger = new Logger("JoesLogger", "DEBUG");
 Amplify.register(logger);
-let aws;
-if (aws) {
+const creds = Auth.Credentials.get()
+if (creds?.accessKeyId) {
   logger.addPluggable(
     new AWSCloudWatchProvider({
       credentials: {
-        accessKeyId: aws.config.credentials.accessKeyId,
-        secretAccessKey: aws.config.credentials.secretAccessKey,
+        accessKeyId: creds.accessKeyId,
+        secretAccessKey: creds.secretAccessKey,
       },
     })
   );
