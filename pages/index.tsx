@@ -128,7 +128,7 @@ export default function Home({
         />
       </Head>
 
-      <main style={{ textAlign: "center", backgroundColor: "#5f71ab" }}>
+      <main style={{ textAlign: "center", backgroundColor: "#43527F" }}>
         <div className="flex flex-col w-full h-5/6 mt-20">
           <div className="flex flex-col justify-end w-full h-3/6">
             <Landing />
