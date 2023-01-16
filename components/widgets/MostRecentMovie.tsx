@@ -164,7 +164,7 @@ export default function MostRecentMovie({ title, description, date, rating }) {
                   Showly
                 </Link>
               </strong>{" "}
-              to track my ratings. This widget shows the most recent movie I've
+              to track my ratings. This widget shows the most recent movie I`&apos;ve
               rated.
             </p>
           </div>
