@@ -4,12 +4,7 @@ import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO, addDays } from "date-fns";
-import {
-  Cache,
-  Logger,
-  Amplify,
-  AWSCloudWatchProvider,
-} from "aws-amplify";
+import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
 
 Amplify.configure();
 const logger = new Logger("JoesLogger", "DEBUG");
@@ -118,11 +113,11 @@ export default function Home({
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Pridi:wght@300;600&display=swap"
-          rel="stylesheet"
+          rel="preload"
         />
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap"
-          rel="stylesheet"
+          rel="preload"
         />
         <link
           rel="preload"
@@ -133,21 +128,24 @@ export default function Home({
         />
       </Head>
 
-      <main style={{ textAlign: "center", backgroundColor: "#bd4b4b" }}>
-        <div>
-          <Landing />
-
-          <div
-            style={{ justifyContent: "center", display: "flex", padding: 20 }}
-          >
-            {mostRecentMovie?.name ? (
-              <MostRecentMovie
-                description={mostRecentMovie.name}
-                title={"@joe307bad on trakt.tv"}
-                date={mostRecentMovie.date}
-                rating={mostRecentMovie.rating}
-              />
-            ) : null}
+      <main style={{ textAlign: "center", backgroundColor: "#5f71ab" }}>
+        <div className="flex flex-col w-full h-5/6 mt-20">
+          <div className="flex flex-col justify-end w-full h-3/6">
+            <Landing />
+          </div>
+          <div className="w-full h-3/6">
+            <div
+              style={{ justifyContent: "center", display: "flex", padding: 20 }}
+            >
+              {mostRecentMovie?.name ? (
+                <MostRecentMovie
+                  description={mostRecentMovie.name}
+                  title={"@joe307bad using Showly"}
+                  date={mostRecentMovie.date}
+                  rating={mostRecentMovie.rating}
+                />
+              ) : null}
+            </div>
           </div>
         </div>
       </main>

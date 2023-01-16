@@ -1,8 +1,7 @@
-/* globals.css */
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap"); /* globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap");
 
 @font-face {
   font-family: "Payback";

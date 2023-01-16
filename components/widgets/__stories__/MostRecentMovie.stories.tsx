@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof MostRecentMovie> = (args) => <MostRecentMo
 
 export const Default = Template.bind({});
 Default.args = {
-    title: "A Christmas Carol",
+    title: "@joe307bad using showly",
     date: "Jan. 4th",
     description: "Hey there"
 };

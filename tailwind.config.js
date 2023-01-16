@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme  = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 // tailwind.config.js
 module.exports = {
   content: [
@@ -15,6 +15,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("flowbite/plugin"),
     require("tw-elements/dist/plugin"),
     require("@tailwindcss/typography"),
   ],
