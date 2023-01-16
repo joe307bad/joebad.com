@@ -214,6 +214,6 @@ export async function getStaticProps({ req, res }) {
 
   return {
     props: { mostRecentMovie, articles },
-    revalidate: 60,
+    revalidate: 86400,
   };
 }
