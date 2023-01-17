@@ -135,15 +135,31 @@ export default function Home({
           </div>
           <div className="w-full h-3/6">
             <div
+                className="space-y-4 flex-col items-center"
               style={{ justifyContent: "center", display: "flex", padding: 20 }}
             >
               {mostRecentMovie?.name ? (
-                <MostRecentMovie
-                  description={mostRecentMovie.name}
-                  title={"@joe307bad using Showly"}
-                  date={mostRecentMovie.date}
-                  rating={mostRecentMovie.rating}
-                />
+                  <MostRecentMovie
+                      description={mostRecentMovie.name}
+                      title={"@joe307bad using Showly"}
+                      date={mostRecentMovie.date}
+                      rating={mostRecentMovie.rating}
+                  />
+              ) : null}
+              {mostRecentMovie?.name ? (
+                  <MostRecentMovie
+                      description={"// abj7inwsk543 // joebad.com // [styles] updating background color"}
+                      title={"@joe307bad building on Github"}
+                      date={"Jan. 5th"}
+                  />
+              ) : null}
+              {mostRecentMovie?.name ? (
+                  <MostRecentMovie
+                      description={mostRecentMovie.name}
+                      title={"@joe307bad using Showly"}
+                      date={mostRecentMovie.date}
+                      rating={mostRecentMovie.rating}
+                  />
               ) : null}
             </div>
           </div>

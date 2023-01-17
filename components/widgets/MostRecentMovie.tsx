@@ -18,8 +18,13 @@ const FilledStar = () => {
   );
 };
 
-export default function MostRecentMovie({ title, description, date, rating }) {
-  const stars = Math.floor(rating / 2);
+export default function MostRecentMovie({
+  title,
+  description,
+  date,
+  rating = undefined,
+}) {
+  const stars = rating ? Math.floor(rating / 2) : 0;
 
   return (
     <>
@@ -68,87 +73,91 @@ export default function MostRecentMovie({ title, description, date, rating }) {
           </p>
           <p
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
-            className="font-light p-1 text-base border-r-2 border-l-2 flex-1 text-left"
+            className={`font-light p-1 text-base ${
+              rating ? "border-r-2" : ""
+            } border-l-2 flex-1 text-left`}
           >
             {description}
           </p>
-          <ul className="flex justify-center pr-1 pl-1">
-            <li>
-              <svg
-                style={{ color: "#4ce0b3" }}
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="star"
-                className="w-4 mr-1"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                {stars >= 1 ? <FilledStar /> : <EmptyStar />}
-              </svg>
-            </li>
-            <li>
-              <svg
-                style={{ color: "#4ce0b3" }}
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="star"
-                className="w-4 mr-1"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                {stars >= 2 ? <FilledStar /> : <EmptyStar />}
-              </svg>
-            </li>
-            <li>
-              <svg
-                style={{ color: "#4ce0b3" }}
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="fas"
-                data-icon="star"
-                className="w-4 text-yellow-500 mr-1"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                {stars >= 3 ? <FilledStar /> : <EmptyStar />}
-              </svg>
-            </li>
-            <li>
-              <svg
-                style={{ color: "#4ce0b3" }}
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="far"
-                data-icon="star"
-                className="w-4 text-yellow-500 mr-1"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                {stars >= 4 ? <FilledStar /> : <EmptyStar />}
-              </svg>
-            </li>
-            <li>
-              <svg
-                style={{ color: "#4ce0b3" }}
-                aria-hidden="true"
-                focusable="false"
-                data-prefix="far"
-                data-icon="star"
-                className="w-4 text-yellow-500"
-                role="img"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 576 512"
-              >
-                {stars >= 5 ? <FilledStar /> : <EmptyStar />}
-              </svg>
-            </li>
-          </ul>
+          {rating ? (
+            <ul className="flex justify-center pr-1 pl-1">
+              <li>
+                <svg
+                  style={{ color: "#4ce0b3" }}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="star"
+                  className="w-4 mr-1"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  {stars >= 1 ? <FilledStar /> : <EmptyStar />}
+                </svg>
+              </li>
+              <li>
+                <svg
+                  style={{ color: "#4ce0b3" }}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="star"
+                  className="w-4 mr-1"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  {stars >= 2 ? <FilledStar /> : <EmptyStar />}
+                </svg>
+              </li>
+              <li>
+                <svg
+                  style={{ color: "#4ce0b3" }}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="fas"
+                  data-icon="star"
+                  className="w-4 text-yellow-500 mr-1"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  {stars >= 3 ? <FilledStar /> : <EmptyStar />}
+                </svg>
+              </li>
+              <li>
+                <svg
+                  style={{ color: "#4ce0b3" }}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="star"
+                  className="w-4 text-yellow-500 mr-1"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  {stars >= 4 ? <FilledStar /> : <EmptyStar />}
+                </svg>
+              </li>
+              <li>
+                <svg
+                  style={{ color: "#4ce0b3" }}
+                  aria-hidden="true"
+                  focusable="false"
+                  data-prefix="far"
+                  data-icon="star"
+                  className="w-4 text-yellow-500"
+                  role="img"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 576 512"
+                >
+                  {stars >= 5 ? <FilledStar /> : <EmptyStar />}
+                </svg>
+              </li>
+            </ul>
+          ) : null}
         </div>
         <div className="collapse" id="collapseExample">
           <div style={{ borderColor: "#4ce0b3" }} className="border-t-2 p-2">
@@ -164,8 +173,8 @@ export default function MostRecentMovie({ title, description, date, rating }) {
                   Showly
                 </Link>
               </strong>{" "}
-              to track my ratings. This widget shows the most recent movie I&apos;ve
-              rated.
+              to track my ratings. This widget shows the most recent movie
+              I&apos;ve rated.
             </p>
           </div>
         </div>
