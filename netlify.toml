@@ -5,9 +5,6 @@ publish = ".next"
 [functions]
 node_bundler = "esbuild"
 
-[[plugins]]
-package = "netlify-plugin-cypress"
-
 ## Learn more about redirects here
 ## https://docs.netlify.com/routing/redirects/#syntax-for-the-netlify-configuration-file
 ## https://docs.netlify.com/routing/redirects/redirect-options/
