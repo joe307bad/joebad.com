@@ -10,6 +10,7 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     unoptimized: true,
   },
+  target: "serverless",
   webpack: (config) => {
     // this will override the experiments
     config.experiments = { ...config.experiments, topLevelAwait: true };
