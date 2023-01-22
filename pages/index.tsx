@@ -3,30 +3,7 @@ import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
 import Landing from "../components/Landing";
 import MostRecentMovie from "../components/widgets/MostRecentMovie";
-import { format, parseISO, addDays } from "date-fns";
-import { Cache, Logger, Amplify, AWSCloudWatchProvider } from "aws-amplify";
-
-Amplify.configure();
-const logger = new Logger("JoesLogger", "DEBUG");
-Amplify.register(logger);
-
-const aki = process.env.ACCESS_KEY_ID;
-const sak = process.env.SECRET_ACCESS_KEY;
-if (aki && sak) {
-  logger.addPluggable(
-    new AWSCloudWatchProvider({
-      logGroupName: "joebad.com",
-      logStreamName: "amplify-logs",
-      region: "us-east-1",
-      credentials: {
-        accessKeyId: aki,
-        secretAccessKey: sak,
-      },
-    })
-  );
-}
-
-const log = (d: any) => logger?.log(JSON.stringify(d));
+import { format, parseISO } from "date-fns";
 
 const traktApi = () => {
   const traktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
@@ -38,7 +15,6 @@ const traktApi = () => {
         init
       );
       const [mostRecentMovie] = (await watchedHistory?.json()) || [];
-      log({ mostRecentMovie });
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
     },
@@ -48,7 +24,6 @@ const traktApi = () => {
         init
       );
       const ratings = await allRatings?.json();
-      log({ ratings });
       const { rating, rated_at } =
         (ratings ?? []).find((r) => r?.movie?.ids?.trakt == traktId) ?? {};
 
@@ -69,11 +44,6 @@ const tmdbApi = () => {
         backdrop_path: photo,
         title: name,
       } = (await movieDetails.json()) || {};
-      log({
-        overview: description,
-        backdrop_path: photo,
-        title: name,
-      });
       return {
         name,
         description,
@@ -156,15 +126,7 @@ export default function Home({
 export async function getStaticProps({ req, res }) {
   const mostRecentMovie = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
-      logger?.error("TRACKT_TV_API_KEY or TMDB_API_KEY not found");
       return null;
-    }
-
-    const cachedMovieDetails = Cache.getItem("movieDetails");
-
-    if (cachedMovieDetails) {
-      log({ "using-cache": cachedMovieDetails });
-      return cachedMovieDetails;
     }
 
     const trakt = traktApi();
@@ -185,10 +147,6 @@ export async function getStaticProps({ req, res }) {
 
     movieDetails.rating = rating ?? null;
     movieDetails.date = date ?? null;
-
-    Cache.setItem("movieDetails", movieDetails, {
-      expires: addDays(Date.now(), 1).getTime(),
-    });
 
     return movieDetails;
   })();
