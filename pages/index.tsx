@@ -99,13 +99,13 @@ export default function Home({
             </Head>
 
             <main style={{textAlign: "center", backgroundColor: "#43527F"}}>
-                <div className="flex flex-col w-full h-5/6 mt-20">
-                    <div className="flex flex-col justify-end w-full h-3/6">
+                <div className="flex flex-col w-full h-full">
+                    <div className="flex flex-col justify-end w-full h-2/3">
                         <Landing/>
                     </div>
-                    <div className="w-full h-3/6">
+                    <div className="w-full h-1/3 flex items-end">
                         <div
-                            className="space-x-4 items-center"
+                            className="space-x-4 items-end"
                             style={{justifyContent: "center", display: "flex", padding: 20}}
                         >
                             {mostRecentMovie?.name ? (
@@ -122,7 +122,7 @@ export default function Home({
                                     title={"recently rated on Showly"}
                                     date={mostRecentMovie.date}
                                     rating={mostRecentMovie.rating}
-
+                                    nowrap
                                 />
                             ) : null}
                         </div>
