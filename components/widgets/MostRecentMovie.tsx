@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MovieDetails } from "../../pages";
 
 const EmptyStar = () => {
   return (
@@ -18,8 +19,8 @@ const FilledStar = () => {
   );
 };
 
-export default function MostRecentMovie({ title, description, date, rating }) {
-  const stars = Math.floor(rating / 2);
+export default function MostRecentMovie({ mostRecentMovie }) {
+  const stars = Math.floor(mostRecentMovie?.rating / 2);
 
   return (
     <>
@@ -36,7 +37,7 @@ export default function MostRecentMovie({ title, description, date, rating }) {
             style={{ fontFamily: "Roboto Mono" }}
             className="text-left flex-1"
           >
-            <p>{title}</p>
+            <p>@joe307bad using Showly</p>
           </div>
 
           <svg
@@ -64,13 +65,15 @@ export default function MostRecentMovie({ title, description, date, rating }) {
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
             className="text-bold p-1 text-base"
           >
-            {date}
+            {mostRecentMovie.date}
           </p>
           <p
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
             className="font-light p-1 text-base border-r-2 border-l-2 flex-1 text-left"
           >
-            {description}
+            <Link target="_blank" href={mostRecentMovie.url}>
+              {mostRecentMovie.name}
+            </Link>
           </p>
           <ul className="flex justify-center pr-1 pl-1">
             <li>
@@ -164,8 +167,8 @@ export default function MostRecentMovie({ title, description, date, rating }) {
                   Showly
                 </Link>
               </strong>{" "}
-              to track my ratings. This widget shows the most recent movie I&apos;ve
-              rated.
+              to track my ratings. This widget shows the most recent movie
+              I&apos;ve rated.
             </p>
           </div>
         </div>

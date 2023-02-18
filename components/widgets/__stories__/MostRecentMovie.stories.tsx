@@ -1,21 +1,25 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import MostRecentMovie from '../MostRecentMovie';
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import MostRecentMovie from "../MostRecentMovie";
 
 export default {
-    title: 'Components/MostRecentMovie',
-    component: MostRecentMovie,
-    argTypes: {
-        children: {
-            control: { type: 'text' },
-        },
+  title: "Components/MostRecentMovie",
+  component: MostRecentMovie,
+  argTypes: {
+    children: {
+      control: { type: "text" },
     },
+  },
 } as ComponentMeta<typeof MostRecentMovie>;
 
-const Template: ComponentStory<typeof MostRecentMovie> = (args) => <MostRecentMovie {...args} />;
+const Template: ComponentStory<typeof MostRecentMovie> = (args) => (
+  <MostRecentMovie {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
+  mostRecentMovie: {
     title: "@joe307bad using showly",
     date: "Jan. 4th",
-    description: "Hey there"
+    description: "Hey there",
+  },
 };

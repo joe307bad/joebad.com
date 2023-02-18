@@ -24,10 +24,22 @@ const traktApi = () => {
         init
       );
       const ratings = await allRatings?.json();
-      const { rating, rated_at } =
-        (ratings ?? []).find((r) => r?.movie?.ids?.trakt == traktId) ?? {};
+      const { rating, rated_at } = (() => {
+        const movie = (ratings ?? []).find(
+          (r) => r?.movie?.ids?.trakt == traktId
+        );
 
-      return { rating, date: format(parseISO(rated_at), "LLL do") };
+        return movie ?? ratings[0];
+      })();
+
+      const ratedDate = (() => {
+        try {
+          return format(parseISO(rated_at), "LLL do");
+        } catch (e) {
+          return format(rated_at ?? new Date(), "LLL do");
+        }
+      })();
+      return { rating, date: ratedDate };
     },
   };
 };
@@ -39,10 +51,12 @@ const tmdbApi = () => {
       const movieDetails = await fetch(
         `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
       );
+
       const {
         overview: description,
         backdrop_path: photo,
         title: name,
+        id,
       } = (await movieDetails.json()) || {};
       return {
         name,
@@ -50,6 +64,7 @@ const tmdbApi = () => {
         photoSrc: photo
           ? `https://image.tmdb.org/t/p/w500/${photo}`
           : undefined,
+        url: `https://www.themoviedb.org/movie/${id}`,
       };
     },
   };
@@ -61,6 +76,7 @@ export type MovieDetails = {
   photoSrc?: string;
   rating?: any;
   date?: string;
+  url?: string;
 };
 
 export default function Home({
@@ -108,12 +124,7 @@ export default function Home({
               style={{ justifyContent: "center", display: "flex", padding: 20 }}
             >
               {mostRecentMovie?.name ? (
-                <MostRecentMovie
-                  description={mostRecentMovie.name}
-                  title={"@joe307bad using Showly"}
-                  date={mostRecentMovie.date}
-                  rating={mostRecentMovie.rating}
-                />
+                <MostRecentMovie mostRecentMovie={mostRecentMovie} />
               ) : null}
             </div>
           </div>
