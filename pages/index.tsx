@@ -2,7 +2,6 @@ import Head from "next/head";
 import { allArticles } from "contentlayer/generated";
 import { select } from "../utils/select";
 import Landing from "../components/Landing";
-import MostRecentMovie from "../components/widgets/MostRecentMovie";
 import { format, parseISO } from "date-fns";
 
 const traktApi = () => {
@@ -115,19 +114,8 @@ export default function Home({
       </Head>
 
       <main style={{ textAlign: "center", backgroundColor: "#43527F" }}>
-        <div className="flex flex-col w-full h-5/6 mt-20">
-          <div className="flex flex-col justify-end w-full h-3/6">
-            <Landing />
-          </div>
-          <div className="w-full h-3/6">
-            <div
-              style={{ justifyContent: "center", display: "flex", padding: 20 }}
-            >
-              {mostRecentMovie?.name ? (
-                <MostRecentMovie mostRecentMovie={mostRecentMovie} />
-              ) : null}
-            </div>
-          </div>
+        <div className="flex flex-col w-full h-full overflow-hidden">
+          <Landing mostRecentMovie={mostRecentMovie} />
         </div>
       </main>
     </>

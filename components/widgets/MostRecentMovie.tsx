@@ -19,11 +19,21 @@ const FilledStar = () => {
   );
 };
 
-export default function MostRecentMovie({ mostRecentMovie }) {
-  const stars = Math.floor(mostRecentMovie?.rating / 2);
+type MostRecentMovieProps = {
+  mostRecentMovie: MovieDetails;
+  nowrap: boolean;
+  className?: string;
+};
 
+export default function MostRecentMovie({
+  mostRecentMovie,
+  className,
+  nowrap,
+}: MostRecentMovieProps) {
+  const { name, description, date, rating = undefined, url } = mostRecentMovie;
+  const stars = rating ? Math.floor(rating / 2) : 0;
   return (
-    <>
+    <div className={className}>
       {" "}
       <div
         style={{ fontFamily: "Roboto Mono", borderColor: "#4ce0b3" }}
@@ -65,15 +75,19 @@ export default function MostRecentMovie({ mostRecentMovie }) {
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
             className="text-bold p-1 text-base"
           >
-            {mostRecentMovie.date}
+            {date}
           </p>
           <p
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
             className="font-light p-1 text-base border-r-2 border-l-2 flex-1 text-left"
           >
-            <Link target="_blank" href={mostRecentMovie.url}>
-              {mostRecentMovie.name}
-            </Link>
+            {url ? (
+              <Link target="_blank" href={url}>
+                {name}
+              </Link>
+            ) : (
+              name
+            )}
           </p>
           <ul className="flex justify-center pr-1 pl-1">
             <li>
@@ -173,6 +187,6 @@ export default function MostRecentMovie({ mostRecentMovie }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
