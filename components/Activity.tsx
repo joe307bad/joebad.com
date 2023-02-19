@@ -15,7 +15,7 @@ export function Activity({
         </h2>
       </div>
       <div className="overflow-x-auto">
-        <div className="flex w-full space-x-4 min-w-[120rem]">
+        <div className="flex w-full space-x-4 items-start">
           {mostRecentMovie?.name ? (
             <MostRecentMovie
               mostRecentMovie={mostRecentMovie}
@@ -24,49 +24,20 @@ export function Activity({
             />
           ) : null}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie*/}
-          {/*    description={*/}
-          {/*      "// abj7inwsk543 // joebad.com // [styles] updating background color"*/}
-          {/*    }*/}
-          {/*    title={"building on Github"}*/}
-          {/*    date={"Jan. 5th"}*/}
-          {/*    nowrap*/}
-          {/*    */}
-          {/*  />*/}
+          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie*/}
-          {/*    description={*/}
-          {/*      "Lorem ipsum dolor sit amet, consectetur adipiscing elit"*/}
-          {/*    }*/}
-          {/*    title={"writing Shorts"}*/}
-          {/*    date={mostRecentMovie.date}*/}
-          {/*    rating={mostRecentMovie.rating}*/}
-          {/*    nowrap*/}
-          {/*  />*/}
+          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie*/}
-          {/*    description={*/}
-          {/*      "Lorem ipsum dolor sit amet, consectetur adipiscing elit"*/}
-          {/*    }*/}
-          {/*    title={"bookmarking on Raindrop.io"}*/}
-          {/*    date={mostRecentMovie.date}*/}
-          {/*    rating={mostRecentMovie.rating}*/}
-          {/*    nowrap*/}
-          {/*  />*/}
+          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
-          {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie*/}
-          {/*    description={*/}
-          {/*      "Lorem ipsum dolor sit amet, consectetur adipiscing elit"*/}
-          {/*    }*/}
-          {/*    title={"tweeting and retweeting"}*/}
-          {/*    date={mostRecentMovie.date}*/}
-          {/*    rating={mostRecentMovie.rating}*/}
-          {/*    nowrap*/}
-          {/*  />*/}
-          {/*) : null}*/}
+          {/*  {mostRecentMovie?.name ? (*/}
+          {/*      <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
+          {/*  ) : null}*/}
+          {/*  {mostRecentMovie?.name ? (*/}
+          {/*      <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
+          {/*  ) : null}*/}
         </div>
       </div>
     </div>

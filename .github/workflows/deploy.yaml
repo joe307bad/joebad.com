@@ -1,45 +1,13 @@
-name: Deploy to S3
+name: Fly Deploy
 on:
   push:
     branches:
       - main
 jobs:
-  build:
+  deploy:
+    name: Deploy app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-      - run: yarn
-      - run: yarn build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: build_dir
-          path: ./out
-  publish-s3:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@master
-        with:
-          name: build_dir
-          path: ./out
-      - uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          SOURCE_DIR: './out'
-          AWS_REGION: 'us-east-2'
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  create-release:
-    needs: publish-s3
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: smcelhinney/github-create-release-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl deploy --remote-only

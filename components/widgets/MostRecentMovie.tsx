@@ -37,7 +37,7 @@ export default function MostRecentMovie({
       {" "}
       <div
         style={{ fontFamily: "Roboto Mono", borderColor: "#4ce0b3" }}
-        className="max-w-sm rounded overflow-hidden border-2 border-sky-500 hover:shadow-lg text-left"
+        className="w-[350px] rounded overflow-hidden border-2 border-sky-500 hover:shadow-lg text-left"
       >
         <div
           style={{ borderColor: "#4ce0b3" }}
