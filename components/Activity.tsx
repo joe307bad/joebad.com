@@ -24,18 +24,15 @@ export function Activity({
             />
           ) : null}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
+          {/* Bookmarking with Raindrop.io  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
+          {/* Building with GitHub <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
           {/*{mostRecentMovie?.name ? (*/}
-          {/*  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
+          {/* Tweeting and retweeting <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*) : null}*/}
-          {/*  {mostRecentMovie?.name ? (*/}
-          {/*      <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
-          {/*  ) : null}*/}
-          {/*  {mostRecentMovie?.name ? (*/}
+          {/* writing Shorts (tiny blog postS) {mostRecentMovie?.name ? (*/}
           {/*      <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
           {/*  ) : null}*/}
         </div>
