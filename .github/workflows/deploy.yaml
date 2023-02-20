@@ -10,6 +10,8 @@ jobs:
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -20,5 +22,4 @@ jobs:
           envkey_TRACKT_TV_API_KEY: ${{ secrets.TRACKT_TV_API_KEY }}
 
       - name: Fly.io deploy
-        uses: superfly/flyctl-actions/setup-flyctl@master
         run: flyctl deploy --remote-only
