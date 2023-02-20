@@ -9,12 +9,15 @@ export function Activity({
 }) {
   return (
     <div className="flex flex-col w-full overflow-hidden">
-      <div className="w-full">
+      <div style={{ backgroundColor: "#43527F" }} className="w-full">
         <h2 className={`${roboto.className} float-left pb-2 pl-5`}>
           My recent activity
         </h2>
       </div>
-      <div className="overflow-x-auto">
+      <div
+        style={{ textAlign: "center", backgroundColor: "#43527F" }}
+        className="overflow-x-auto"
+      >
         <div className="flex w-full space-x-4 items-start">
           {mostRecentMovie?.name ? (
             <MostRecentMovie

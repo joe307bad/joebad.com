@@ -22,8 +22,8 @@ export default function Landing({
 }) {
   return (
     <>
-      <div className="w-full h-1/4"></div>
-      <div className="flex flex-col justify-center w-full h-1/2">
+      <div className="w-full md:h-1/4"></div>
+      <div className="flex flex-col justify-center w-full md:h-1/2 h-3/4 relative">
         <div
           className="block"
           style={{
@@ -41,7 +41,7 @@ export default function Landing({
           />
         </div>
         <h1 style={{ fontFamily: "Payback" }}>
-          <strong>Joe</strong> Badaczewski
+          Joe Badaczewski
         </h1>
         <h2 className={roboto.className}>
           Pittsburgh-based Front-End Engineer at{" "}
@@ -68,7 +68,7 @@ export default function Landing({
           </Link>
         </div>
       </div>
-      <div className="w-full h-1/4 flex items-end pb-5">
+      <div className="w-full h-1/4 flex items-end pb-5 z-[1]">
         <Activity mostRecentMovie={mostRecentMovie} />
       </div>
     </>
