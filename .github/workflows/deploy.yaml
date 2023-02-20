@@ -7,11 +7,18 @@ jobs:
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
-          TRACKT_TV_API_KEY: ${{ secrets.TRACKT_TV_API_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
+          envkey_TRACKT_TV_API_KEY: ${{ secrets.TRACKT_TV_API_KEY }}
+
+      - name: Fly.io deploy
+        uses: superfly/flyctl-actions/setup-flyctl@master
+        run: flyctl deploy --remote-only
