@@ -22,32 +22,33 @@ export default function Landing({
 }) {
   return (
     <>
-      <div className="w-full md:h-1/4"></div>
-      <div className="flex flex-col justify-center w-full md:h-1/2 h-3/4 relative">
-        <div
-          className="block"
-          style={{
-            position: "relative",
-            width: 100,
-            height: 100,
-            margin: "0 auto",
-          }}
-        >
-          <Image
-            src="/joebad-logo.png"
-            layout="fill"
-            objectFit="contain"
-            alt="Joe Bad's logo"
-          />
+      <div className="w-full md:h-1/4 wide:landscape:h-0"></div>
+      <div className="wide:landscape:flex-row flex flex-col wide:landscape: justify-center w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 wide:landscape: relative">
+        <div className=" flex flex-col">
+          <div
+            className="block"
+            style={{
+              position: "relative",
+              width: 100,
+              height: 100,
+              margin: "0 auto",
+            }}
+          >
+            <Image
+              src="/joebad-logo.png"
+              layout="fill"
+              objectFit="contain"
+              alt="Joe Bad's logo"
+            />
+          </div>
+          <h1 style={{ fontFamily: "Payback" }}>Joe Badaczewski</h1>
+          <h2 className={`${roboto.className} wide:landscape:text-[27px] small:!text-[20px]`}>
+            Pittsburgh-based Front-End Engineer at{" "}
+            <Link href={"https://aws.amazon.com/"}>AWS</Link>
+          </h2>
         </div>
-        <h1 style={{ fontFamily: "Payback" }}>
-          Joe Badaczewski
-        </h1>
-        <h2 className={roboto.className}>
-          Pittsburgh-based Front-End Engineer at{" "}
-          <Link href={"https://aws.amazon.com/"}>AWS</Link>
-        </h2>
         <div
+          className="items-center wide:landscape:p-10 "
           style={{
             marginTop: 10,
             display: "flex",
