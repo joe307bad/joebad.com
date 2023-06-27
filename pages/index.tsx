@@ -69,6 +69,26 @@ const tmdbApi = () => {
   };
 };
 
+const githubApi = () => {
+  return {
+    async getMostRecentCommit(): Promise<CommitDetails> {
+      // https://api.github.com/users/joe307bad/events/public
+      const activity = await fetch(
+        `https://api.github.com/users/joe307bad/events/public`
+      ).then(res => res.json());
+
+      const { payload } = activity[0];
+      const { commits } = payload;
+      const { sha, url, message } = commits[0];
+      return {
+        message,
+        link: url,
+        hash: sha,
+      };
+    },
+  };
+};
+
 export type MovieDetails = {
   name?: string;
   description?: string;
@@ -78,11 +98,19 @@ export type MovieDetails = {
   url?: string;
 };
 
+export type CommitDetails = {
+  message: string;
+  link: string;
+  hash: string;
+};
+
 export default function Home({
   mostRecentMovie,
   articles,
+  mostRecentCommit,
 }: {
   mostRecentMovie: MovieDetails;
+  mostRecentCommit: CommitDetails;
   articles: any[];
 }) {
   return (
@@ -115,7 +143,7 @@ export default function Home({
 
       <main className="bg-[#43527F]" style={{ textAlign: "center" }}>
         <div className="flex flex-col w-full h-full overflow-hidden">
-          <Landing mostRecentMovie={mostRecentMovie} />
+          <Landing mostRecentMovie={mostRecentMovie} mostRecentCommit={mostRecentCommit} />
         </div>
       </main>
     </>
@@ -149,6 +177,7 @@ export async function getStaticProps({ req, res }) {
 
     return movieDetails;
   })();
+  const mostRecentCommit = await githubApi().getMostRecentCommit();
   const articles = allArticles
     .map((article) =>
       select(article, [
@@ -168,7 +197,7 @@ export async function getStaticProps({ req, res }) {
     );
 
   return {
-    props: { mostRecentMovie, articles },
+    props: { mostRecentMovie, articles, mostRecentCommit },
     revalidate: 86400,
   };
 }

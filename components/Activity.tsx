@@ -1,11 +1,13 @@
 import MostRecentMovie from "./widgets/MostRecentMovie";
-import { MovieDetails } from "../pages";
+import { CommitDetails, MovieDetails } from "../pages";
 import { roboto } from "./Landing";
 
 export function Activity({
   mostRecentMovie,
+  mostRecentCommit,
 }: {
   mostRecentMovie: MovieDetails;
+  mostRecentCommit: CommitDetails;
 }) {
   return (
     <div className="flex flex-col w-full overflow-hidden">
@@ -25,6 +27,9 @@ export function Activity({
               nowrap
               className="pl-5"
             />
+          ) : null}
+          {mostRecentMovie?.name ? (
+            <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />
           ) : null}
           {/*{mostRecentMovie?.name ? (*/}
           {/* Bookmarking with Raindrop.io  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}

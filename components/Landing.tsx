@@ -7,7 +7,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { Roboto } from "@next/font/google";
-import { MovieDetails } from "../pages";
+import { CommitDetails, MovieDetails } from "../pages";
 import { Activity } from "./Activity";
 
 export const roboto = Roboto({
@@ -17,8 +17,10 @@ export const roboto = Roboto({
 
 export default function Landing({
   mostRecentMovie,
+  mostRecentCommit,
 }: {
   mostRecentMovie: MovieDetails;
+  mostRecentCommit: CommitDetails;
 }) {
   return (
     <>
@@ -42,7 +44,9 @@ export default function Landing({
             />
           </div>
           <h1 style={{ fontFamily: "Payback" }}>Joe Badaczewski</h1>
-          <h2 className={`${roboto.className} wide:landscape:text-[27px] small:!text-[20px]`}>
+          <h2
+            className={`${roboto.className} wide:landscape:text-[27px] small:!text-[20px]`}
+          >
             Pittsburgh-based Front-End Engineer at{" "}
             <Link href={"https://aws.amazon.com/"}>AWS</Link>
           </h2>
@@ -70,7 +74,7 @@ export default function Landing({
         </div>
       </div>
       <div className="w-full h-1/4 flex items-end pb-5 z-[1]">
-        <Activity mostRecentMovie={mostRecentMovie} />
+        <Activity mostRecentMovie={mostRecentMovie} mostRecentCommit={mostRecentCommit} />
       </div>
     </>
   );
