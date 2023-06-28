@@ -75,15 +75,27 @@ const githubApi = () => {
       // https://api.github.com/users/joe307bad/events/public
       const activity = await fetch(
         `https://api.github.com/users/joe307bad/events/public`
-      ).then(res => res.json());
+      ).then((res) => res.json());
 
-      const { payload } = activity[0];
+      const { payload, repo, created_at } = activity[0];
       const { commits } = payload;
       const { sha, url, message } = commits[0];
+      const { name } = repo;
+
+      const date = (() => {
+        try {
+          return format(parseISO(created_at), "LLL do");
+        } catch (e) {
+          return format(created_at ?? new Date(), "LLL do");
+        }
+      })();
+
       return {
         message,
-        link: url,
+        link: `https://github.com/${name}/commit/${sha}`,
         hash: sha,
+        date,
+        repoName: name.split("/")[1],
       };
     },
   };
@@ -102,6 +114,8 @@ export type CommitDetails = {
   message: string;
   link: string;
   hash: string;
+  repoName: string;
+  date: string;
 };
 
 export default function Home({
@@ -143,7 +157,10 @@ export default function Home({
 
       <main className="bg-[#43527F]" style={{ textAlign: "center" }}>
         <div className="flex flex-col w-full h-full overflow-hidden">
-          <Landing mostRecentMovie={mostRecentMovie} mostRecentCommit={mostRecentCommit} />
+          <Landing
+            mostRecentMovie={mostRecentMovie}
+            mostRecentCommit={mostRecentCommit}
+          />
         </div>
       </main>
     </>

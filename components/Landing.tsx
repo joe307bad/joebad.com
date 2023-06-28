@@ -74,7 +74,10 @@ export default function Landing({
         </div>
       </div>
       <div className="w-full h-1/4 flex items-end pb-5 z-[1]">
-        <Activity mostRecentMovie={mostRecentMovie} mostRecentCommit={mostRecentCommit} />
+        <Activity
+          mostRecentMovie={mostRecentMovie}
+          mostRecentCommit={mostRecentCommit}
+        />
       </div>
     </>
   );

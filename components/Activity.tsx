@@ -1,6 +1,7 @@
 import MostRecentMovie from "./widgets/MostRecentMovie";
 import { CommitDetails, MovieDetails } from "../pages";
 import { roboto } from "./Landing";
+import MostRecentCommit from "./widgets/MostRecentCommit";
 
 export function Activity({
   mostRecentMovie,
@@ -28,8 +29,8 @@ export function Activity({
               className="pl-5"
             />
           ) : null}
-          {mostRecentMovie?.name ? (
-            <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />
+          {mostRecentCommit?.hash ? (
+            <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
           ) : null}
           {/*{mostRecentMovie?.name ? (*/}
           {/* Bookmarking with Raindrop.io  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
