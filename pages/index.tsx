@@ -93,6 +93,7 @@ const githubApi = () => {
       return {
         message,
         link: `https://github.com/${name}/commit/${sha}`,
+        repoLink: `https://github.com/${name}`,
         hash: sha,
         date,
         repoName: name.split("/")[1],
@@ -116,6 +117,7 @@ export type CommitDetails = {
   hash: string;
   repoName: string;
   date: string;
+  repoLink: string;
 };
 
 export default function Home({

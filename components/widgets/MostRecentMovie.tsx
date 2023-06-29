@@ -170,7 +170,7 @@ export default function MostRecentMovie({
         <div className="collapse" id="collapseExample">
           <div style={{ borderColor: "#4ce0b3" }} className="border-t-2 p-2">
             <p className="text-sm font-light">
-              I like to watch movies or TV shows and rate them out of 10 stars
+              I enjoy watching movies or TV shows and rating them out of 10 stars
               (simplified here to 5 stars). I use an open-source, Android app
               called{" "}
               <strong>

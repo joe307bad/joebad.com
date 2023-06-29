@@ -14,14 +14,14 @@ export function Activity({
     <div className="flex flex-col w-full overflow-hidden">
       <div style={{ backgroundColor: "#43527F" }} className="w-full">
         <h2 className={`${roboto.className} float-left pb-2 pl-5`}>
-          My recent activity
+
         </h2>
       </div>
       <div
         style={{ textAlign: "center", backgroundColor: "#43527F" }}
         className="overflow-x-auto"
       >
-        <div className="flex w-full space-x-4 items-start">
+        <div className="flex w-full space-x-4 items-end">
           {mostRecentMovie?.name ? (
             <MostRecentMovie
               mostRecentMovie={mostRecentMovie}

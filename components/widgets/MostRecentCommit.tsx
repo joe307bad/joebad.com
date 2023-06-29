@@ -12,7 +12,14 @@ export default function MostRecentCommit({
   className,
   nowrap,
 }: MostRecentCommitProps) {
-  const { hash, message, link: url, date, repoName } = mostRecentCommit;
+  const {
+    hash,
+    message,
+    link: url,
+    date,
+    repoName,
+    repoLink,
+  } = mostRecentCommit;
 
   return (
     <div className={className}>
@@ -41,7 +48,7 @@ export default function MostRecentCommit({
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"
             data-bs-toggle="collapse"
-            data-bs-target="#collapseExample"
+            data-bs-target="#recentCommitInfo"
           >
             <svg
               fill="#4ce0b3"
@@ -54,16 +61,18 @@ export default function MostRecentCommit({
         </div>
         <div className="inline-flex w-full">
           <p
-              style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
-              className="text-bold p-1 text-base flex items-center"
+            style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
+            className="text-bold p-1 text-base flex items-center"
           >
             {date}
           </p>
           <p
-              style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
-              className="text-bold p-1 border-l-2 text-base flex items-center"
+            style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
+            className="text-bold p-1 border-l-2 text-base flex items-center"
           >
-            {repoName}
+            <Link className="line-clamp-2" target="_blank" href={repoLink}>
+              {repoName}
+            </Link>
           </p>
           <p
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
@@ -78,22 +87,12 @@ export default function MostRecentCommit({
             )}
           </p>
         </div>
-        <div className="collapse" id="collapseExample">
+        <div className="collapse" id="recentCommitInfo">
           <div style={{ borderColor: "#4ce0b3" }} className="border-t-2 p-2">
             <p className="text-sm font-light">
-              I like to watch movies or TV shows and rate them out of 10 stars
-              (simplified here to 5 stars). I use an open-source, Android app
-              called{" "}
-              <strong>
-                <Link
-                  target="_blank"
-                  href="https://github.com/michaldrabik/showly-2.0"
-                >
-                  Showly
-                </Link>
-              </strong>{" "}
-              to track my ratings. This widget shows the most recent movie
-              I&apos;ve rated.
+              I program as a hobby and creative outlet. I am always working on
+              some proof of concept or passion project. This widget shows my most
+              recent commit across all my GitHub repositories.
             </p>
           </div>
         </div>
