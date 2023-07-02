@@ -22,6 +22,12 @@
     "paths": {
       "contentlayer/generated": [
         "./.contentlayer/generated"
+      ],
+      "@widgets/MostRecentMovie": [
+        "./components/widgets/MostRecentMovie"
+      ],
+      "@widgets/MostRecentCommit": [
+        "./components/widgets/MostRecentCommit"
       ]
     }
   },

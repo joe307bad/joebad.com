@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import MostRecentMovie from "../MostRecentMovie";
+import { MostRecentMovie } from "@widgets/MostRecentMovie";
 
 export default {
   title: "Components/MostRecentMovie",

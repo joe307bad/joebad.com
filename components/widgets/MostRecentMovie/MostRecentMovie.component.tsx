@@ -1,6 +1,6 @@
-import { MovieDetails } from "../../pages";
-import BaseWidget from "./BaseWidget";
+import BaseWidget from "../BaseWidget";
 import Link from "next/link";
+import { MovieDetails } from "./MostRecentMovie.api";
 
 const EmptyStar = () => {
   return (
@@ -108,16 +108,15 @@ const Stars = ({ stars }: { stars: number }) => {
   );
 };
 
-export default function MostRecentMovie({
+export function MostRecentMovie({
   mostRecentMovie,
   className,
-  nowrap,
 }: MostRecentMovieProps) {
-  const { name, description, date, rating = undefined, url } = mostRecentMovie;
+  const { name, date, rating = undefined, url } = mostRecentMovie;
   const stars = rating ? Math.floor(rating / 2) : 0;
   return (
     <BaseWidget
-      heading="@joe307bad using Showly"
+      heading="Rating movies using Showly"
       column1={[date, undefined]}
       column2={[name, url]}
       column3={[<Stars stars={stars} key={"movieWidgetStars"} />, undefined]}

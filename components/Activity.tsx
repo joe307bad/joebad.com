@@ -1,7 +1,6 @@
-import MostRecentMovie from "./widgets/MostRecentMovie";
-import { CommitDetails, MovieDetails } from "../pages";
 import { roboto } from "./Landing";
-import MostRecentCommit from "./widgets/MostRecentCommit";
+import { MovieDetails, MostRecentMovie } from "@widgets/MostRecentMovie";
+import { CommitDetails, MostRecentCommit } from "@widgets/MostRecentCommit";
 
 export function Activity({
   mostRecentMovie,
@@ -14,7 +13,7 @@ export function Activity({
     <div className="flex flex-col w-full overflow-hidden">
       <div style={{ backgroundColor: "#43527F" }} className="w-full">
         <h2 className={`${roboto.className} float-left pb-2 pl-5`}>
-
+          Updates + interests + activity
         </h2>
       </div>
       <div
@@ -32,18 +31,9 @@ export function Activity({
           {mostRecentCommit?.hash ? (
             <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
           ) : null}
-          {/*{mostRecentMovie?.name ? (*/}
-          {/* Bookmarking with Raindrop.io  <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
-          {/*) : null}*/}
-          {/*{mostRecentMovie?.name ? (*/}
-          {/* Building with GitHub <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
-          {/*) : null}*/}
-          {/*{mostRecentMovie?.name ? (*/}
-          {/* Tweeting and retweeting <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
-          {/*) : null}*/}
-          {/* writing Shorts (tiny blog postS) {mostRecentMovie?.name ? (*/}
-          {/*      <MostRecentMovie mostRecentMovie={mostRecentMovie} nowrap />*/}
-          {/*  ) : null}*/}
+          {/* Bookmarking with Raindrop.io */}
+          {/* Tweeting */}
+          {/* shorts */}
         </div>
       </div>
     </div>

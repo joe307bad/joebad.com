@@ -7,21 +7,13 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { Roboto } from "@next/font/google";
-import { CommitDetails, MovieDetails } from "../pages";
-import { Activity } from "./Activity";
 
 export const roboto = Roboto({
   weight: "100",
   subsets: ["latin"],
 });
 
-export default function Landing({
-  mostRecentMovie,
-  mostRecentCommit,
-}: {
-  mostRecentMovie: MovieDetails;
-  mostRecentCommit: CommitDetails;
-}) {
+export default function Landing({ children }) {
   return (
     <>
       <div className="w-full md:h-1/4 wide:landscape:h-0"></div>
@@ -73,12 +65,7 @@ export default function Landing({
           </Link>
         </div>
       </div>
-      <div className="w-full h-1/4 flex items-end pb-5 z-[1]">
-        <Activity
-          mostRecentMovie={mostRecentMovie}
-          mostRecentCommit={mostRecentCommit}
-        />
-      </div>
+      <div className="w-full h-1/4 flex items-end pb-5 z-[1]">{children}</div>
     </>
   );
 }
