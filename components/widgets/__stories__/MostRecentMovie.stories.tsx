@@ -19,7 +19,7 @@ export const Default = Template.bind({});
 Default.args = {
   mostRecentMovie: {
     name: "@joe307bad using showly",
-    date: "Jan. 4th",
+    date: "Jan. 4th1",
     description: "Hey there",
   },
 };
