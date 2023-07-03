@@ -1,0 +1,32 @@
+.singleArticle {
+  h1 {
+    font-family: "Roboto";
+    font-size: 30px;
+    font-weight: 900;
+  }
+
+  h2 {
+    font-family: "Roboto";
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  header p {
+    margin: 0px;
+    font-family: "Roboto", serif;
+  }
+
+  p {
+    margin: 20px;
+  }
+
+  .offcanvas-backdrop {
+    display: none;
+    background-color: transparent;
+  }
+
+  ul {
+    margin: 20px 50px;
+    list-style: circle;
+  }
+}

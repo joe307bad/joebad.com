@@ -1,0 +1,31 @@
+#landing {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4ce0b3;
+
+  html {
+    background: #43527f;
+  }
+
+  h1 {
+    font-size: 50px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  main {
+  }
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .offcanvas-backdrop {
+    display: none;
+    background-color: transparent;
+  }
+}

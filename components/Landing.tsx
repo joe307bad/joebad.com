@@ -7,6 +7,7 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { Roboto } from "@next/font/google";
+import styles from '../styles/landing.module.scss';
 
 export const roboto = Roboto({
   weight: "100",
@@ -17,7 +18,7 @@ export default function Landing({ children }) {
   return (
     <>
       <div className="w-full md:h-1/4 wide:landscape:h-0"></div>
-      <div className="wide:landscape:flex-row flex flex-col wide:landscape: justify-center w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 wide:landscape: relative">
+      <div id={styles.landing} className="wide:landscape:flex-row flex flex-col wide:landscape: justify-center w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 wide:landscape: relative">
         <div className=" flex flex-col">
           <div
             className="block"

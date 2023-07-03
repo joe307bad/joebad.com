@@ -1,8 +1,9 @@
-import { allArticles } from "contentlayer/generated";
+import { allShorts } from "contentlayer/generated";
 import { NextSeo } from "next-seo";
 import { SingleArticle } from "../../components/SingleArticle";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import SampleComponent from '../../components/SampleComponent';
+import '../../styles/short.module.scss';
 
 const usedcomponents = {
   SampleComponent,
@@ -15,7 +16,6 @@ const SinglePost = ({ article }) => {
       <NextSeo title={article.title} description={article.seoDescription} />
 
       <SingleArticle
-        image={article.image}
         title={article.title}
         category={article.category}
         author={article.author}
@@ -29,7 +29,7 @@ export default SinglePost;
 
 export async function getStaticPaths() {
   return {
-    paths: allArticles.map((article) => ({
+    paths: allShorts.map((article) => ({
       params: { slug: article.slug },
     })),
     fallback: false,
@@ -37,7 +37,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const article = allArticles.find((article) => article.slug === params.slug);
+  const article = allShorts.find((article) => article.slug === params.slug);
 
   return { props: { article } };
 }

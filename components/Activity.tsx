@@ -1,6 +1,7 @@
 import { roboto } from "./Landing";
 import { MovieDetails, MostRecentMovie } from "@widgets/MostRecentMovie";
 import { CommitDetails, MostRecentCommit } from "@widgets/MostRecentCommit";
+import styles from '../styles/activity.module.scss'
 
 export function Activity({
   mostRecentMovie,
@@ -10,10 +11,10 @@ export function Activity({
   mostRecentCommit: CommitDetails;
 }) {
   return (
-    <div className="flex flex-col w-full overflow-hidden">
+    <div id={styles.activity} className="flex flex-col w-full overflow-hidden">
       <div style={{ backgroundColor: "#43527F" }} className="w-full">
         <h2 className={`${roboto.className} float-left pb-2 pl-5`}>
-          Updates + interests + activity
+          Interests + activity
         </h2>
       </div>
       <div
