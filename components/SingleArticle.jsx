@@ -3,6 +3,7 @@ import styles from "../styles/short.module.scss";
 import "prismjs/themes/prism-coy.css";
 import { useEffect } from "react";
 import Prism from "prismjs";
+import { useFormatter } from "next-intl";
 
 export const roboto = Roboto({
   weight: ["100", "500", "900"],
@@ -16,60 +17,63 @@ export const SingleArticle = ({
   title,
   children,
   publishedAt,
+  subTitle,
 }) => {
+  const format = useFormatter();
+  const dateTime = new Date(publishedAt);
   useEffect(() => {
     const highlight = async () => {
-      await Prism.highlightAll(); // <--- prepare Prism
+      await Prism.highlightAll();
     };
-    highlight(); // <--- call the async function
-  }, [title]);
+    highlight();
+  }, [title, publishedAt]);
   return (
-    <main
-      className={`${styles.singleArticle} pt-8 pb-16 lg:pt-16 lg:pb-24 bg-white dark:bg-gray-900`}
-    >
-      <div className="flex justify-between px-4 mx-auto max-w-screen-xl ">
-        <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
-          <header className="mb-4 lg:mb-6 not-format">
+    <div className={`${styles.singleArticle} flex justify-between`}>
+      <article className="items-center flex flex-col mx-auto w-full format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+        <div className="w-full flex items-center flex-col bg-[#43527f]">
+          <header
+            className={`${roboto.className} w-full max-w-2xl text-[#4ce0b3] p-5 md:p-0 mb-0 md:mb-10 m-5 md:mb-10 mt-5 pt-0`}
+          >
             <address className="flex items-center mb-6 not-italic">
-              <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+              <div className="inline-flex items-center mr-3 text-sm">
                 <img
-                  style={{ backgroundColor: "#43527f" }}
-                  className="mr-4 w-12 h-12 rounded-full border-5 border-blue-100"
+                  className="mr-4 w-20 h-230 rounded-full border-[#4ce0b3] border-2"
                   src="/Joe.jpg"
-                  alt="Jese Leos"
+                  alt="Joe Badaczewski"
                 />
                 <div>
-                  <p
-                    href="#"
-                    rel="author"
-                    className="text-xl text-gray-900 dark:text-white"
-                  >
+                  <p href="#" rel="author" className="text-xl">
                     Joe Badaczewski
                   </p>
-                  <p className="text-base font-light text-gray-500 dark:text-gray-400">
+                  <p style={{ fontWeight: 100 }} className="text-base">
                     Front-end Engineer II @ AWS
-                  </p>
-                  <p className="text-base font-light text-gray-500 dark:text-gray-400">
-                    <time
-                      pubdate
-                      dateTime="2022-02-08"
-                      title="February 8th, 2022"
-                    >
-                      {publishedAt}
-                    </time>
                   </p>
                 </div>
               </div>
             </address>
+            <p className="text-base">
+              <time>
+                {format.dateTime(dateTime, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            </p>
             <h1
-              className={`mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white`}
+              className={`mb-4 text-3xl font-extrabold leading-tight pb-0 mb-10 mt-1`}
             >
               {title}
             </h1>
+            <h2 className="text-base font-light">{subTitle}</h2>
           </header>
+        </div>
+        <div
+          className={`${styles.articleContent} articleContent max-w-full md:max-w-2xl p-5 md:p-0 pt-0 mt-5 md:mt-10`}
+        >
           {children}
-        </article>
-      </div>
-    </main>
+        </div>
+      </article>
+    </div>
   );
 };

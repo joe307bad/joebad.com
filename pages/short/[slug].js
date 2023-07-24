@@ -2,8 +2,9 @@ import { allShorts } from "contentlayer/generated";
 import { NextSeo } from "next-seo";
 import { SingleArticle } from "../../components/SingleArticle";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import SampleComponent from '../../components/SampleComponent';
-import '../../styles/short.module.scss';
+import SampleComponent from "../../components/SampleComponent";
+import "../../styles/short.module.scss";
+import { NextIntlClientProvider } from "next-intl";
 
 const usedcomponents = {
   SampleComponent,
@@ -12,17 +13,12 @@ const SinglePost = ({ article }) => {
   const MDXContent = useMDXComponent(article.body.code);
 
   return (
-    <>
+    <NextIntlClientProvider locale='en-US'>
       <NextSeo title={article.title} description={article.seoDescription} />
-
-      <SingleArticle
-        title={article.title}
-        category={article.category}
-        author={article.author}
-      >
+      <SingleArticle {...article}>
         <MDXContent components={usedcomponents} />
       </SingleArticle>
-    </>
+    </NextIntlClientProvider>
   );
 };
 export default SinglePost;

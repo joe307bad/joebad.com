@@ -7,10 +7,10 @@ export const githubApi = () => {
         `https://api.github.com/users/joe307bad/events/public`
       ).then((res) => res.json());
 
-      const { payload, repo, created_at } = activity[0];
-      const { commits } = payload;
-      const { sha, message } = commits[0];
-      const { name } = repo;
+      const { payload, repo, created_at } = activity?.[0] ?? {};
+      const { commits } = payload ?? {};
+      const { sha, message } = commits?.[0] ?? { message: null, sha: null};
+      const { name } = repo ?? { name: "" };
 
       const date = (() => {
         try {
@@ -26,7 +26,7 @@ export const githubApi = () => {
         repoLink: `https://github.com/${name}`,
         hash: sha,
         date,
-        repoName: name.split("/")[1],
+        repoName: name.split("/")[1] ?? null,
       };
     },
   };

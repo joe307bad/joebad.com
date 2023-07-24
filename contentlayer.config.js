@@ -47,6 +47,7 @@ const Short = defineDocumentType(() => ({
       of: Author,
     },
     image: { type: "string", required: false },
+    subTitle: { type: "string", required: true },
   },
   computedFields,
 }));

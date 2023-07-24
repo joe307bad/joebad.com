@@ -2,7 +2,7 @@ import { allArticles } from "contentlayer/generated";
 import { NextSeo } from "next-seo";
 import { SingleArticle } from "../../components/SingleArticle";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import SampleComponent from '../../components/SampleComponent';
+import SampleComponent from "../../components/SampleComponent";
 
 const usedcomponents = {
   SampleComponent,
@@ -14,12 +14,7 @@ const SinglePost = ({ article }) => {
     <>
       <NextSeo title={article.title} description={article.seoDescription} />
 
-      <SingleArticle
-        image={article.image}
-        title={article.title}
-        category={article.category}
-        author={article.author}
-      >
+      <SingleArticle {...article}>
         <MDXContent components={usedcomponents} />
       </SingleArticle>
     </>
