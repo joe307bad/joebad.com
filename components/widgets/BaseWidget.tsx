@@ -5,7 +5,7 @@ type BaseWidgetProps = {
   heading: string;
   column1: [string | ReactNode, string | undefined];
   column2: [string | ReactNode, string | undefined];
-  column3: [string | ReactNode, string | undefined];
+  column3?: [string | ReactNode, string | undefined];
   className: string | undefined;
   description: string | ReactNode;
   id: string;
@@ -25,13 +25,13 @@ export default function BaseWidget(props: BaseWidgetProps) {
   } = props;
   const [column1Text, column1Link] = column1;
   const [column2Text, column2Link] = column2;
-  const [column3Text, column3Link] = column3;
+  const [column3Text, column3Link] = column3 ?? [];
   return (
     <div className={className}>
       {" "}
       <div
         style={{ fontFamily: "Roboto Mono", borderColor: "#4ce0b3" }}
-        className="w-[350px] min-h-[95px] flex flex-col rounded overflow-hidden border-2 border-sky-500 hover:shadow-lg text-left"
+        className="w-[350px] min-h-[95px] flex flex-col rounded overflow-hidden border-2 border-sky-500 hover:shadow-lg text-left bg-[#43527F]"
       >
         <div
           style={{ borderColor: "#4ce0b3" }}
@@ -73,7 +73,9 @@ export default function BaseWidget(props: BaseWidgetProps) {
           </p>
           <p
             style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
-            className="font-light p-1 text-base border-r-2 border-l-2 flex-1 text-left flex items-center"
+            className={`font-light p-1 text-base ${
+              column3 ? "border-r-2" : ""
+            } border-l-2 flex-1 text-left flex items-center`}
           >
             {column2Link ? (
               <Link target="_blank" href={column2Link}>
@@ -83,22 +85,24 @@ export default function BaseWidget(props: BaseWidgetProps) {
               column2Text
             )}
           </p>
-          <div
-            className="flex p-1 items-center font-light"
-            style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
-          >
-            {column3Link ? (
-              <Link
-                target="_blank"
-                className="line-clamp-2 text-base"
-                href={column3Link}
-              >
-                {column3Text}
-              </Link>
-            ) : (
-              column3Text
-            )}
-          </div>
+          {column3 && (
+            <div
+              className="flex p-1 items-center font-light"
+              style={{ fontFamily: "Roboto", borderColor: "#4ce0b3" }}
+            >
+              {column3Link ? (
+                <Link
+                  target="_blank"
+                  className="line-clamp-2 text-base"
+                  href={column3Link}
+                >
+                  {column3Text}
+                </Link>
+              ) : (
+                column3Text
+              )}
+            </div>
+          )}
         </div>
         <div className="collapse" id={id}>
           <div style={{ borderColor: "#4ce0b3" }} className="border-t-2 p-2">

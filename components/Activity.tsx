@@ -1,24 +1,23 @@
 import { roboto } from "./Landing";
 import { MovieDetails, MostRecentMovie } from "@widgets/MostRecentMovie";
 import { CommitDetails, MostRecentCommit } from "@widgets/MostRecentCommit";
-import styles from '../styles/activity.module.scss'
+import styles from "../styles/activity.module.scss";
+import { Short } from "contentlayer/generated";
+import { MostRecentShort } from "./widgets/MostRecentShort";
 
 export function Activity({
   mostRecentMovie,
   mostRecentCommit,
+  short,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
+  short: Short;
 }) {
   return (
-    <div id={styles.activity} className="flex flex-col w-full overflow-hidden">
-      <div style={{ backgroundColor: "#43527F" }} className="w-full">
-        <h2 className={`${roboto.className} float-left pb-2 pl-5`}>
-          Interests + activity
-        </h2>
-      </div>
+    <div id={styles.activity} className="flex flex-col w-full overflow-hidden z-10">
       <div
-        style={{ textAlign: "center", backgroundColor: "#43527F" }}
+        style={{ textAlign: "center" }}
         className="overflow-x-auto"
       >
         <div className="flex w-full space-x-4 items-end">
@@ -32,9 +31,9 @@ export function Activity({
           {mostRecentCommit?.hash ? (
             <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
           ) : null}
+          {/*<MostRecentShort short={short} nowrap />*/}
           {/* Bookmarking with Raindrop.io */}
           {/* Tweeting */}
-          {/* shorts */}
         </div>
       </div>
     </div>

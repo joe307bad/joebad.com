@@ -1,19 +1,19 @@
 import Head from "next/head";
-import { allArticles } from "contentlayer/generated";
+import { allArticles, allShorts, Short } from "contentlayer/generated";
 import { select } from "../utils/select";
-import Landing from "../components/Landing";
+import Landing, { roboto } from "../components/Landing";
 import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
 import { Activity } from "../components/Activity";
 
 export default function Home({
   mostRecentMovie,
-  articles,
+  shorts,
   mostRecentCommit,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
-  articles: any[];
+  shorts: Short[];
 }) {
   return (
     <>
@@ -51,9 +51,15 @@ export default function Home({
       <main className="bg-[#43527F]" style={{ textAlign: "center" }}>
         <div className="flex flex-col w-full h-full overflow-hidden">
           <Landing>
+            <div style={{ backgroundColor: "#43527F" }} className="w-full absolute bottom-[120px]">
+              <h2 className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0`}>
+                Interests + activity
+              </h2>
+            </div>
             <Activity
               mostRecentMovie={mostRecentMovie}
               mostRecentCommit={mostRecentCommit}
+              short={shorts[0]}
             />
           </Landing>
         </div>
@@ -109,7 +115,7 @@ export async function getStaticProps({ req, res }) {
     );
 
   return {
-    props: { mostRecentMovie, articles, mostRecentCommit },
+    props: { mostRecentMovie, articles, mostRecentCommit, shorts: allShorts },
     revalidate: 86400,
   };
 }

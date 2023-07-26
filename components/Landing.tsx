@@ -66,7 +66,7 @@ export default function Landing({ children }) {
           </Link>
         </div>
       </div>
-      <div className="w-full h-1/4 flex items-end pb-5 z-[1]">{children}</div>
+      <div className="w-full h-1/4 flex items-end pb-5 z-[1] relative">{children}</div>
     </>
   );
 }
