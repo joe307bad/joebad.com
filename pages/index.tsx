@@ -41,6 +41,11 @@ export default function Home({
           crossOrigin=""
           type="font/woff2"
         />
+        <meta name="title" content="Joe Badaczewski | Front-End Engineer" />
+        <meta
+          name="description"
+          content="Joe Badaczewski | Pittsburgh-based Front-End Engineer at AWS | Writing short blog posts about coding, comics, movies, sports, and open source software."
+        />
       </Head>
 
       <main className="bg-[#43527F]" style={{ textAlign: "center" }}>

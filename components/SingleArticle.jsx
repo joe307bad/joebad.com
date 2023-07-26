@@ -32,7 +32,7 @@ export const SingleArticle = ({
       <article className="items-center flex flex-col mx-auto w-full format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
         <div className="w-full flex items-center flex-col bg-[#43527f]">
           <header
-            className={`${roboto.className} w-full max-w-2xl text-[#4ce0b3] p-5 md:p-0 mb-0 md:mb-10 m-5 md:mb-10 mt-5 pt-0`}
+            className={`${roboto.className} w-full md:max-w-2xl text-[#4ce0b3] p-5 md:p-0 mb-0 md:mb-10 m-5 md:mb-10 mt-5 pt-0`}
           >
             <address className="flex items-center mb-6 not-italic">
               <div className="inline-flex items-center mr-3 text-sm">
@@ -46,7 +46,7 @@ export const SingleArticle = ({
                     Joe Badaczewski
                   </p>
                   <p style={{ fontWeight: 100 }} className="text-base">
-                    Front-end Engineer II @ AWS
+                    Front-End Engineer II @ AWS
                   </p>
                 </div>
               </div>
@@ -61,7 +61,7 @@ export const SingleArticle = ({
               </time>
             </p>
             <h1
-              className={`mb-4 text-3xl font-extrabold leading-tight pb-0 mb-10 mt-1`}
+              className={`mb-4 text-3xl font-extrabold leading-tight pb-0 mb-5 mt-1`}
             >
               {title}
             </h1>
