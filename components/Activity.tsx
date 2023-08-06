@@ -31,7 +31,7 @@ export function Activity({
           {mostRecentCommit?.hash ? (
             <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
           ) : null}
-          <MostRecentShort short={short} nowrap />
+          {/*<MostRecentShort short={short} nowrap />*/}
           {/* Bookmarking with Raindrop.io */}
           {/* Tweeting */}
         </div>
