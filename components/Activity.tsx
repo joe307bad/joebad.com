@@ -12,14 +12,14 @@ export function Activity({
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
-  short: Short;
+  short: Short & { formattedDatetime: string };
 }) {
   return (
-    <div id={styles.activity} className="flex flex-col w-full overflow-hidden z-10">
-      <div
-        style={{ textAlign: "center" }}
-        className="overflow-x-auto"
-      >
+    <div
+      id={styles.activity}
+      className="flex flex-col w-full overflow-hidden z-10"
+    >
+      <div style={{ textAlign: "center" }} className="overflow-x-auto">
         <div className="flex w-full space-x-4 items-end">
           {mostRecentMovie?.name ? (
             <MostRecentMovie

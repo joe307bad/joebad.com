@@ -5,6 +5,7 @@ import Landing, { roboto } from "../components/Landing";
 import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
 import { Activity } from "../components/Activity";
+import { format, parseISO } from "date-fns";
 
 export default function Home({
   mostRecentMovie,
@@ -13,8 +14,9 @@ export default function Home({
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
-  shorts: Short[];
+  shorts: (Short & { formattedDatetime: string })[];
 }) {
+  console.log("shorts", shorts);
   return (
     <>
       <Head>
@@ -51,8 +53,13 @@ export default function Home({
       <main className="bg-[#43527F]" style={{ textAlign: "center" }}>
         <div className="flex flex-col w-full h-full overflow-hidden">
           <Landing>
-            <div style={{ backgroundColor: "#43527F" }} className="w-full absolute bottom-[120px]">
-              <h2 className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0`}>
+            <div
+              style={{ backgroundColor: "#43527F" }}
+              className="w-full absolute bottom-[120px]"
+            >
+              <h2
+                className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0`}
+              >
                 Interests + activity
               </h2>
             </div>
@@ -96,26 +103,29 @@ export async function getStaticProps({ req, res }) {
     return movieDetails;
   })();
   const mostRecentCommit = await githubApi().getMostRecentCommit();
-  const articles = allArticles
-    .map((article) =>
-      select(article, [
+  const shorts = allShorts
+    .map((article) => {
+      const a = select(article, [
         "slug",
         "title",
         "description",
         "publishedAt",
-        "readingTime",
-        "author",
-        "category",
-        "image",
-      ])
-    )
+      ]);
+
+      const d = format(parseISO(a.publishedAt), "LLL do");
+
+      return {
+        formattedDatetime: d,
+        ...a,
+      };
+    })
     .sort(
       (a, b) =>
         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
     );
 
   return {
-    props: { mostRecentMovie, articles, mostRecentCommit, shorts: allShorts },
+    props: { mostRecentMovie, mostRecentCommit, shorts },
     revalidate: 86400,
   };
 }
