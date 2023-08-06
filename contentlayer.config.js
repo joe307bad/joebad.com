@@ -42,6 +42,10 @@ const Short = defineDocumentType(() => ({
     description: { type: "string", required: true },
     seoDescription: { type: "string", required: true },
     category: { type: "string", required: true },
+    tags: {
+      type: "list",
+      of: { type: "string" },
+    },
     author: {
       type: "nested",
       of: Author,

@@ -11,7 +11,7 @@ export const roboto = Roboto({
   subsets: ["latin"],
 });
 
-export const SingleArticle = ({ title, children, publishedAt, subTitle }) => {
+export const SingleArticle = ({ title, children, publishedAt, subTitle, tags }) => {
   const dateTime = new Date(publishedAt);
   useEffect(() => {
     const highlight = async () => {
@@ -26,7 +26,7 @@ export const SingleArticle = ({ title, children, publishedAt, subTitle }) => {
           title={title}
           subTitle={subTitle}
           dateTime={dateTime}
-          tags={[["joebad.com", "pink"]]}
+          tags={tags}
         />
         <div
           className={`${styles.articleContent} articleContent max-w-full md:max-w-2xl p-5 md:p-0 pt-0 mt-5 md:mt-10`}

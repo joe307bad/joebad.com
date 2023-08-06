@@ -1,5 +1,6 @@
 import BaseWidget from "../BaseWidget";
 import { Short } from "contentlayer/generated";
+import Link from "next/link";
 
 type MostRecentShortProps = {
   short: Short & { formattedDatetime: string };
@@ -10,10 +11,14 @@ type MostRecentShortProps = {
 export function MostRecentShort(props: MostRecentShortProps) {
   const { title, formattedDatetime: date, slug } = props.short;
   const url = `/short/${slug}`;
-  console.log("formattedDatetime", props.short.formattedDatetime)
+  console.log("formattedDatetime", props.short.formattedDatetime);
   return (
     <BaseWidget
-      heading="Writing blog posts"
+      heading={
+        <span>
+          Keeping a <Link href="/shorts">digital journal</Link>
+        </span>
+      }
       column1={[date, undefined]}
       column2={[title, url]}
       className={""}

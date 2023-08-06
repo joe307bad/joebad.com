@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 type BaseWidgetProps = {
-  heading: string;
+  heading: ReactNode | string;
   column1: [string | ReactNode, string | undefined];
   column2: [string | ReactNode, string | undefined];
   column3?: [string | ReactNode, string | undefined];

@@ -2,12 +2,13 @@ import Link from "next/link";
 import ReadMoreShorts from "../buttons/ReadMoreShorts";
 import { useFormatter } from "next-intl";
 import { Roboto } from "@next/font/google";
+import TagsList from "./TagsList";
 const roboto = Roboto({
   weight: ["100", "500", "900"],
   subsets: ["latin"],
 });
 type BlogHeader = {
-  tags?: [string, string][];
+  tags?: string[];
   title: string;
   dateTime?: number | Date;
   subTitle: string;
@@ -37,8 +38,13 @@ export default function BlogHeader({
                   alt="Joe Badaczewski"
                 />
                 <div>
-                  <p className="text-xl">Joe Badaczewski</p>
-                  <p style={{ fontWeight: 100 }} className="text-base">
+                  <p className={`${roboto.className} baset-text text-xl`}>
+                    Joe Badaczewski
+                  </p>
+                  <p
+                    style={{ fontWeight: 400, fontFamily: "Roboto Mono" }}
+                    className="text-base text-[18px]"
+                  >
                     Front-End Engineer II @ AWS
                   </p>
                 </div>
@@ -65,18 +71,7 @@ export default function BlogHeader({
         <h1 className={`text-3xl font-extrabold leading-tight pb-0 mt-1 mb-2`}>
           {title}
         </h1>
-        <div className="mb-5">
-          {tags &&
-            tags.map(([text, color]) => (
-              <span
-                key={text}
-                style={{ fontFamily: "Roboto Mono" }}
-                className={`bg-${color}-100 text-${color}-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-${color}-900 dark:text-${color}-300`}
-              >
-                {text}
-              </span>
-            ))}
-        </div>
+        <div className="mb-5">{tags && <TagsList tags={tags} />}</div>
         <h2 className="text-base">{subTitle}</h2>
       </header>
     </div>
