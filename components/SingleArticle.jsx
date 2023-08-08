@@ -33,7 +33,6 @@ export const SingleArticle = ({ title, children, publishedAt, subTitle, tags }) 
         >
           {children}
         </div>
-
         <ReadMoreShorts />
       </article>
     </div>
