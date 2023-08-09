@@ -23,7 +23,7 @@ export default function TagsList({ tags }) {
     <span
       key={text}
       style={{ fontFamily: "Roboto Mono" }}
-      className={`bg-${color[text]}-100 text-${color[text]}-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-${color[text]}-900 dark:text-${color[text]}-300 whitespace-nowrap break-all`}
+      className={`bg-${color[text]}-100 text-${color[text]}-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-${color[text]}-900 dark:text-${color[text]}-300 whitespace-nowrap break-all inline-block mb-1`}
     >
       {text}
     </span>

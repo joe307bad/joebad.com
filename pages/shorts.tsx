@@ -31,32 +31,52 @@ export default function ShortsArchive({ shorts }: { shorts: Short[] }) {
       />
       <div className={`flex justify-center p-5 md:pt-0 md:mt-10`}>
         <ul className="w-full md:max-w-2xl">
-          {Object.keys(shortsByYear).flatMap((year) => {
-            return [
-              <li key={year}>
-                <h3 style={{ fontFamily: "Roboto Mono" }} className="pb-2">{year}</h3>
-              </li>,
-              ...shortsByYear[year].map((s) => (
-                <li className="flex w-full mb-5" key={s._id}>
-                  <Link className="flex w-full" href={`/short/${s.slug}`}>
-                    <div
-                      style={{ fontFamily: "Roboto Mono" }}
-                      className={`pr-5`}
+          {Object.keys(shortsByYear)
+            .sort()
+            .reverse()
+            .flatMap((year) => {
+              return [
+                <li key={year}>
+                  <h3
+                    style={{ fontFamily: "Roboto Mono" }}
+                    className="pb-2 text-xl text-[#43527f]"
+                  >
+                    {year}
+                  </h3>
+                </li>,
+                ...shortsByYear[year]
+                  .sort(
+                    (a, b) =>
+                      parse(b.publishedAt, "yyyy-MM-dd", new Date()).getTime() -
+                      parse(a.publishedAt, "yyyy-MM-dd", new Date()).getTime()
+                  )
+                  .map((s, i) => (
+                    <li
+                      className={`flex w-full mb-5 ml-5 ${
+                        i === shortsByYear[year].length - 1 ? "mb-10" : ""
+                      }`}
+                      key={s._id}
                     >
-                      {format(
-                        parse(s.publishedAt, "yyyy-MM-dd", new Date()),
-                        "LLL do"
-                      )}
-                    </div>{" "}
-                    <div className="flex-1">
-                      <span className=" hover:underline">{s.title}</span> <br />
-                      {s.tags && <TagsList tags={s.tags} />}
-                    </div>{" "}
-                  </Link>
-                </li>
-              )),
-            ];
-          })}
+                      <Link className="flex w-full" href={`/short/${s.slug}`}>
+                        <div
+                          style={{ fontFamily: "Roboto Mono" }}
+                          className={`pr-5`}
+                        >
+                          {format(
+                            parse(s.publishedAt, "yyyy-MM-dd", new Date()),
+                            "LLL do"
+                          )}
+                        </div>{" "}
+                        <div className="flex-1">
+                          <span className=" hover:underline">{s.title}</span>{" "}
+                          <br />
+                          {s.tags && <TagsList tags={s.tags} />}
+                        </div>{" "}
+                      </Link>
+                    </li>
+                  )),
+              ];
+            })}
         </ul>
       </div>
     </NextIntlClientProvider>

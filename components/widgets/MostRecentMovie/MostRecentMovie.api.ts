@@ -13,10 +13,15 @@ export const traktApi = () => {
   const init = { headers: { "trakt-api-key": traktTvApiKey } };
   return {
     async getIdsOfMostRecentlyWatchedMovie() {
-      const watchedHistory = await fetch(
+      const watchedHistory: false | Response = await fetch(
         "https://api.trakt.tv/users/joe307bad/history/movies",
         init
-      );
+      ).catch(() => false);
+
+      if (watchedHistory === false) {
+        return [];
+      }
+
       const [mostRecentMovie] = (await watchedHistory?.json()) || [];
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
@@ -51,9 +56,13 @@ export const tmdbApi = () => {
   const tmdbApiKey = process.env.TMDB_API_KEY || "";
   return {
     async getMovieDetailsByTmdbId(tmdbId: string): Promise<MovieDetails> {
-      const movieDetails = await fetch(
+      const movieDetails: false | Response = await fetch(
         `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
-      );
+      ).catch(() => false);
+
+      if (movieDetails === false) {
+        return {};
+      }
 
       const {
         overview: description,
