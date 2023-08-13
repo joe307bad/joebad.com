@@ -118,8 +118,8 @@ export function MostRecentMovie({
     <BaseWidget
       heading="Rating movies using Showly"
       column1={[date, undefined]}
-      column2={[name, url]}
-      column3={[<Stars stars={stars} key={"movieWidgetStars"} />, undefined]}
+      column2={[name, url, true]}
+      column3={[<Stars stars={stars} key={"movieWidgetStars"} />, undefined, true]}
       className={className}
       description={
         <>

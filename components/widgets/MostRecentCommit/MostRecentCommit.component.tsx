@@ -18,8 +18,8 @@ export function MostRecentCommit({
     <BaseWidget
       heading="Building on GitHub"
       column1={[date, undefined]}
-      column2={[repoName, repoLink]}
-      column3={[message, url]}
+      column2={[repoName, repoLink, true]}
+      column3={[message, url, true]}
       className={className}
       description={
         <>
