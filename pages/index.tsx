@@ -16,11 +16,10 @@ export default function Home({
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
 }) {
-  console.log("shorts", shorts);
   return (
     <>
       <Head>
-        <title>Joe Badaczewski | Front-End Engineer</title>
+        <title>Joe Badaczewski | Senior Software Engineer</title>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -43,10 +42,10 @@ export default function Home({
           crossOrigin=""
           type="font/woff2"
         />
-        <meta name="title" content="Joe Badaczewski | Front-End Engineer" />
+        <meta name="title" content="Joe Badaczewski | Senior Software Engineer" />
         <meta
           name="description"
-          content="Joe Badaczewski | Pittsburgh-based Front-End Engineer at AWS | Writing short blog posts about coding, comics, movies, sports, and open source software."
+          content="Joe Badaczewski |  Pittsburgh-based | working as a Front-End Engineer II at AWS | Writing short blog posts about coding, comics, movies, sports, and open source software."
         />
       </Head>
 
@@ -58,7 +57,7 @@ export default function Home({
               className="w-full absolute bottom-[120px]"
             >
               <h2
-                className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0`}
+                className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0 font-thin`}
               >
                 Interests + activity
               </h2>

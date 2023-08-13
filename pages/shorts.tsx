@@ -14,7 +14,7 @@ export default function ShortsArchive({ shorts }: { shorts: Short[] }) {
       format(parse(x.publishedAt, "yyyy-MM-dd", new Date()), "yyyy")
     )
   );
-  console.log(shortsByYear);
+
   return (
     <NextIntlClientProvider locale="en-US">
       <NextSeo

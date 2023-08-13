@@ -32,6 +32,45 @@ const Article = defineDocumentType(() => ({
   computedFields,
 }));
 
+
+export const Page = defineDocumentType(() => ({
+  name: "Page",
+  filePathPattern: `./*.mdx`,
+  contentType: "mdx",
+  fields: {
+    title: {
+      type: "string",
+      required: true,
+    },
+    subtitle: {
+      type: "string",
+      required: true,
+    },
+    description: {
+      type: "string",
+      required: false,
+    },
+    published: {
+      type: "date",
+      required: true,
+    },
+    updated: {
+      type: "date",
+      required: false,
+    },
+    pinned: {
+      type: "boolean",
+      required: false,
+    },
+  },
+  computedFields: {
+    slug: {
+      type: "string",
+      resolve: (post) => post._raw.sourceFileName.replace(/\.mdx$/, ""),
+    },
+  },
+}));
+
 const Short = defineDocumentType(() => ({
   name: "Short",
   filePathPattern: "shorts/*.mdx",
@@ -70,6 +109,6 @@ const computedFields = {
 
 const contentLayerConfig = makeSource({
   contentDirPath: "data",
-  documentTypes: [Article, Short],
+  documentTypes: [Article, Short, Page],
 });
 export default contentLayerConfig;

@@ -1,15 +1,9 @@
-import { Roboto } from "@next/font/google";
 import styles from "../styles/short.module.scss";
 import "prismjs/themes/prism-coy.css";
 import { useEffect } from "react";
 import Prism from "prismjs";
 import ReadMoreShorts from "./buttons/ReadMoreShorts";
 import BlogHeader from "./layout/BlogHeader";
-
-export const roboto = Roboto({
-  weight: ["100", "500", "900"],
-  subsets: ["latin"],
-});
 
 export const SingleArticle = ({ title, children, publishedAt, subTitle, tags }) => {
   const dateTime = new Date(publishedAt);

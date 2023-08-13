@@ -5,7 +5,10 @@ const color = {
   "functional programming": "yellow",
   "coding": "green",
   "comics": "purple",
-  "review": "orange"
+  "review": "orange",
+  "personal tenets": "purple",
+  "professional overview": "green",
+  "current position": "orange"
 };
 
 const possibleTagColors = [

@@ -1,4 +1,3 @@
-import { roboto } from "./Landing";
 import { MovieDetails, MostRecentMovie } from "@widgets/MostRecentMovie";
 import { CommitDetails, MostRecentCommit } from "@widgets/MostRecentCommit";
 import styles from "../styles/activity.module.scss";
@@ -17,7 +16,7 @@ export function Activity({
   return (
     <div
       id={styles.activity}
-      className="flex flex-col w-full overflow-hidden z-10"
+      className={`flex flex-col w-full overflow-hidden z-10`}
     >
       <div style={{ textAlign: "center" }} className="overflow-x-auto">
         <div className="flex w-full space-x-4 items-end">

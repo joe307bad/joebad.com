@@ -4,8 +4,8 @@ import { ReactNode } from "react";
 type BaseWidgetProps = {
   heading: ReactNode | string;
   column1: [string | ReactNode, string | undefined];
-  column2: [string | ReactNode, string | undefined];
-  column3?: [string | ReactNode, string | undefined];
+  column2: [string | ReactNode, string | undefined, boolean | undefined];
+  column3?: [string | ReactNode, string | undefined, boolean | undefined];
   className: string | undefined;
   description: string | ReactNode;
   id: string;
@@ -24,8 +24,8 @@ export default function BaseWidget(props: BaseWidgetProps) {
     description,
   } = props;
   const [column1Text, column1Link] = column1;
-  const [column2Text, column2Link] = column2;
-  const [column3Text, column3Link] = column3 ?? [];
+  const [column2Text, column2Link, column2LinkBlank = true] = column2;
+  const [column3Text, column3Link, column3LinkBlank = true] = column3 ?? [];
   return (
     <div className={className}>
       {" "}
@@ -78,7 +78,10 @@ export default function BaseWidget(props: BaseWidgetProps) {
             } border-l-2 flex-1 text-left flex items-center`}
           >
             {column2Link ? (
-              <Link target="_blank" href={column2Link}>
+              <Link
+                {...(column2LinkBlank ? { target: "_blank" } : {})}
+                href={column2Link}
+              >
                 {column2Text}
               </Link>
             ) : (
@@ -92,7 +95,7 @@ export default function BaseWidget(props: BaseWidgetProps) {
             >
               {column3Link ? (
                 <Link
-                  target="_blank"
+                  {...(column3LinkBlank ? { target: "_blank" } : {})}
                   className="line-clamp-2 text-base"
                   href={column3Link}
                 >
