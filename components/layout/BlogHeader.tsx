@@ -71,7 +71,7 @@ export default function BlogHeader({
         <h1 className={`text-3xl font-extrabold leading-tight pb-0 mt-1 mb-2`}>
           {title}
         </h1>
-        <div className="mb-5">{tags && <TagsList tags={tags} />}</div>
+        <div className="mb-5">{tags && <TagsList alignContent="left" tags={tags} />}</div>
         <h2 className="text-base">{subTitle}</h2>
       </header>
     </div>

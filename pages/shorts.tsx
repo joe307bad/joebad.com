@@ -70,7 +70,7 @@ export default function ShortsArchive({ shorts }: { shorts: Short[] }) {
                         <div className="flex-1">
                           <span className=" hover:underline">{s.title}</span>{" "}
                           <br />
-                          {s.tags && <TagsList tags={s.tags} />}
+                          {s.tags && <TagsList alignContent="left" tags={s.tags} />}
                         </div>{" "}
                       </Link>
                     </li>

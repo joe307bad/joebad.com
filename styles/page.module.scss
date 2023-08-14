@@ -1,9 +1,26 @@
-.mostRecentExperience {
-  text-align: left;
+.splitContent {
+  display: flex;
+  padding-top:1rem;
+  padding-bottom:1rem;
 
-  h2, h3 {
+  & > div {
+    width: 50%;
+
+    &:nth-of-type(2n) {
+      padding-left: 1rem;
+    }
+    &:nth-of-type(n) {
+      padding-right: 1rem;
+    }
+  }
+}
+
+.mostRecentExperience {
+  text-align: center;
+
+  h2,
+  h3 {
     font-family: "Roboto", serif;
-    font-weight: 900;
     color: #4ce0b3;
     font-size: 1.25rem;
   }
@@ -11,5 +28,41 @@
   h3 {
     font-family: "Roboto Mono", serif;
     font-weight: 100;
+  }
+}
+
+.content {
+  h2,
+  h3,
+  h4,
+  span {
+    text-align: left;
+  }
+
+  span {
+    display: inline-block;
+  }
+
+  h4 {
+    font-weight: 900;
+    padding-top: 10px;
+    color: #4ce0b3;
+  }
+
+  p {
+    text-align: left;
+    padding: 10px 0px;
+    color: #4ce0b3;
+  }
+
+  ul {
+    text-align: left;
+    list-style: disc;
+    padding: 0px 20px;
+
+    li {
+      padding-top: 5px;
+      color: #4ce0b3;
+    }
   }
 }

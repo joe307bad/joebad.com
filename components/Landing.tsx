@@ -42,7 +42,7 @@ export default function Landing({ children }) {
             />
           </div>
           <h1
-            className={`${roboto.className} p-10 pt-1 pb-1 md:max-w-4xl text-[25px] md:text-[40px] font-thin`}
+            className={`${roboto.className} p-10 pt-1 pb-1 md:max-w-4xl text-[25px] md:text-[40px] font-thin font-bold md:font-light`}
           >
             Hey there, my name is{" "}
             <strong className="font-bold">Joe Badaczewski</strong>.{" "}
@@ -52,7 +52,7 @@ export default function Landing({ children }) {
           </h1>
           <span className="wide:landscape:hidden">◆</span>
           <h2
-            className={`${roboto.className}  font-sans md:max-w-2xl p-1 text-[20px] md:text-[27px] font-thin wide:landscape:hidden`}
+            className={`${roboto.className}  font-sans md:max-w-2xl p-1 text-[20px] md:text-[27px] font-thin wide:landscape:hidden font-bold md:font-light`}
           >
             {`I have ${yoe} years of experience building and scaling high volume web and mobile apps. I currently work as a Front-End Engineer II at `}
             <Link href={"https://aws.amazon.com/"}>AWS</Link>.
