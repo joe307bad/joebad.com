@@ -6,6 +6,15 @@ import SampleComponent from "../../components/SampleComponent";
 import "../../styles/short.module.scss";
 import { NextIntlClientProvider } from "next-intl";
 
+// Setting a vision (working with customers/stakeholders, defining mission/tenets, writing narratives or PR/FAQs)
+// Hands-on delivery (e.g. defining requirements, analysis, designing/presenting solutions, coding/code reviews, building, testing, deploying)
+// Tackling hard problems (e.g., scientific research, inventing, root cause resolution, simplifying a process or architecture, resolving blockers)
+// Sustaining engineering and operations (e.g. CMs, oncall, break/fix, COEs, incident analysis, ticket reviews, scaling, handling escalations, automating manual procedures)
+// Business operations (e.g. attending metrics reviews, acquisitions, strategic/roadmap planning, other meetings)
+// Organizational health (e.g. hiring, developing others, coaching/mentoring, providing feedback on a promotion)
+// Developing your own skills (attending talks/training, being mentored)
+// Listening to customers
+
 const usedcomponents = {
   SampleComponent,
 };
