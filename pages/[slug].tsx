@@ -7,10 +7,12 @@ import Page from "../components/Page";
 import { MostRecentExperience } from "../components/MostRecentExerience";
 import TagsList from "../components/layout/TagsList";
 import { SplitContent } from "../components/layout/SplitContent";
+import LinkButton from "../components/buttons/LinkButton";
 
 const usedComponents = {
   Education,
   MostRecentExperience,
+  LinkButton,
   TagsList,
   SplitContent,
 };

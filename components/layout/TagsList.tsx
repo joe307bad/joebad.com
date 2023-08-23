@@ -40,6 +40,10 @@ const color = {
   "PHP": "orange",
   "javascript": "emerald",
   "early experience": "slate",
+  "performance": "red",
+  "observability": "emerald",
+  "grad": "purple",
+  "undergrad": "purple",
 };
 
 const possibleTagColors = [

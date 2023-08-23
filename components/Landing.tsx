@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { Roboto } from "@next/font/google";
 import styles from "../styles/landing.module.scss";
+import LinkButton from "./buttons/LinkButton";
 
 export const roboto = Roboto({
   weight: ["100", "400", "700"],
@@ -19,12 +20,12 @@ export default function Landing({ children }) {
 
   return (
     <>
-      <div className="w-full md:h-1/4 wide:landscape:h-0"></div>
+      <div className="w-full mt-5 md:h-1/4 wide:landscape:h-0"></div>
       <div
         id={styles.landing}
-        className="wide:landscape:flex-row flex flex-col wide:landscape: justify-center w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 wide:landscape: relative"
+        className="wide:landscape:flex-row flex flex-col w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 relative"
       >
-        <div className="justify-center items-center flex flex-col">
+        <div className="flex flex-col">
           <div
             className="block wide:landscape:hidden"
             style={{
@@ -41,33 +42,32 @@ export default function Landing({ children }) {
               alt="Joe Bad's logo"
             />
           </div>
-          <h1
-            className={`${roboto.className} p-10 pt-1 pb-1 md:max-w-4xl text-[25px] md:text-[40px] font-thin font-bold md:font-light`}
-          >
-            Hey there, my name is{" "}
-            <strong className="font-bold">Joe Badaczewski</strong>.{" "}
-            <span className="wide:landscape:hidden">
-              I am a Pittsburgh-based Senior Software Engineer.
-            </span>
-          </h1>
-          <span className="wide:landscape:hidden">◆</span>
-          <h2
-            className={`${roboto.className}  font-sans md:max-w-2xl p-1 text-[20px] md:text-[27px] font-thin wide:landscape:hidden font-bold md:font-light`}
-          >
-            {`I have ${yoe} years of experience building and scaling high volume web and mobile apps. I currently work as a Front-End Engineer II at `}
-            <Link href={"https://aws.amazon.com/"}>AWS</Link>.
-          </h2>
+          <div className="flex flex-col wide:landscape:flex-row items-center">
+            <h1
+              className={`font-[Roboto] p-10 pt-1 pb-1 md:max-w-4xl text-[25px] md:text-[40px] font-thin`}
+            >
+              Hey there, my name is{" "}
+              <strong className="font-bold">Joe Badaczewski</strong>.{" "}
+              <span className="wide:landscape:hidden">
+                I am a Pittsburgh-based Senior Software Engineer.
+              </span>
+            </h1>
+            <div className="mt-2 mb-2 m-4 md:ml-0 md:mr-0">
+              <LinkButton
+                link={"/experience"}
+                text={`${yoe} years of exp. building large-scale web and mobile apps`}
+              />
+            </div>
+          </div>
         </div>
-        <span>◆</span>
         <div
-          className="items-center wide:landscape:p-10 "
+          className="justify-center items-center wide:landscape:items-start wide:landscape:p-10 "
           style={{
             marginTop: 10,
             display: "flex",
             fontSize: 40,
             gap: 10,
             columnGap: 20,
-            justifyContent: "center",
           }}
         >
           <Link href="https://www.linkedin.com/in/joebad/">

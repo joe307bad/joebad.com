@@ -25,6 +25,14 @@
     font-size: 1.25rem;
   }
 
+  h2 {
+    margin: .55rem 0;
+  }
+
+  h3 {
+    margin: .75rem 0;
+  }
+
   h3 {
     font-family: "Roboto Mono", serif;
     font-weight: 100;
@@ -53,12 +61,14 @@
     text-align: left;
     padding: 10px 0px;
     color: #4ce0b3;
+    margin: .75rem 0;
   }
 
   ul {
     text-align: left;
     list-style: disc;
     padding: 0px 20px;
+    margin: 1rem 0;
 
     li {
       padding-top: 5px;
