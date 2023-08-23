@@ -49,13 +49,13 @@ export default function Landing({ children }) {
               Hey there, my name is{" "}
               <strong className="font-bold">Joe Badaczewski</strong>.{" "}
               <span className="wide:landscape:hidden">
-                I am a Pittsburgh-based Senior Software Engineer.
+                I am a Pittsburgh-based Senior Software Engineer
               </span>
             </h1>
             <div className="mt-2 mb-2 m-4 md:ml-0 md:mr-0">
               <LinkButton
                 link={"/experience"}
-                text={`${yoe} years of exp. building large-scale web and mobile apps`}
+                text={`w/ ${yoe} years of exp. building large-scale web and mobile apps`}
               />
             </div>
           </div>
