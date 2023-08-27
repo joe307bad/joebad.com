@@ -8,6 +8,7 @@ import { MostRecentExperience } from "../components/MostRecentExerience";
 import TagsList from "../components/layout/TagsList";
 import { SplitContent } from "../components/layout/SplitContent";
 import LinkButton from "../components/buttons/LinkButton";
+import ResumeButton from "../components/buttons/ResumeButton";
 
 const usedComponents = {
   Education,
@@ -15,6 +16,7 @@ const usedComponents = {
   LinkButton,
   TagsList,
   SplitContent,
+  ResumeButton,
 };
 
 const SinglePost = ({ page }) => {

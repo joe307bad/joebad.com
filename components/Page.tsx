@@ -41,7 +41,7 @@ export default function Page({ page, children }) {
         <h2 className="font-[Roboto] font-thin text-2xl pb-5 text-[#4ce0b3]">
           {page.subtitle}
         </h2>
-        <span className="block pb-5 text-[#4ce0b3]">◆</span>
+        <span className="block text-[#4ce0b3]">◆</span>
         <div className={`${styles.content}`}>{children}</div>
       </div>
     </div>

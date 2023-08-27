@@ -5,17 +5,36 @@ export default function LinkButton({
   text,
   align = "center",
   newWindow = false,
+  variant = "primary",
+}: {
+  link: string;
+  text: string;
+  align?: "center" | "start";
+  newWindow?: boolean;
+  variant?: "primary" | "secondary";
+  fullWidth?: boolean;
 }) {
+  const bgColor = (() => {
+    switch (variant) {
+      case "primary":
+        return ["bg-[#4ce0b3]"];
+      case "secondary":
+        return ["bg-[#FCFF6C]"];
+    }
+  })();
   return (
-    <Link href={link} target={newWindow ? "_blank" : "_self"}>
+    <Link
+      rel="noopener noreferrer"
+      href={link}
+      target={newWindow ? "_blank" : "_self"}
+    >
       <button
         style={{
           fontFamily: "Roboto Mono",
-          borderColor: "#4ce0b3",
           display: "flex",
           alignSelf: align,
         }}
-        className=" border-[#4ce0b3] hover:bg-opacity-80 border p-2 rounded bg-[#4ce0b3] text-[#43527f]"
+        className={`hover:bg-opacity-80 p-2 rounded ${bgColor} text-[#43527f]`}
       >
         {text}
       </button>
