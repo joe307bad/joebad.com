@@ -7,9 +7,10 @@ export const githubApi = () => {
         `https://api.github.com/users/joe307bad/events/public`
       ).then((res) => res.json());
 
-      const { payload, repo, created_at } = activity?.[0] ?? {};
+      const { payload, repo, created_at } =
+        activity?.find((activity) => activity.type === "PushEvent") ?? {};
       const { commits } = payload ?? {};
-      const { sha, message } = commits?.[0] ?? { message: null, sha: null};
+      const { sha, message } = commits?.[0] ?? { message: null, sha: null };
       const { name } = repo ?? { name: "" };
 
       const date = (() => {
