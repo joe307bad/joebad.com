@@ -9,6 +9,7 @@ import TagsList from "../components/layout/TagsList";
 import { SplitContent } from "../components/layout/SplitContent";
 import LinkButton from "../components/buttons/LinkButton";
 import ResumeButton from "../components/buttons/ResumeButton";
+import { InlineLinkButtons } from "../components/layout/InlineLinkButtons";
 
 const usedComponents = {
   Education,
@@ -17,6 +18,7 @@ const usedComponents = {
   TagsList,
   SplitContent,
   ResumeButton,
+  InlineLinkButtons,
 };
 
 const SinglePost = ({ page }) => {
