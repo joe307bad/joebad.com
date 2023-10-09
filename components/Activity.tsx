@@ -20,15 +20,15 @@ export function Activity({
     >
       <div style={{ textAlign: "center" }} className="overflow-x-auto">
         <div className="flex w-full space-x-4 items-end">
+          {mostRecentCommit?.hash ? (
+            <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
+          ) : null}
           {mostRecentMovie?.name ? (
             <MostRecentMovie
               mostRecentMovie={mostRecentMovie}
               nowrap
               className="pl-5"
             />
-          ) : null}
-          {mostRecentCommit?.hash ? (
-            <MostRecentCommit mostRecentCommit={mostRecentCommit} nowrap />
           ) : null}
           {/*<MostRecentShort short={short} nowrap />*/}
           {/* Bookmarking with Raindrop.io */}
