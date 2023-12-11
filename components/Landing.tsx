@@ -23,9 +23,9 @@ export default function Landing({ children }) {
       <div className="w-full mt-5 md:h-1/4 wide:landscape:h-0"></div>
       <div
         id={styles.landing}
-        className="wide:landscape:flex-row flex flex-col w-full wide:landscape:h-3/4 md:h-1/2 h-3/4 relative"
+        className="wide:landscape:flex-row flex flex-col w-full wide:landscape:h-1/2 md:h-1/2 h-3/4 relative"
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-center">
           <div
             className="block wide:landscape:hidden"
             style={{
@@ -44,11 +44,11 @@ export default function Landing({ children }) {
           </div>
           <div className="flex flex-col wide:landscape:flex-row items-center">
             <h1
-              className={`font-[Roboto] p-10 pt-1 pb-1 md:max-w-4xl text-[25px] md:text-[40px] font-thin`}
+              className={`font-[Roboto] p-10 pt-1 pb-1 md:max-w-4xl text-[25px] wide:landscape:text-[25px] md:text-[40px] font-thin`}
             >
               Hey there, my name is{" "}
               <strong className="font-bold">Joe Badaczewski</strong>.{" "}
-              <span className="wide:landscape:hidden">
+              <span>
                 I am a Pittsburgh-based Senior Software Engineer
               </span>
             </h1>
@@ -81,7 +81,7 @@ export default function Landing({ children }) {
           </Link>
         </div>
       </div>
-      <div className="w-full h-1/4 flex items-end pb-5 z-[1] relative">
+      <div className="w-full wide:landscape:h-1/2 h-1/4 flex items-end pb-5 z-[1] relative">
         {children}
       </div>
     </>
