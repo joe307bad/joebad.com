@@ -6,8 +6,8 @@ export default function ResumeButton() {
       <LinkButton
         fullWidth
         newWindow
-        text={"Download résumé (PDF, 77kb)"}
-        link="/Badaczewski_Résumé.pdf"
+        text={"Download résumé (PDF, 79kb)"}
+        link="/Badaczewski_CV.pdf"
         variant="secondary"
       />
     </div>

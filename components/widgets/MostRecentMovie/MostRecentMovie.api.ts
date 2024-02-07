@@ -22,7 +22,8 @@ export const traktApi = () => {
         return [];
       }
 
-      const [mostRecentMovie] = (await watchedHistory?.json()) || [];
+      const b = await watchedHistory?.json();
+      const [mostRecentMovie] = (b) || [];
       const ids = mostRecentMovie?.movie?.ids;
       return [ids?.tmdb, ids?.trakt];
     },

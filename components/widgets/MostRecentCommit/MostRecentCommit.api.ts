@@ -10,7 +10,9 @@ export const githubApi = () => {
       const { payload, repo, created_at } =
         activity?.find((activity) => activity.type === "PushEvent") ?? {};
       const { commits } = payload ?? {};
-      const { sha, message } = commits?.[0] ?? { message: null, sha: null };
+      const { sha, message } = commits?.filter(
+        ({ message }) => message !== "Badaczewski_CV"
+      )?.[0] ?? { message: null, sha: null };
       const { name } = repo ?? { name: "" };
 
       const date = (() => {
