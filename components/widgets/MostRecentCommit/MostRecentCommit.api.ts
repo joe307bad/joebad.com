@@ -8,11 +8,16 @@ export const githubApi = () => {
       ).then((res) => res.json());
 
       const { payload, repo, created_at } =
-        activity?.find((activity) => activity.type === "PushEvent") ?? {};
+        activity?.find((activity) => {
+          return (
+            activity.type === "PushEvent" &&
+            !activity.payload.commits.find((commit) =>
+              commit.message.includes("Badaczewski_CV")
+            )
+          );
+        }) ?? {};
       const { commits } = payload ?? {};
-      const { sha, message } = commits?.filter(
-        ({ message }) => message !== "Badaczewski_CV"
-      )?.[0] ?? { message: null, sha: null };
+      const { sha, message } = commits?.[0] ?? { message: null, sha: null };
       const { name } = repo ?? { name: "" };
 
       const date = (() => {
