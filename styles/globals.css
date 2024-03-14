@@ -7,7 +7,13 @@
   font-family: "Payback";
   font-style: normal;
   src: url("/payback-webfont.woff2") format("woff2"),
-    url("/payback-webfont.woff") format("woff");
+  url("/payback-webfont.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  src: url("/Geist-Regular.woff2") format("woff2")
 }
 
 html,
