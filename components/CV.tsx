@@ -1,35 +1,9 @@
-import {allPages} from "contentlayer/generated";
-import {NextSeo} from "next-seo";
-import {useMDXComponent} from "next-contentlayer/hooks";
 import {NextIntlClientProvider} from "next-intl";
-import Education from "../components/about/Education";
-import Page from "../components/Page";
-import {MostRecentExperience} from "../components/MostRecentExerience";
-import TagsList from "../components/layout/TagsList";
-import {SplitContent} from "../components/layout/SplitContent";
-import LinkButton from "../components/buttons/LinkButton";
-import ResumeButton from "../components/buttons/ResumeButton";
-import {InlineLinkButtons} from "../components/layout/InlineLinkButtons";
+import {NextSeo} from "next-seo";
 import styles from "../styles/v2.module.scss";
 import Link from "next/link";
-import Position from "../components/Position";
-import Accomplishment from "../components/Accomplishment";
 
-const usedComponents = {
-    Education,
-    MostRecentExperience,
-    LinkButton,
-    TagsList,
-    SplitContent,
-    ResumeButton,
-    InlineLinkButtons,
-    Position,
-    Accomplishment
-};
-
-const SinglePost = ({page}) => {
-    const MDXContent = useMDXComponent(page.body.code);
-
+export default function CV({page, children}) {
     return (
         <>
             <style global jsx>{`
@@ -67,17 +41,10 @@ const SinglePost = ({page}) => {
                         <br/>
                         <br/>
                         <h3 className='font-bold h-[37px]'>Work History</h3>
-                        <MDXContent components={usedComponents}/>
+                        {children}
                     </div>
                 </div>
             </NextIntlClientProvider>
         </>
-    );
-};
-export default SinglePost;
-
-export async function getStaticProps({params}) {
-    const page = allPages.find((article) => article.slug === 'cv');
-
-    return {props: {page}};
+    )
 }
