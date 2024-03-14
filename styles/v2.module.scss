@@ -1,11 +1,19 @@
 #v2 {
-  color:white;
+  color: white;
 
-  h1{
+  h1 {
     font-family: 'Geist';
   }
 
-  a{
+  a {
     border-bottom: 5px solid #f26130;
+  }
+
+  .purple {
+    border-bottom: 5px solid purple;
+  }
+
+  .cyan {
+    border-bottom: 5px solid #4ce0b3;
   }
 }

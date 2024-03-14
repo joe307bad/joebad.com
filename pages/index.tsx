@@ -1,11 +1,10 @@
 import Head from "next/head";
-import { allArticles, allShorts, Short } from "contentlayer/generated";
+import { allShorts, Short } from "contentlayer/generated";
 import { select } from "../utils/select";
-import Landing, { roboto } from "../components/Landing";
 import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
-import { Activity } from "../components/Activity";
 import { format, parseISO } from "date-fns";
+import V2 from "../components/V2";
 
 export default function Home({
   mostRecentMovie,
@@ -28,16 +27,12 @@ export default function Home({
           crossOrigin="true"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Pridi:wght@300;600&display=swap"
-          rel="preload"
-        />
-        <link
           href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;500&family=Roboto:wght@300;500&display=swap"
           rel="preload"
         />
         <link
           rel="preload"
-          href="/payback-webfont.woff2"
+          href="/Geist-Regular.woff2"
           as="font"
           crossOrigin=""
           type="font/woff2"
@@ -45,31 +40,15 @@ export default function Home({
         <meta name="title" content="Joe Badaczewski | Senior Software Engineer" />
         <meta
           name="description"
-          content="Joe Badaczewski |  Pittsburgh-based | working as a Front-End Engineer II at AWS | Writing short blog posts about coding, comics, movies, sports, and open source software."
+          content="Joe Badaczewski | Senior Software Engineer at SoftWriters"
         />
       </Head>
 
-      <main className="bg-[#43527F]" style={{ textAlign: "center" }}>
-        <div className="flex flex-col w-full h-full overflow-hidden">
-          <Landing>
-            <div
-              style={{ backgroundColor: "#43527F" }}
-              className="w-full absolute bottom-[120px]"
-            >
-              <h2
-                className={`${roboto.className} float-left pb-2 pl-5 text-[#4ce0b3] text-[30px] z-0 font-thin`}
-              >
-                Interests + activity
-              </h2>
-            </div>
-            <Activity
-              mostRecentMovie={mostRecentMovie}
-              mostRecentCommit={mostRecentCommit}
-              short={shorts[0]}
-            />
-          </Landing>
-        </div>
-      </main>
+      <V2 {...{
+        mostRecentMovie,
+        shorts,
+        mostRecentCommit,
+      }} />
     </>
   );
 }

@@ -44,7 +44,8 @@ const color = {
   "observability": "emerald",
   "grad": "purple",
   "undergrad": "purple",
-  "accessibility": "blue"
+  "accessibility": "blue",
+  "active development": "blue"
 };
 
 const possibleTagColors = [
