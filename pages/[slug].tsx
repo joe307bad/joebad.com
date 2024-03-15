@@ -40,7 +40,7 @@ const SinglePost = ({page}) => {
     return (
         <NextIntlClientProvider locale="en-US">
             <NextSeo title={page.title} description={page.seoDescription}/>
-            <Page page={page}>
+            <Page>
                 <MDXContent components={usedComponents}/>
             </Page>
         </NextIntlClientProvider>
