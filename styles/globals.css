@@ -24,6 +24,6 @@ main {
   min-height: 400px;
 }
 
-h1, h2 {
+h1, h2, h4 {
   font-weight: bold;
 }
