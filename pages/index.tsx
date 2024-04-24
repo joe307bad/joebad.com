@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { allShorts, Short } from "contentlayer/generated";
+import { allShorts, Short, allLearnings as al, Learning } from "contentlayer/generated";
 import { select } from "../utils/select";
 import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
@@ -10,11 +10,14 @@ export default function Home({
   mostRecentMovie,
   shorts,
   mostRecentCommit,
+  mostRecentLearning
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
+  mostRecentLearning: Learning
 }) {
+  
   return (
     <>
       <Head>
@@ -48,6 +51,7 @@ export default function Home({
         mostRecentMovie,
         shorts,
         mostRecentCommit,
+        mostRecentLearning
       }} />
     </>
   );
@@ -103,7 +107,10 @@ export async function getStaticProps({ req, res }) {
     );
 
   return {
-    props: { mostRecentMovie, mostRecentCommit, shorts },
+    props: { mostRecentMovie, mostRecentCommit, shorts, mostRecentLearning: {
+      ...al[0],
+      publishedAt: format(parseISO(al[0].publishedAt), "LLL do")
+    }},
     revalidate: 86400,
   };
 }

@@ -4,19 +4,24 @@ import TagsList from "./layout/TagsList";
 import Stars from "./Rating";
 import { MovieDetails } from "@widgets/MostRecentMovie";
 import { CommitDetails } from "@widgets/MostRecentCommit";
-import { Short } from "contentlayer/generated";
+import { Learning, Short } from "contentlayer/generated";
 import Header from "./layout/Header";
 import Page from "../components/Page";
+import { useMDXComponent } from "next-contentlayer/hooks";
 
 export default function V2({
   mostRecentMovie,
   shorts,
   mostRecentCommit,
+  mostRecentLearning
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
+  mostRecentLearning: Learning;
 }) {
+  const MDXContent = useMDXComponent(mostRecentLearning.body.code);
+
   return (
     <Page>
       <Header />
@@ -139,7 +144,7 @@ export default function V2({
       <br />
       <h2 className="h-[37px] font-bold">Activity</h2>
       <div className="border-l-[5px] border-l-[purple] p-1 pl-5">
-        <h3 className="text-lg">Most recent commit on Github</h3>
+        <h3 className="text-lg">Programming on Github</h3>
         <br />
         <p>
           {mostRecentCommit.date} ◆{" "}
@@ -155,7 +160,7 @@ export default function V2({
         <br />
         <span>
           <Link className={styles.purple} href={mostRecentCommit.link}>
-            {mostRecentCommit.hash}
+            View this commit on Github
           </Link>
         </span>
       </div>
@@ -202,9 +207,43 @@ export default function V2({
             className={styles.cyan}
             href="https://trakt.tv/users/joe307bad/ratings"
           >
-            My Ratings
+            My ratings
           </Link>
         </span>
+      </div>
+      <br />
+      <br />
+      <div className={styles.education}>
+        <div className="border-l-[5px] border-l-[#DCF763] p-1 pl-5">
+          <h3 className="text-lg">
+            Taking notes and continuing education
+          </h3>
+          <br />
+          <div className="flex items-center">
+            <p>
+              {mostRecentLearning.publishedAt} ◆{" "}
+              <Link
+                target="_blank"
+                className={styles.cyan}
+                href={mostRecentLearning.courseLink ?? ""}
+              >
+                {mostRecentLearning.courseTitle}
+              </Link>
+            </p>
+          </div>
+          <br />
+          <MDXContent />
+          <br />
+          <span>
+            <Link
+              target="_blank"
+              className={styles.cyan}
+              href={`https://github.com/joe307bad/joebad.com/tree/main/data/${mostRecentLearning._id}`}
+            >
+              View this note on GitHub
+            </Link>
+          </span>
+        </div>
       </div>
     </Page>
   );

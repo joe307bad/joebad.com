@@ -12,7 +12,7 @@ export const githubApi = () => {
           return (
             activity.type === "PushEvent" &&
             !activity.payload.commits.find((commit) =>
-              commit.message.includes("Badaczewski_CV")
+              commit.message.includes("Badaczewski_CV") || commit.message.includes("[learning]")
             )
           );
         }) ?? {};

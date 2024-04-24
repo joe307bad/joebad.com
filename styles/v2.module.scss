@@ -16,4 +16,15 @@
   .cyan {
     border-bottom: 5px solid #4ce0b3;
   }
+
+  .education {
+    a {
+      border-bottom: 5px solid #DCF763;
+    }
+
+    li {
+      list-style: disc;
+      margin-left: 20px;
+    }
+  }
 }

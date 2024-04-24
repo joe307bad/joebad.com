@@ -95,6 +95,33 @@ const Short = defineDocumentType(() => ({
   computedFields,
 }));
 
+const Learning = defineDocumentType(() => ({
+  name: "Learning",
+  filePathPattern: "learnings/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    courseTitle: { type: "string", required: true },
+    courseLink: { type: "string", required: true },
+    status: { type: "string", required: true },
+    title: { type: "string", required: true },
+    publishedAt: { type: "string", required: true },
+    description: { type: "string", required: true },
+    seoDescription: { type: "string", required: true },
+    category: { type: "string", required: true },
+    tags: {
+      type: "list",
+      of: { type: "string" },
+    },
+    author: {
+      type: "nested",
+      of: Author,
+    },
+    subTitle: { type: "string", required: true },
+  },
+  computedFields,
+}));
+
 const computedFields = {
   readingTime: { type: "json", resolve: (doc) => readingTime(doc.body.raw) },
   wordCount: {
@@ -109,6 +136,6 @@ const computedFields = {
 
 const contentLayerConfig = makeSource({
   contentDirPath: "data",
-  documentTypes: [Article, Short, Page],
+  documentTypes: [Article, Short, Page, Learning],
 });
 export default contentLayerConfig;
