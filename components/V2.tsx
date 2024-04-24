@@ -215,8 +215,8 @@ export default function V2({
       <br />
       <div className={styles.education}>
         <div className="border-l-[5px] border-l-[#DCF763] p-1 pl-5">
-          <h3 className="text-lg">
-            Taking notes and continuing education
+          <h3 id="continuing-education" className="text-lg">
+            Continuing education and taking notes
           </h3>
           <br />
           <div className="flex items-center">
