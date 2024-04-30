@@ -1,0 +1,19 @@
+---
+title: Notes on Generative AI with LLMs | 2024-04-30
+category: ai
+courseTitle: Generative AI with Large Language Models
+courseLink: https://www.coursera.org/learn/generative-ai-with-llms
+status: In Progress
+publishedAt: "2024-04-30"
+description: Watching video x, y, and z
+seoDescription: Watching video x, y, and z
+author: { name: "joe307bad" }
+subTitle: Watching videos on introduction to LLMs and the generative AI project lifecycle
+tags:
+  - AI
+  - LLMs
+---
+
+Continuing learning some of the basics about LLMs, today the instructors covered a topic called "in-context learning" (ICL). In the context of LLMs, ICL is a part of prompt engineering during the process of training an LLM. Engineers use ICL to train a model on a specific domain by providing examples of successful outcomes directly in the prompt. The goal is to engineer the prompts to encourage the LLM to learn by example. However, prompt engineering has to be cognizant of the "context window". Using ICL is restricted by the size of the "context window", which is sometimees only a couple thousand words.
+
+For my personal project `end` (which at its core is a turn based strategy game similar to Risk on an interplanetary scale), I can envision using an LLM to determine the overall "winner" of a match. To clarify, each match in `end` will have a multi faceted outcome that looks at resource usage and overall soldier count to determine a set of different "outcomes" that could have far reaching effects on several different planetary systems. By using "multi shot inference" to train a model, I can provide multiple basic example "game winners" from other matches to help the LLMs learn what a "winner" truly looks like in the context of a multi dimensional gaming system.
