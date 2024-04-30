@@ -17,7 +17,7 @@ export default function Home({
   shorts: (Short & { formattedDatetime: string })[];
   mostRecentLearning: Learning
 }) {
-  
+
   return (
     <>
       <Head>
@@ -106,11 +106,17 @@ export async function getStaticProps({ req, res }) {
         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
     );
 
+  const mostRecentLearning = al.sort((a: Learning, b: Learning) => {
+    return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  })[0]
+
   return {
-    props: { mostRecentMovie, mostRecentCommit, shorts, mostRecentLearning: {
-      ...al[0],
-      publishedAt: format(parseISO(al[0].publishedAt), "LLL do")
-    }},
+    props: {
+      mostRecentMovie, mostRecentCommit, shorts, mostRecentLearning: {
+        ...mostRecentLearning,
+        publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do")
+      }
+    },
     revalidate: 86400,
   };
 }

@@ -8,8 +8,7 @@ import readingTime from "reading-time";
 const Author = defineNestedType(() => ({
   name: "Author",
   fields: {
-    name: { type: "string", required: true },
-    image: { type: "string", required: true },
+    name: { type: "string", required: true }
   },
 }));
 
@@ -104,7 +103,6 @@ const Learning = defineDocumentType(() => ({
     courseTitle: { type: "string", required: true },
     courseLink: { type: "string", required: true },
     status: { type: "string", required: true },
-    title: { type: "string", required: true },
     publishedAt: { type: "string", required: true },
     description: { type: "string", required: true },
     seoDescription: { type: "string", required: true },
