@@ -11,8 +11,8 @@ export default function Header() {
                 <Link target='_blank' href="https://frameworkltc.com/">
                     SoftWriters
                 </Link></h2>
-            <h2 className='h-[37px] max-w-[400px] font-light'>BA in Digital Media Arts + MS in Multimedia
-                Technology from
+            <h2 className='h-[37px] max-w-[400px] font-light'>MS in Multimedia
+                Technology + BA in Digital Media Arts  from
                 Duquesne
                 University</h2>
         </div>

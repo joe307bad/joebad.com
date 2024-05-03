@@ -22,7 +22,7 @@ export default function CV({page, children}) {
                         <div className='inline'>
                             <span><Link
                                 rel="noopener noreferrer"
-                                target={"_blank"} href="/Badaczewski_CV.pdf" download>Download CV</Link></span>
+                                target={"_blank"} href="/Badaczewski_CV_2024.pdf" download>Download CV</Link></span>
                             {/*<span className='pl-2'>◆</span>*/}
                             {/*<span className='pl-2'><Link href="/">Blog</Link></span>*/}
                             <span className='pl-2'>◆</span>
