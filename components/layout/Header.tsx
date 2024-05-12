@@ -3,9 +3,11 @@ import Link from "next/link";
 export default function Header() {
     return (
         <div className='w-full items-end'>
+            <div className="pb-2 pt-4">
             <Link href='/'>
-                <img className='pb-5' height={100} width={100} src="/penguin-2.png"/>
+                <img className='pb-5' height={200} width={95} src="/joe.png"/>
             </Link>
+            </div>
             <h1 className='h-[27px] text-lg font-bold'>Joe Badaczewski</h1>
             <h2 className='h-[37px] font-light'>Senior Software Engineer at{' '}
                 <Link target='_blank' href="https://frameworkltc.com/">
