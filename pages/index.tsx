@@ -5,6 +5,7 @@ import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
 import { format, parseISO } from "date-fns";
 import V2 from "../components/V2";
+import { flickrApi } from "../components/widgets/MostRecentPhoto/MostRecentPhoto.api";
 
 export default function Home({
   mostRecentMovie,
@@ -65,6 +66,8 @@ export async function getStaticProps({ req, res }) {
 
     const trakt = traktApi();
     const tmdb = tmdbApi();
+    const flickr = flickrApi();
+    const photo = await flickr.getMostRecentPhoto();
 
     const [tmdbId, traktId] = await trakt.getIdsOfMostRecentlyWatchedMovie();
 
