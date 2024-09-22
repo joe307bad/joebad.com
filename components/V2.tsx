@@ -13,12 +13,14 @@ export default function V2({
   mostRecentMovie,
   shorts,
   mostRecentCommit,
-  mostRecentLearning
+  mostRecentLearning,
+  mostRecentPhoto,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
   mostRecentLearning: Learning;
+  mostRecentPhoto;
 }) {
   const MDXContent = useMDXComponent(mostRecentLearning.body.code);
 
@@ -211,6 +213,38 @@ export default function V2({
           </Link>
         </span>
       </div>
+      {mostRecentPhoto.url ? (
+        <>
+          <br />
+          <br />
+          <div className="border-l-[5px] border-l-[#0ACDFF] p-1 pl-5">
+            <h3 className="text-lg">Taking photos and uploading to Flickr</h3>
+            <br />
+            <div className="flex flex-col">
+              <p>
+                {mostRecentPhoto.date} ◆ {mostRecentPhoto.title}
+              </p>
+              <span className="pt-5">
+                <img
+                  width={400}
+                  className="pb-5 border-8 border-amber-100"
+                  src={mostRecentPhoto.url}
+                />
+              </span>
+            </div>
+            <br />
+            <span>
+              <Link
+                target="_blank"
+                className={styles.blue}
+                href="https://www.flickr.com/photos/joe307bad/"
+              >
+                My photos
+              </Link>
+            </span>
+          </div>
+        </>
+      ) : null}
       <br />
       <br />
       <div className={styles.education}>
