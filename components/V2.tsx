@@ -227,7 +227,7 @@ export default function V2({
               <span className="pt-5">
                 <img
                   width={400}
-                  className="pb-5 border-8 border-amber-100"
+                  className="border-8 border-amber-100"
                   src={mostRecentPhoto.url}
                 />
               </span>
