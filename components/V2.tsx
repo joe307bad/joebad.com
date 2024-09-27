@@ -2,7 +2,7 @@ import styles from "../styles/v2.module.scss";
 import Link from "next/link";
 import TagsList from "./layout/TagsList";
 import Stars from "./Rating";
-import { MovieDetails } from "@widgets/MostRecentMovie";
+import { EpisodeDetails, MovieDetails } from "@widgets/MostRecentMovie";
 import { CommitDetails } from "@widgets/MostRecentCommit";
 import { Learning, Short } from "contentlayer/generated";
 import Header from "./layout/Header";
@@ -15,12 +15,14 @@ export default function V2({
   mostRecentCommit,
   mostRecentLearning,
   mostRecentPhoto,
+  mostRecentEpisode,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
   mostRecentLearning: Learning;
   mostRecentPhoto;
+  mostRecentEpisode: EpisodeDetails;
 }) {
   const MDXContent = useMDXComponent(mostRecentLearning.body.code);
 
@@ -170,7 +172,7 @@ export default function V2({
       <br />
       <div className="border-l-[5px] border-l-[#4ce0b3] p-1 pl-5">
         <h3 className="text-lg">
-          Rating movies using{" "}
+          Rating movies and shows using{" "}
           <Link
             target="_blank"
             className={styles.cyan}
@@ -203,11 +205,38 @@ export default function V2({
           </span>
         </div>
         <br />
+        <div className="flex items-center">
+          <p>
+            {mostRecentEpisode.date} ◆ {mostRecentEpisode.showName}
+          </p>
+        </div>
+          <div className="flex items-center">
+          <p>
+            {mostRecentEpisode.season} x {mostRecentEpisode.episode} ◆{" "}
+            <Link
+                target="_blank"
+                className={styles.cyan}
+                href={mostRecentEpisode.url ?? ""}
+            >
+              {mostRecentEpisode.name}
+            </Link> ◆{" "}
+          </p>
+          <span className="">
+            <Stars
+                stars={
+                  mostRecentEpisode.rating
+                      ? Math.floor(mostRecentEpisode.rating / 2)
+                      : 0
+                }
+            />
+          </span>
+        </div>
+        <br/>
         <span>
           <Link
-            target="_blank"
-            className={styles.cyan}
-            href="https://trakt.tv/users/joe307bad/ratings"
+              target="_blank"
+              className={styles.cyan}
+              href="https://trakt.tv/users/joe307bad/ratings"
           >
             My ratings
           </Link>
