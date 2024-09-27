@@ -6,7 +6,12 @@ import {
   Learning,
 } from "contentlayer/generated";
 import { select } from "../utils/select";
-import { MovieDetails, tmdbApi, traktApi } from "@widgets/MostRecentMovie";
+import {
+  EpisodeDetails,
+  MovieDetails,
+  tmdbApi,
+  traktApi,
+} from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
 import { format, parseISO } from "date-fns";
 import V2 from "../components/V2";
@@ -21,12 +26,14 @@ export default function Home({
   mostRecentCommit,
   mostRecentLearning,
   mostRecentPhoto,
+  mostRecentEpisode,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
   mostRecentLearning: Learning;
   mostRecentPhoto: PhotoDetails;
+  mostRecentEpisode: EpisodeDetails;
 }) {
   return (
     <>
@@ -66,7 +73,8 @@ export default function Home({
           shorts,
           mostRecentCommit,
           mostRecentLearning,
-          mostRecentPhoto
+          mostRecentPhoto,
+          mostRecentEpisode
         }}
       />
     </>
@@ -74,31 +82,40 @@ export default function Home({
 }
 
 export async function getStaticProps({ req, res }) {
-  const mostRecentMovie = await (async () => {
+  const [mostRecentMovie, mostRecentEpisode] = await (async () => {
     if (!process.env.TRACKT_TV_API_KEY || !process.env.TMDB_API_KEY) {
-      return null;
+      return [];
     }
 
     const trakt = traktApi();
     const tmdb = tmdbApi();
 
-    const [tmdbId, traktId] = await trakt.getIdsOfMostRecentlyWatchedMovie();
+    const { movie, episode } = await trakt.getIdsOfMostRecentlyWatchedMovie();
+    const [tmdbId, traktId] = movie ?? [undefined, undefined];
+    const [epTvdbId, epTraktId] = episode ?? [undefined, undefined];
 
     if (!tmdbId) {
-      return { error: "No recent movie found from Trakt.tv" };
+      return [{ error: "No recent movie found from Trakt.tv" }];
     }
 
     const movieDetails = await tmdb.getMovieDetailsByTmdbId(tmdbId);
     const { rating, date } = await trakt.getRatingByTraktId(traktId);
 
-    if (!movieDetails) {
-      return { error: `No movie details found from TMDB with id: ${tmdbId}` };
+    const epDetail = await tmdb.getEpisodeDetailsByTmdbId(epTvdbId);
+    const { rating: epRating, date: epDate } =
+      await trakt.getEpisodeRatingByTraktId(epTraktId);
+
+    if (!movieDetails || !epDetail) {
+      return [{ error: `No movie details found from TMDB with id: ${tmdbId}` }];
     }
 
     movieDetails.rating = rating ?? null;
     movieDetails.date = date ?? null;
 
-    return movieDetails;
+    epDetail.rating = epRating ?? null;
+    epDetail.date = epDate ?? null;
+
+    return [movieDetails, epDetail];
   })();
   const mostRecentCommit = await githubApi().getMostRecentCommit();
   const shorts = allShorts
@@ -133,6 +150,7 @@ export async function getStaticProps({ req, res }) {
 
   return {
     props: {
+      mostRecentEpisode,
       mostRecentPhoto: photo,
       mostRecentMovie,
       mostRecentCommit,

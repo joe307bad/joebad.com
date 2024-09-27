@@ -8,6 +8,13 @@ export type MovieDetails = {
   date?: string;
   url?: string;
 };
+
+export type EpisodeDetails = MovieDetails & {
+  showName?: string;
+  season?: string;
+  episode?: string;
+};
+
 export const traktApi = () => {
   const traktTvApiKey = process.env.TRACKT_TV_API_KEY || "";
   const init = { headers: { "trakt-api-key": traktTvApiKey } };
@@ -18,14 +25,25 @@ export const traktApi = () => {
         init
       ).catch(() => false);
 
-      if (watchedHistory === false) {
-        return [];
+      const episodeHistory: false | Response = await fetch(
+        "https://api.trakt.tv/users/joe307bad/history/episodes",
+        init
+      ).catch(() => false);
+
+      if (watchedHistory === false || episodeHistory === false) {
+        return { movie: undefined, episode: undefined };
       }
 
       const b = await watchedHistory?.json();
-      const [mostRecentMovie] = (b) || [];
+      const e = await episodeHistory?.json();
+      const [mostRecentEpisode] = e || [];
+      const [mostRecentMovie] = b || [];
+      const episodeIds = mostRecentEpisode?.episode?.ids;
       const ids = mostRecentMovie?.movie?.ids;
-      return [ids?.tmdb, ids?.trakt];
+      return {
+        movie: [ids?.tmdb, ids?.trakt],
+        episode: [episodeIds?.tvdb, episodeIds?.trakt],
+      };
     },
     async getRatingByTraktId(traktId) {
       const allRatings = await fetch(
@@ -39,6 +57,29 @@ export const traktApi = () => {
         );
 
         return movie ?? ratings[0];
+      })();
+
+      const ratedDate = (() => {
+        try {
+          return format(parseISO(rated_at), "LLL do");
+        } catch (e) {
+          return format(rated_at ?? new Date(), "LLL do");
+        }
+      })();
+      return { rating, date: ratedDate };
+    },
+    async getEpisodeRatingByTraktId(traktId) {
+      const allRatings = await fetch(
+        "https://api.trakt.tv/users/joe307bad/ratings/episodes",
+        init
+      );
+      const ratings = await allRatings?.json();
+      const { rating, rated_at } = (() => {
+        const episode = (ratings ?? []).find((r) => {
+          return r?.episode?.ids?.trakt == traktId;
+        });
+
+        return episode ?? ratings[0];
       })();
 
       const ratedDate = (() => {
@@ -78,6 +119,62 @@ export const tmdbApi = () => {
           ? `https://image.tmdb.org/t/p/w500/${photo}`
           : undefined,
         url: `https://www.themoviedb.org/movie/${id}`,
+      };
+    },
+    async getEpisodeDetailsByTmdbId(
+      tvdbid: string
+    ): Promise<EpisodeDetails | undefined> {
+      const apikey = process.env.TVDB_API_KEY || "";
+      const login: false | Response = await fetch(
+        `https://api4.thetvdb.com/v4/login`,
+        {
+          method: "POST",
+          body: JSON.stringify({ apikey }),
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+        }
+      ).catch(() => false);
+
+      if (!login) {
+        return undefined;
+      }
+
+      const response = await login?.json();
+      const epDetails: false | Response = await fetch(
+        `https://api4.thetvdb.com/v4/episodes/${tvdbid}/extended`,
+        { headers: { Authorization: `Bearer ${response?.data?.token}` } }
+      ).catch(() => false);
+
+      // https://api4.thetvdb.com/v4/login
+      // https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}/episode/{episode_number}
+
+      if (epDetails === false) {
+        return undefined;
+      }
+
+      const details = (await epDetails.json())?.data || {};
+
+      const seriesDetails: false | Response = await fetch(
+        `https://api4.thetvdb.com/v4/series/${details.seriesId}/extended`,
+        { headers: { Authorization: `Bearer ${response?.data?.token}` } }
+      ).catch(() => false);
+
+      if (seriesDetails === false) {
+        return undefined;
+      }
+
+      const serDetails = (await seriesDetails.json())?.data || {};
+
+      return {
+        name: details.name,
+        showName: serDetails.name,
+        season: details.seasonNumber,
+        episode: details.number,
+        description: "",
+        photoSrc: "",
+        url: `https://www.thetvdb.com/series/${serDetails.slug}/episodes/${details.id}`,
       };
     },
   };

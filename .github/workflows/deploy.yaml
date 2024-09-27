@@ -21,6 +21,7 @@ jobs:
           envkey_TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
           envkey_TRACKT_TV_API_KEY: ${{ secrets.TRACKT_TV_API_KEY }}
           envkey_FLICKR_API_KEY: ${{ secrets.FLICKR_API_KEY }}
+          envkey_TVDB_API_KEY: ${{ secrets.TVDB_API_KEY }}
 
       - name: Fly.io deploy
         run: flyctl deploy --remote-only
