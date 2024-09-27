@@ -82,7 +82,9 @@ export async function getStaticProps({ req, res }) {
     const trakt = traktApi();
     const tmdb = tmdbApi();
 
-    const [tmdbId, traktId] = await trakt.getIdsOfMostRecentlyWatchedMovie();
+    const {movie, episode} = await trakt.getIdsOfMostRecentlyWatchedMovie();
+    const [tmdbId, traktId] = movie ?? [undefined, undefined];
+    const [epTmdbId, epTraktId] = episode ?? [undefined, undefined];
 
     if (!tmdbId) {
       return { error: "No recent movie found from Trakt.tv" };
@@ -91,12 +93,18 @@ export async function getStaticProps({ req, res }) {
     const movieDetails = await tmdb.getMovieDetailsByTmdbId(tmdbId);
     const { rating, date } = await trakt.getRatingByTraktId(traktId);
 
+    const epDetail = await tmdb.getEpisodeDetailsByTmdbId(epTmdbId);
+    const { rating: epRating, date: epDate } = await trakt.getRatingByTraktId(epTraktId);
+
     if (!movieDetails) {
       return { error: `No movie details found from TMDB with id: ${tmdbId}` };
     }
 
     movieDetails.rating = rating ?? null;
     movieDetails.date = date ?? null;
+
+    epDetail.rating = epRating ?? null;
+    epDetail.date = epDate ?? null;
 
     return movieDetails;
   })();

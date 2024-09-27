@@ -18,14 +18,25 @@ export const traktApi = () => {
         init
       ).catch(() => false);
 
-      if (watchedHistory === false) {
-        return [];
+      const episodeHistory: false | Response = await fetch(
+        "https://api.trakt.tv/users/joe307bad/history/episodes",
+        init
+      ).catch(() => false);
+
+      if (watchedHistory === false || episodeHistory === false) {
+        return { movie: undefined, episode: undefined };
       }
 
       const b = await watchedHistory?.json();
-      const [mostRecentMovie] = (b) || [];
+      const e = await episodeHistory?.json();
+      const [mostRecentEpisode] = e || [];
+      const [mostRecentMovie] = b || [];
+      const episodeIds = mostRecentEpisode?.episode?.ids;
       const ids = mostRecentMovie?.movie?.ids;
-      return [ids?.tmdb, ids?.trakt];
+      return {
+        movie: [ids?.tmdb, ids?.trakt],
+        episode: [episodeIds?.tmdb, episodeIds?.trakt],
+      };
     },
     async getRatingByTraktId(traktId) {
       const allRatings = await fetch(
@@ -58,7 +69,7 @@ export const tmdbApi = () => {
   return {
     async getMovieDetailsByTmdbId(tmdbId: string): Promise<MovieDetails> {
       const movieDetails: false | Response = await fetch(
-        `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
+          `https://api.themoviedb.org/3/movie/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
       ).catch(() => false);
 
       if (movieDetails === false) {
@@ -75,8 +86,35 @@ export const tmdbApi = () => {
         name,
         description,
         photoSrc: photo
-          ? `https://image.tmdb.org/t/p/w500/${photo}`
-          : undefined,
+            ? `https://image.tmdb.org/t/p/w500/${photo}`
+            : undefined,
+        url: `https://www.themoviedb.org/movie/${id}`,
+      };
+    },
+    async getEpisodeDetailsByTmdbId(tmdbId: string): Promise<MovieDetails> {
+      const epDetails: false | Response = await fetch(
+          `https://api.themoviedb.org/3/episode/${tmdbId}?api_key=${tmdbApiKey}&language=en-US`
+      ).catch(() => false);
+
+      // https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}/episode/{episode_number}
+
+      if (epDetails === false) {
+        return {};
+      }
+      const b = await epDetails.json();
+
+      const {
+        overview: description,
+        backdrop_path: photo,
+        title: name,
+        id,
+      } = (await epDetails.json()) || {};
+      return {
+        name,
+        description,
+        photoSrc: photo
+            ? `https://image.tmdb.org/t/p/w500/${photo}`
+            : undefined,
         url: `https://www.themoviedb.org/movie/${id}`,
       };
     },
