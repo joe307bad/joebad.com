@@ -92,7 +92,7 @@ export async function getStaticProps({ req, res }) {
 
     const { movie, episode } = await trakt.getIdsOfMostRecentlyWatchedMovie();
     const [tmdbId, traktId] = movie ?? [undefined, undefined];
-    const [epTvdbId, epTraktId] = episode ?? [undefined, undefined];
+    const [epTvdbId, epTraktId, epTmdbId] = episode ?? [undefined, undefined];
 
     if (!tmdbId) {
       return [{ error: "No recent movie found from Trakt.tv" }];
@@ -101,7 +101,7 @@ export async function getStaticProps({ req, res }) {
     const movieDetails = await tmdb.getMovieDetailsByTmdbId(tmdbId);
     const { rating, date } = await trakt.getRatingByTraktId(traktId);
 
-    const epDetail = await tmdb.getEpisodeDetailsByTmdbId(epTvdbId);
+    const epDetail = await tmdb.getEpisodeDetailsByTmdbId(epTvdbId, epTmdbId);
     const { rating: epRating, date: epDate } =
       await trakt.getEpisodeRatingByTraktId(epTraktId);
 

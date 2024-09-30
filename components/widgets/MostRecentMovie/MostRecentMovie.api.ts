@@ -39,10 +39,11 @@ export const traktApi = () => {
       const [mostRecentEpisode] = e || [];
       const [mostRecentMovie] = b || [];
       const episodeIds = mostRecentEpisode?.episode?.ids;
+      const showIds = mostRecentEpisode?.show?.ids;
       const ids = mostRecentMovie?.movie?.ids;
       return {
         movie: [ids?.tmdb, ids?.trakt],
-        episode: [episodeIds?.tvdb, episodeIds?.trakt],
+        episode: [episodeIds?.tvdb, episodeIds?.trakt, showIds?.tmdb],
       };
     },
     async getRatingByTraktId(traktId) {
@@ -122,7 +123,8 @@ export const tmdbApi = () => {
       };
     },
     async getEpisodeDetailsByTmdbId(
-      tvdbid: string
+      tvdbid: string,
+      tmdbId: string
     ): Promise<EpisodeDetails | undefined> {
       const apikey = process.env.TVDB_API_KEY || "";
       const login: false | Response = await fetch(
@@ -147,9 +149,6 @@ export const tmdbApi = () => {
         { headers: { Authorization: `Bearer ${response?.data?.token}` } }
       ).catch(() => false);
 
-      // https://api4.thetvdb.com/v4/login
-      // https://api.themoviedb.org/3/tv/{series_id}/season/{season_number}/episode/{episode_number}
-
       if (epDetails === false) {
         return undefined;
       }
@@ -167,6 +166,10 @@ export const tmdbApi = () => {
 
       const serDetails = (await seriesDetails.json())?.data || {};
 
+      if (!details.name) {
+        return undefined;
+      }
+
       return {
         name: details.name,
         showName: serDetails.name,
@@ -174,7 +177,7 @@ export const tmdbApi = () => {
         episode: details.number,
         description: "",
         photoSrc: "",
-        url: `https://www.thetvdb.com/series/${serDetails.slug}/episodes/${details.id}`,
+        url: `https://www.themoviedb.org/tv/${tmdbId}/season/${details.seasonNumber}/episode/${details.number}`,
       };
     },
   };
