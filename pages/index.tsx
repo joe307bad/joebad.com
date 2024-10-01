@@ -13,7 +13,7 @@ import {
   traktApi,
 } from "@widgets/MostRecentMovie";
 import { CommitDetails, githubApi } from "@widgets/MostRecentCommit";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, addDays, addMinutes } from "date-fns";
 import V2 from "../components/V2";
 import {
   flickrApi,
@@ -27,6 +27,8 @@ export default function Home({
   mostRecentLearning,
   mostRecentPhoto,
   mostRecentEpisode,
+  lastBuildTime,
+  lastBuildTimeMilliseconds
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
@@ -34,6 +36,8 @@ export default function Home({
   mostRecentLearning: Learning;
   mostRecentPhoto: PhotoDetails;
   mostRecentEpisode: EpisodeDetails;
+  lastBuildTime: string;
+  lastBuildTimeMilliseconds: number;
 }) {
   return (
     <>
@@ -66,7 +70,6 @@ export default function Home({
           content="Joe Badaczewski | Senior Software Engineer at SoftWriters"
         />
       </Head>
-
       <V2
         {...{
           mostRecentMovie,
@@ -74,7 +77,9 @@ export default function Home({
           mostRecentCommit,
           mostRecentLearning,
           mostRecentPhoto,
-          mostRecentEpisode
+          mostRecentEpisode,
+          lastBuildTime,
+          lastBuildTimeMilliseconds
         }}
       />
     </>
@@ -148,6 +153,10 @@ export async function getStaticProps({ req, res }) {
   const flickr = flickrApi();
   const photo = await flickr.getMostRecentPhoto();
 
+  var date = new Date();
+  var now = addMinutes(date, date.getTimezoneOffset())
+  const oneDayFromNow = addDays(now, 1);
+
   return {
     props: {
       mostRecentEpisode,
@@ -159,6 +168,7 @@ export async function getStaticProps({ req, res }) {
         ...mostRecentLearning,
         publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do"),
       },
+      lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm b") + " UTC",
     },
     revalidate: 86400,
   };

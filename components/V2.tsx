@@ -8,6 +8,7 @@ import { Learning, Short } from "contentlayer/generated";
 import Header from "./layout/Header";
 import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import { format } from "date-fns";
 
 export default function V2({
   mostRecentMovie,
@@ -16,6 +17,8 @@ export default function V2({
   mostRecentLearning,
   mostRecentPhoto,
   mostRecentEpisode,
+  lastBuildTime,
+  lastBuildTimeMilliseconds
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
@@ -23,6 +26,8 @@ export default function V2({
   mostRecentLearning: Learning;
   mostRecentPhoto;
   mostRecentEpisode: EpisodeDetails;
+  lastBuildTime: string;
+  lastBuildTimeMilliseconds: number;
 }) {
   const MDXContent = useMDXComponent(mostRecentLearning.body.code);
 
@@ -210,33 +215,34 @@ export default function V2({
             {mostRecentEpisode.date} ◆ {mostRecentEpisode.showName}
           </p>
         </div>
-          <div className="flex items-center">
+        <div className="flex items-center">
           <p>
             {mostRecentEpisode.season} x {mostRecentEpisode.episode} ◆{" "}
             <Link
-                target="_blank"
-                className={styles.cyan}
-                href={mostRecentEpisode.url ?? ""}
+              target="_blank"
+              className={styles.cyan}
+              href={mostRecentEpisode.url ?? ""}
             >
               {mostRecentEpisode.name}
-            </Link> ◆{" "}
+            </Link>{" "}
+            ◆{" "}
           </p>
           <span className="">
             <Stars
-                stars={
-                  mostRecentEpisode.rating
-                      ? Math.floor(mostRecentEpisode.rating / 2)
-                      : 0
-                }
+              stars={
+                mostRecentEpisode.rating
+                  ? Math.floor(mostRecentEpisode.rating / 2)
+                  : 0
+              }
             />
           </span>
         </div>
-        <br/>
+        <br />
         <span>
           <Link
-              target="_blank"
-              className={styles.cyan}
-              href="https://trakt.tv/users/joe307bad/ratings"
+            target="_blank"
+            className={styles.cyan}
+            href="https://trakt.tv/users/joe307bad/ratings"
           >
             My ratings
           </Link>
@@ -307,6 +313,12 @@ export default function V2({
             </Link>
           </span>
         </div>
+      </div>
+      <br />
+      <br />
+      <br />
+      <div className="p-5 text-center">
+        <p>This site is built with Next.js and Incremental Site Regeneration. Latest activity is updated once per day. The next update will occour around <br /> {lastBuildTime}</p>
       </div>
     </Page>
   );

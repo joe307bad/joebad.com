@@ -14,7 +14,7 @@ export default function Page({children}: { children: ReactNode }) {
                 <div id={styles.v2} className='p-5 max-w-[600px]'>
                     {children}
                 </div>
-            </div>
+        </div>
         </>
     )
 }
