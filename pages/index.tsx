@@ -153,6 +153,7 @@ export async function getStaticProps({ req, res }) {
   const flickr = flickrApi();
   const photo = await flickr.getMostRecentPhoto();
 
+  var now = new Date();
   var date = new Date();
   var now = addMinutes(date, date.getTimezoneOffset())
   const oneDayFromNow = addDays(now, 1);
@@ -169,7 +170,7 @@ export async function getStaticProps({ req, res }) {
         publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do"),
       },
       lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm a") + " UTC",
-      lastBuildTimeUTC: oneDayFromNow.toISOString()
+      lastBuildTimeUTC: now.toString()
     },
     revalidate: 86400,
   };
