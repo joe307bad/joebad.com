@@ -44,7 +44,7 @@ export default function V2({
       var utc = new Date();
       var offset = utc.getTimezoneOffset();
       var local = new Date(
-        new Date(lastBuildTimeUTC).getTime() - offset * 60000
+        new Date(lastBuildTimeUTC).getTime() - (offset * 60000)
       );
       // return local;
       return (

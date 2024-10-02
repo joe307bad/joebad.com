@@ -169,7 +169,7 @@ export async function getStaticProps({ req, res }) {
         publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do"),
       },
       lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm a") + " UTC",
-      lastBuildTimeUTC: oneDayFromNow.toUTCString()
+      lastBuildTimeUTC: oneDayFromNow.toISOString()
     },
     revalidate: 86400,
   };
