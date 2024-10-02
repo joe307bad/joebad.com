@@ -46,13 +46,11 @@ export default function V2({
     }
 
     if (typeof window !== "undefined") {
-      var utc = new Date();
-      var offset = utc.getTimezoneOffset();
-      console.log({offset})
-      var local = new Date(
-        new Date(lastBuildTimeUTC).getTime() - (offset * 60000)
-      );
-      // return local;
+      console.log({lastBuildTimeUTC})
+      console.log({local: new Date(lastBuildTimeUTC).toLocaleTimeString() })
+      const utc = new Date(lastBuildTimeUTC).toLocaleDateString() + " " + new Date(lastBuildTimeUTC).toLocaleTimeString() + " UTC";
+      console.log({string: utc })
+      var local = new Date(utc);
       return (
         format(local, "LLL do @ h:mm a") +
         " " +
