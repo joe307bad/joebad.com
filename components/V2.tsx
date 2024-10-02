@@ -50,7 +50,7 @@ export default function V2({
       console.log({local: new Date(lastBuildTimeUTC).toLocaleTimeString() })
       const utc = new Date(lastBuildTimeUTC).toLocaleDateString() + " " + new Date(lastBuildTimeUTC).toLocaleTimeString() + " UTC";
       console.log({string: utc })
-      var local = new Date(utc);
+      var local = new Date(lastBuildTimeUTC);
       return (
         format(local, "LLL do @ h:mm a") +
         " " +
