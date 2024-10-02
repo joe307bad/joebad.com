@@ -28,7 +28,7 @@ export default function Home({
   mostRecentPhoto,
   mostRecentEpisode,
   lastBuildTime,
-  lastBuildTimeMilliseconds
+                               lastBuildTimeUTC
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
@@ -37,7 +37,7 @@ export default function Home({
   mostRecentPhoto: PhotoDetails;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
-  lastBuildTimeMilliseconds: number;
+  lastBuildTimeUTC: string;
 }) {
   return (
     <>
@@ -79,7 +79,7 @@ export default function Home({
           mostRecentPhoto,
           mostRecentEpisode,
           lastBuildTime,
-          lastBuildTimeMilliseconds
+          lastBuildTimeUTC,
         }}
       />
     </>
@@ -168,7 +168,8 @@ export async function getStaticProps({ req, res }) {
         ...mostRecentLearning,
         publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do"),
       },
-      lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm b") + " UTC",
+      lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm a") + " UTC",
+      lastBuildTimeUTC: oneDayFromNow.toUTCString()
     },
     revalidate: 86400,
   };

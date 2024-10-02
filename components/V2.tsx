@@ -9,6 +9,7 @@ import Header from "./layout/Header";
 import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { format } from "date-fns";
+import { useEffect, useMemo, useState } from "react";
 
 export default function V2({
   mostRecentMovie,
@@ -18,7 +19,7 @@ export default function V2({
   mostRecentPhoto,
   mostRecentEpisode,
   lastBuildTime,
-  lastBuildTimeMilliseconds
+  lastBuildTimeUTC,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
@@ -27,9 +28,39 @@ export default function V2({
   mostRecentPhoto;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
-  lastBuildTimeMilliseconds: number;
+  lastBuildTimeUTC: string;
 }) {
   const MDXContent = useMDXComponent(mostRecentLearning.body.code);
+
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    // this forces a rerender
+    setHydrated(true);
+  }, []);
+
+  const date = useMemo(() => {
+    if (typeof window !== "undefined") {
+      var utc = new Date();
+      var offset = utc.getTimezoneOffset();
+      var local = new Date(
+        new Date(lastBuildTimeUTC).getTime() - offset * 60000
+      );
+      // return local;
+      return (
+        format(local, "LLL do @ h:mm a") +
+        " " +
+        new window.Intl.DateTimeFormat().resolvedOptions().timeZone
+      );
+    }
+
+    return undefined;
+  }, [lastBuildTimeUTC]);
+
+  if (!hydrated) {
+    // this returns null on first render, so the client and server match
+    return null;
+  }
 
   return (
     <Page>
@@ -318,7 +349,13 @@ export default function V2({
       <br />
       <br />
       <div className="p-5 text-center">
-        <p>This site is built with Next.js and Incremental Site Regeneration. Latest activity is updated once per day. The next update will occour around <br /> {lastBuildTime}</p>
+        <p suppressHydrationWarning>
+          This site is built with Next.js and Incremental Static Regeneration.
+          My latest activity is updated once per day. The next update will occur
+          around <br />{" "}
+          <span suppressHydrationWarning={true}>{lastBuildTime}</span>{" "}
+          <span suppressHydrationWarning={true}>({date})</span>
+        </p>
       </div>
     </Page>
   );
