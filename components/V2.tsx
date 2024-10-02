@@ -35,21 +35,11 @@ export default function V2({
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    // this forces a rerender
     setHydrated(true);
   }, []);
 
   const date = useMemo(() => {
-    if (!hydrated) {
-      // this returns null on first render, so the client and server match
-      return null;
-    }
-
     if (typeof window !== "undefined") {
-      console.log({lastBuildTimeUTC})
-      console.log({local: new Date(lastBuildTimeUTC).toLocaleTimeString() })
-      const utc = new Date(lastBuildTimeUTC).toLocaleDateString() + " " + new Date(lastBuildTimeUTC).toLocaleTimeString() + " UTC";
-      console.log({string: utc })
       var local = new Date(lastBuildTimeUTC);
       return (
         format(local, "LLL do @ h:mm a") +
@@ -59,10 +49,9 @@ export default function V2({
     }
 
     return undefined;
-  }, [lastBuildTimeUTC, hydrated]);
+  }, [lastBuildTimeUTC]);
 
   if (!hydrated) {
-    // this returns null on first render, so the client and server match
     return null;
   }
 
