@@ -352,12 +352,11 @@ export default function V2({
       <br />
       <br />
       <br />
-      <div className="p-5 text-center">
+      <div className="text-center">
         <p suppressHydrationWarning>
           This site is built with Next.js and Incremental Static Regeneration.
           My latest activity is updated once per day. The next update will occur
-          around <br />{" "}
-          <span suppressHydrationWarning={true}>{lastBuildTime}</span>{" "}
+          around <span suppressHydrationWarning={true}>{lastBuildTime}</span>{" "}
           <span suppressHydrationWarning={true}>({date})</span>
         </p>
       </div>
