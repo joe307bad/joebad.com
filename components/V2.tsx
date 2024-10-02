@@ -8,8 +8,8 @@ import { Learning, Short } from "contentlayer/generated";
 import Header from "./layout/Header";
 import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
-import { format } from "date-fns";
 import { useEffect, useMemo, useState } from "react";
+import { format } from "date-fns";
 
 export default function V2({
   mostRecentMovie,
@@ -40,6 +40,11 @@ export default function V2({
   }, []);
 
   const date = useMemo(() => {
+    if (!hydrated) {
+      // this returns null on first render, so the client and server match
+      return null;
+    }
+
     if (typeof window !== "undefined") {
       var utc = new Date();
       var offset = utc.getTimezoneOffset();
@@ -55,7 +60,7 @@ export default function V2({
     }
 
     return undefined;
-  }, [lastBuildTimeUTC]);
+  }, [lastBuildTimeUTC, hydrated]);
 
   if (!hydrated) {
     // this returns null on first render, so the client and server match
