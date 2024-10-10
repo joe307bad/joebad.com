@@ -19,6 +19,7 @@ import {
   flickrApi,
   PhotoDetails,
 } from "../components/widgets/MostRecentPhoto/MostRecentPhoto.api";
+import {sportsScoresApi} from "../components/widgets/SportsScores/SportsScores.api";
 
 export default function Home({
   mostRecentMovie,
@@ -94,6 +95,9 @@ export async function getStaticProps({ req, res }) {
 
     const trakt = traktApi();
     const tmdb = tmdbApi();
+    const sportsScores = sportsScoresApi();
+
+    const res = await sportsScores.pitt();
 
     const { movie, episode } = await trakt.getIdsOfMostRecentlyWatchedMovie();
     const [tmdbId, traktId] = movie ?? [undefined, undefined];
