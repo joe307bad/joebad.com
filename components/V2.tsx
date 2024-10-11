@@ -199,7 +199,7 @@ export default function V2({
       </div>
       <br />
       <br />
-      <div className="border-l-[5px] border-l-[#4ce0b3] p-1 pl-5">
+      <div className="border-l-[5px] p-1 pl-5 border-l-[#4ce0b3]">
         <h3 className="text-lg">
           Rating movies and shows using{" "}
           <Link
@@ -212,7 +212,7 @@ export default function V2({
         </h3>
         <br />
         <div className="flex items-center">
-          <p>
+          <p className="truncate">
             {mostRecentMovie.date} ◆{" "}
             <Link
               target="_blank"
@@ -223,7 +223,7 @@ export default function V2({
             </Link>{" "}
             ◆
           </p>
-          <span className="">
+          <div>
             <Stars
               stars={
                 mostRecentMovie.rating
@@ -231,7 +231,7 @@ export default function V2({
                   : 0
               }
             />
-          </span>
+          </div>
         </div>
         <br />
         <div className="flex items-center">
@@ -240,7 +240,7 @@ export default function V2({
           </p>
         </div>
         <div className="flex items-center">
-          <p>
+        <p className="truncate">
             {mostRecentEpisode.season} x {mostRecentEpisode.episode} ◆{" "}
             <Link
               target="_blank"

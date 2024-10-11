@@ -19,6 +19,7 @@
     "@popperjs/core": "^2.11.6",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.3",
+    "animate.css": "^4.1.1",
     "aws-amplify": "^5.0.10",
     "contentlayer": "^0.2.5",
     "date-fns": "^2.29.3",
