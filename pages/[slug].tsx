@@ -32,6 +32,7 @@ const SinglePost = ({page}) => {
     if (page.slug === 'cv') {
         return (
             <CV page={page}>
+                <NextSeo title={page.title} description={page.seoDescription}/>
                 <MDXContent components={usedComponents}/>
             </CV>
         )

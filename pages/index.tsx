@@ -1,10 +1,5 @@
 import Head from "next/head";
-import {
-  allShorts,
-  Short,
-  allLearnings as al,
-  Learning, allPosts, Post,
-} from "contentlayer/generated";
+import { allPosts, Post } from "contentlayer/generated";
 import { select } from "../utils/select";
 import {
   EpisodeDetails,
@@ -22,18 +17,16 @@ import {
 
 export default function Home({
   mostRecentMovie,
-  shorts,
   mostRecentCommit,
-  mostRecentLearning,
+  mostRecentPost,
   mostRecentPhoto,
   mostRecentEpisode,
   lastBuildTime,
-                               lastBuildTimeUTC
+  lastBuildTimeUTC,
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
-  shorts: (Short & { formattedDatetime: string })[];
-  mostRecentLearning: Post;
+  mostRecentPost: Post;
   mostRecentPhoto: PhotoDetails;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
@@ -63,19 +56,18 @@ export default function Home({
         />
         <meta
           name="title"
-          content="Joe Badaczewski | Senior Software Engineer"
+          content="Joe Badaczewski | Senior Software Engineer at SoftWriters"
         />
         <meta
           name="description"
-          content="Joe Badaczewski | Senior Software Engineer at SoftWriters"
+          content={`For ${new Date().getFullYear() - 2012} years, I have been programming solutions for various domains: financial, health care, transportation, and cloud computing.`}
         />
       </Head>
       <V2
         {...{
           mostRecentMovie,
-          shorts,
           mostRecentCommit,
-          mostRecentLearning,
+          mostRecentPost,
           mostRecentPhoto,
           mostRecentEpisode,
           lastBuildTime,
@@ -123,27 +115,8 @@ export async function getStaticProps({ req, res }) {
     return [movieDetails, epDetail];
   })();
   const mostRecentCommit = await githubApi().getMostRecentCommit();
-  const shorts = allPosts
-    .map((article) => {
-      const a = select(article, [
-        "slug",
-        "title",
-        "publishedAt",
-      ]);
 
-      const d = format(parseISO(a.publishedAt), "LLL do");
-
-      return {
-        formattedDatetime: d,
-        ...a,
-      };
-    })
-    .sort(
-      (a, b) =>
-        Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
-    );
-
-  const mostRecentLearning = allPosts.sort((a: Post, b: Post) => {
+  const mostRecentPost = allPosts.sort((a: Post, b: Post) => {
     return (
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
@@ -153,7 +126,7 @@ export async function getStaticProps({ req, res }) {
   const photo = await flickr.getMostRecentPhoto();
 
   var date = new Date();
-  var now = addMinutes(date, date.getTimezoneOffset())
+  var now = addMinutes(date, date.getTimezoneOffset());
   const oneDayFromNow = addDays(now, 1);
 
   return {
@@ -162,13 +135,16 @@ export async function getStaticProps({ req, res }) {
       mostRecentPhoto: photo,
       mostRecentMovie,
       mostRecentCommit,
-      shorts,
-      mostRecentLearning: {
-        ...mostRecentLearning,
-        publishedAt: format(parseISO(mostRecentLearning.publishedAt), "LLL do"),
+      mostRecentPost: {
+        ...mostRecentPost,
+        publishedAt: format(parseISO(mostRecentPost.publishedAt), "LLL do"),
       },
       lastBuildTime: format(oneDayFromNow, "LLL do @ h:mm a") + " UTC",
-      lastBuildTimeUTC: new Date(oneDayFromNow).toLocaleDateString() + " " + new Date(oneDayFromNow).toLocaleTimeString() + " UTC"
+      lastBuildTimeUTC:
+        new Date(oneDayFromNow).toLocaleDateString() +
+        " " +
+        new Date(oneDayFromNow).toLocaleTimeString() +
+        " UTC",
     },
     revalidate: 86400,
   };

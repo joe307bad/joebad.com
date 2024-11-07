@@ -38,14 +38,14 @@ const SinglePost = ({ post }) => {
             <p className="text-sm truncate">{post.publishedAt}</p>
           </div>
           <div>◆</div>
-          <div className="overflow-hidden truncate">
-            <Link target="_blank" className="text-sm" href={post.mainLink}>
+          <div className="overflow-hidden truncate items-center">
+            <Link target="_blank" className="text-sm block" href={post.mainLink}>
               {post.mainLink}
             </Link>
           </div>
           <div>◆</div>
-          <div className="overflow-hidden flex items-center space-x-1 truncate min-w-[80px]">
-            <Link className="text-sm" href="/blog">
+          <div className="overflow-hidden items-center">
+            <Link className="text-sm block" href="/blog">
               Back to blog
             </Link>
           </div>

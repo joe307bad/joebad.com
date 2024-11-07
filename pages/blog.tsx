@@ -29,8 +29,8 @@ const SinglePost = ({ posts }) => {
               className="flex space-x-2 pb-3 items-center"
             >
               <p className="w-[120px] text-sm"><span className="text-[10px] pr-[5px]">{posts.length - i}. </span>{p.publishedAt}</p>
-              <div className="flex-1 overflow-hidden truncate">
-                <Link className="" key={i} href={`/post/${p.slug}`}>
+              <div className="flex-1 overflow-hidden truncate pb-2">
+                <Link key={i} href={`/post/${p.slug}`}>
                     {p.title}
                 </Link>
               </div>

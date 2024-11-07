@@ -5,28 +5,20 @@ import {
 } from "contentlayer/source-files";
 import readingTime from "reading-time";
 
-const Author = defineNestedType(() => ({
-  name: "Author",
-  fields: {
-    name: { type: "string", required: true },
-  },
-}));
-
-const Article = defineDocumentType(() => ({
-  name: "Article",
-  filePathPattern: "articles/*.mdx",
+const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: "posts/**/*.mdx",
   contentType: "mdx",
   fields: {
     title: { type: "string", required: true },
-    publishedAt: { type: "string", required: true },
-    description: { type: "string", required: true },
-    seoDescription: { type: "string", required: true },
     category: { type: "string", required: true },
-    author: {
-      type: "nested",
-      of: Author,
+    mainLink: { type: "string", required: true },
+    publishedAt: { type: "string", required: true },
+    subTitle: { type: "string", required: true },
+    tags: {
+      type: "list",
+      of: { type: "string" },
     },
-    image: { type: "string", required: true },
   },
   computedFields,
 }));
@@ -69,74 +61,6 @@ export const Page = defineDocumentType(() => ({
   },
 }));
 
-const Short = defineDocumentType(() => ({
-  name: "Short",
-  filePathPattern: "shorts/*.mdx",
-  contentType: "mdx",
-  fields: {
-    title: { type: "string", required: true },
-    publishedAt: { type: "string", required: true },
-    description: { type: "string", required: true },
-    seoDescription: { type: "string", required: true },
-    category: { type: "string", required: true },
-    tags: {
-      type: "list",
-      of: { type: "string" },
-    },
-    author: {
-      type: "nested",
-      of: Author,
-    },
-    image: { type: "string", required: false },
-    subTitle: { type: "string", required: true },
-  },
-  computedFields,
-}));
-
-const Post = defineDocumentType(() => ({
-  name: "Post",
-  filePathPattern: "posts/**/*.mdx",
-  contentType: "mdx",
-  fields: {
-    title: { type: "string", required: true },
-    category: { type: "string", required: true },
-    mainLink: { type: "string", required: true },
-    publishedAt: { type: "string", required: true },
-    subTitle: { type: "string", required: true },
-    tags: {
-      type: "list",
-      of: { type: "string" },
-    },
-  },
-  computedFields,
-}));
-
-const Learning = defineDocumentType(() => ({
-  name: "Learning",
-  filePathPattern: "learnings/**/*.mdx",
-  contentType: "mdx",
-  fields: {
-    title: { type: "string", required: true },
-    courseTitle: { type: "string", required: true },
-    courseLink: { type: "string", required: true },
-    status: { type: "string", required: true },
-    publishedAt: { type: "string", required: true },
-    description: { type: "string", required: true },
-    seoDescription: { type: "string", required: true },
-    category: { type: "string", required: true },
-    tags: {
-      type: "list",
-      of: { type: "string" },
-    },
-    author: {
-      type: "nested",
-      of: Author,
-    },
-    subTitle: { type: "string", required: true },
-  },
-  computedFields,
-}));
-
 const computedFields = {
   readingTime: { type: "json", resolve: (doc) => readingTime(doc.body.raw) },
   wordCount: {
@@ -151,6 +75,6 @@ const computedFields = {
 
 const contentLayerConfig = makeSource({
   contentDirPath: "data",
-  documentTypes: [Article, Short, Page, Learning, Post],
+  documentTypes: [Page, Post],
 });
 export default contentLayerConfig;

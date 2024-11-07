@@ -4,7 +4,7 @@ import TagsList from "./layout/TagsList";
 import Stars from "./Rating";
 import { EpisodeDetails, MovieDetails } from "@widgets/MostRecentMovie";
 import { CommitDetails } from "@widgets/MostRecentCommit";
-import { Learning, Post, Short } from "contentlayer/generated";
+import { Post } from "contentlayer/generated";
 import Header from "./layout/Header";
 import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
@@ -13,9 +13,8 @@ import { format } from "date-fns";
 
 export default function V2({
   mostRecentMovie,
-  shorts,
   mostRecentCommit,
-  mostRecentLearning,
+  mostRecentPost,
   mostRecentPhoto,
   mostRecentEpisode,
   lastBuildTime,
@@ -23,14 +22,13 @@ export default function V2({
 }: {
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
-  shorts: (Short & { formattedDatetime: string })[];
-  mostRecentLearning: Post;
+  mostRecentPost: Post;
   mostRecentPhoto;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
   lastBuildTimeUTC: string;
 }) {
-  const MDXContent = useMDXComponent(mostRecentLearning.body.code);
+  const MDXContent = useMDXComponent(mostRecentPost.body.code);
 
   const [hydrated, setHydrated] = useState(false);
 
@@ -93,7 +91,53 @@ export default function V2({
       <br />
       <br />
       <br />
-      <h2 className="h-[37px] font-bold">Projects</h2>
+      <h2 className="h-[37px] font-bold">Intro</h2>
+      <h3>
+        Welcome to my corner of the internet! My name is Joe and I have been
+        programming solutions for several different industries (mainly
+        financial, cloud computing, and health care) for{" "}
+        {new Date().getFullYear() - 2012}+ years. My profesional interests
+        include delivering world class web + mobile + desktop user experiences
+        and exploring toolsets that build failure proof software. My personal
+        interests include comic books, sports, running, cosmology, working on
+        side projects, and watching TV and movies.
+        <br />
+        <br />
+        <p className="pb-2">Let&apos;s take a quick tour of my home page:</p>
+        <div className="flex space-x-2 pb-2">
+          <div>◆</div>
+          <p>
+            Under <Link href="#projects">Projects</Link> are the side projects I
+            am actively developing.
+          </p>
+        </div>
+        <div className="flex space-x-2 pb-2">
+          <div>◆</div>
+          <p>
+            Under Activity, you can see{" "}
+            <Link href="#programming-on-github">my most recent commit</Link> to
+            my GitHub profile.
+          </p>
+        </div>
+        <div className="flex space-x-2 pb-2">
+          <div>◆</div>
+          <p>
+           I also list the most recent movie/TV show I&apos;ve watched and{" "}
+          <Link href="#rating-tv-and-movies">a basic rating</Link>.
+          </p>
+        </div>
+        <div className="flex space-x-2 pb-2">
+          <div>◆</div>
+          <p> Finally, at the bottom you can see my most recent{" "}
+          <Link href="#blog">blog</Link> post.
+          </p>
+        </div>
+      </h3>
+      <br />
+      <br />
+      <h2 id="projects" className="h-[37px] font-bold">
+        Projects
+      </h2>
       <div className="border-l-[5px] border-l-[#f26130] p-1 pl-5">
         <div className="flex">
           <h3 className="text-lg">end</h3>
@@ -179,9 +223,13 @@ export default function V2({
       <br />
       <br />
       <br />
-      <h2 className="h-[37px] font-bold">Activity</h2>
+      <h2 id="activity" className="h-[37px] font-bold">
+        Activity
+      </h2>
       <div className="border-l-[5px] border-l-[purple] p-1 pl-5">
-        <h3 className="text-lg">Programming on Github</h3>
+        <h3 id="programming-on-github" className="text-lg">
+          Programming on Github
+        </h3>
         <br />
         <p>
           {mostRecentCommit.date} ◆{" "}
@@ -204,7 +252,7 @@ export default function V2({
       <br />
       <br />
       <div className="border-l-[5px] p-1 pl-5 border-l-[#4ce0b3]">
-        <h3 className="text-lg">
+        <h3 id="rating-tv-and-movies" className="text-lg">
           Rating movies and shows using{" "}
           <Link
             target="_blank"
@@ -281,7 +329,9 @@ export default function V2({
           <br />
           <br />
           <div className="border-l-[5px] border-l-[#0ACDFF] p-1 pl-5">
-            <h3 className="text-lg">Taking photos and uploading to Flickr</h3>
+            <h3 id="taking-photos" className="text-lg">
+              Taking photos and uploading to Flickr
+            </h3>
             <br />
             <div className="flex flex-col">
               <p>
@@ -312,19 +362,19 @@ export default function V2({
       <br />
       <div className={styles.education}>
         <div className="border-l-[5px] border-l-[#DCF763] p-1 pl-5">
-          <h3 id="continuing-education" className="text-lg">
-            Writing about programming and comics
+          <h3 id="blog" className="text-lg">
+            Writing about my interests
           </h3>
           <br />
           <div className="flex items-center">
             <p>
-              {mostRecentLearning.publishedAt} ◆{" "}
+              {mostRecentPost.publishedAt} ◆{" "}
               <Link
                 target="_blank"
                 className={styles.cyan}
-                href={`/post/${mostRecentLearning.slug}`}
+                href={`/post/${mostRecentPost.slug}`}
               >
-                {mostRecentLearning.title}
+                {mostRecentPost.title}
               </Link>
             </p>
           </div>
@@ -338,7 +388,7 @@ export default function V2({
             <div>◆</div>
             <Link
               className={styles.cyan}
-              href={`https://github.com/joe307bad/joebad.com/tree/main/data/${mostRecentLearning._id}`}
+              href={`https://github.com/joe307bad/joebad.com/tree/main/data/${mostRecentPost._id}`}
             >
               View this post on GitHub
             </Link>
