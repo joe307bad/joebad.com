@@ -96,7 +96,7 @@ export default function V2({
         Welcome to my corner of the internet! My name is Joe and I have been
         programming solutions for several different industries (mainly
         financial, cloud computing, and health care) for{" "}
-        {new Date().getFullYear() - 2012}+ years. My profesional interests
+        {new Date().getFullYear() - 2012}+ years. My professional interests
         include delivering world class web + mobile + desktop user experiences
         and exploring toolsets that build failure proof software. My personal
         interests include comic books, sports, running, cosmology, working on

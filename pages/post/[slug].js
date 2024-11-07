@@ -39,14 +39,14 @@ const SinglePost = ({ post }) => {
           </div>
           <div>◆</div>
           <div className="overflow-hidden truncate items-center">
-            <Link target="_blank" className="text-sm block" href={post.mainLink}>
+            <Link target="_blank" className="text-sm" href={post.mainLink}>
               {post.mainLink}
             </Link>
           </div>
           <div>◆</div>
-          <div className="overflow-hidden items-center">
-            <Link className="text-sm block" href="/blog">
-              Back to blog
+          <div className="overflow-hidden items-center min-w-[80px]">
+            <Link className="text-sm" href="/blog">
+              Back to Blog
             </Link>
           </div>
         </div>
