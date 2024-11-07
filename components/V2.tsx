@@ -4,7 +4,7 @@ import TagsList from "./layout/TagsList";
 import Stars from "./Rating";
 import { EpisodeDetails, MovieDetails } from "@widgets/MostRecentMovie";
 import { CommitDetails } from "@widgets/MostRecentCommit";
-import { Learning, Short } from "contentlayer/generated";
+import { Learning, Post, Short } from "contentlayer/generated";
 import Header from "./layout/Header";
 import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
@@ -24,7 +24,7 @@ export default function V2({
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
-  mostRecentLearning: Learning;
+  mostRecentLearning: Post;
   mostRecentPhoto;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
@@ -62,6 +62,10 @@ export default function V2({
       <div className="inline">
         <span>
           <Link href="/cv">CV</Link>
+        </span>
+        <span className="pl-2">◆</span>
+        <span className="pl-2">
+          <Link href="/blog">Blog</Link>
         </span>
         {/*<span className='pl-2'>◆</span>*/}
         {/*<span className='pl-2'><Link href="/">Blog</Link></span>*/}
@@ -240,7 +244,7 @@ export default function V2({
           </p>
         </div>
         <div className="flex items-center">
-        <p className="truncate">
+          <p className="truncate">
             {mostRecentEpisode.season} x {mostRecentEpisode.episode} ◆{" "}
             <Link
               target="_blank"
@@ -309,7 +313,7 @@ export default function V2({
       <div className={styles.education}>
         <div className="border-l-[5px] border-l-[#DCF763] p-1 pl-5">
           <h3 id="continuing-education" className="text-lg">
-            Continuing education and taking notes
+            Writing about programming and comics
           </h3>
           <br />
           <div className="flex items-center">
@@ -318,24 +322,27 @@ export default function V2({
               <Link
                 target="_blank"
                 className={styles.cyan}
-                href={mostRecentLearning.courseLink ?? ""}
+                href={`/post/${mostRecentLearning.slug}`}
               >
-                {mostRecentLearning.courseTitle}
+                {mostRecentLearning.title}
               </Link>
             </p>
           </div>
           <br />
           <MDXContent />
           <br />
-          <span>
+          <div className="flex space-x-2">
+            <Link className={styles.cyan} href={`/blog`}>
+              Read other posts
+            </Link>
+            <div>◆</div>
             <Link
-              target="_blank"
               className={styles.cyan}
               href={`https://github.com/joe307bad/joebad.com/tree/main/data/${mostRecentLearning._id}`}
             >
-              View this note on GitHub
+              View this post on GitHub
             </Link>
-          </span>
+          </div>
         </div>
       </div>
       <br />

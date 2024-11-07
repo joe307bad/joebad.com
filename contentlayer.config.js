@@ -8,7 +8,7 @@ import readingTime from "reading-time";
 const Author = defineNestedType(() => ({
   name: "Author",
   fields: {
-    name: { type: "string", required: true }
+    name: { type: "string", required: true },
   },
 }));
 
@@ -30,7 +30,6 @@ const Article = defineDocumentType(() => ({
   },
   computedFields,
 }));
-
 
 export const Page = defineDocumentType(() => ({
   name: "Page",
@@ -94,6 +93,24 @@ const Short = defineDocumentType(() => ({
   computedFields,
 }));
 
+const Post = defineDocumentType(() => ({
+  name: "Post",
+  filePathPattern: "posts/**/*.mdx",
+  contentType: "mdx",
+  fields: {
+    title: { type: "string", required: true },
+    category: { type: "string", required: true },
+    mainLink: { type: "string", required: true },
+    publishedAt: { type: "string", required: true },
+    subTitle: { type: "string", required: true },
+    tags: {
+      type: "list",
+      of: { type: "string" },
+    },
+  },
+  computedFields,
+}));
+
 const Learning = defineDocumentType(() => ({
   name: "Learning",
   filePathPattern: "learnings/**/*.mdx",
@@ -134,6 +151,6 @@ const computedFields = {
 
 const contentLayerConfig = makeSource({
   contentDirPath: "data",
-  documentTypes: [Article, Short, Page, Learning],
+  documentTypes: [Article, Short, Page, Learning, Post],
 });
 export default contentLayerConfig;

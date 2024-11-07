@@ -3,7 +3,7 @@ import {
   allShorts,
   Short,
   allLearnings as al,
-  Learning,
+  Learning, allPosts, Post,
 } from "contentlayer/generated";
 import { select } from "../utils/select";
 import {
@@ -33,7 +33,7 @@ export default function Home({
   mostRecentMovie: MovieDetails;
   mostRecentCommit: CommitDetails;
   shorts: (Short & { formattedDatetime: string })[];
-  mostRecentLearning: Learning;
+  mostRecentLearning: Post;
   mostRecentPhoto: PhotoDetails;
   mostRecentEpisode: EpisodeDetails;
   lastBuildTime: string;
@@ -123,12 +123,11 @@ export async function getStaticProps({ req, res }) {
     return [movieDetails, epDetail];
   })();
   const mostRecentCommit = await githubApi().getMostRecentCommit();
-  const shorts = allShorts
+  const shorts = allPosts
     .map((article) => {
       const a = select(article, [
         "slug",
         "title",
-        "description",
         "publishedAt",
       ]);
 
@@ -144,7 +143,7 @@ export async function getStaticProps({ req, res }) {
         Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
     );
 
-  const mostRecentLearning = al.sort((a: Learning, b: Learning) => {
+  const mostRecentLearning = allPosts.sort((a: Post, b: Post) => {
     return (
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
     );
