@@ -128,6 +128,13 @@ export default function V2({
         </div>
         <div className="flex space-x-2 pb-2">
           <div>◆</div>
+          <p>
+           Sometimes I take photos and you can view my{" "}
+          <Link href="#taking-photos">most recent capture</Link>.
+          </p>
+        </div>
+        <div className="flex space-x-2 pb-2">
+          <div>◆</div>
           <p> Finally, at the bottom you can see my most recent{" "}
           <Link href="#blog">blog</Link> post.
           </p>
