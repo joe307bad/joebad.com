@@ -28,3 +28,47 @@ main {
 h1, h2, h4 {
   font-weight: bold;
 }
+
+.code-highlight {
+  float: left; /* 1 */
+  min-width: 100%; /* 2 */
+}
+
+.code-line {
+  display: block;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-left: 4px solid rgba(0, 0, 0, 0); /* Set placeholder for highlight accent border color to transparent */
+  line-height: 1.25rem;
+}
+
+.code-line.inserted {
+  background-color: theme('colors.emerald.900'); /* Set inserted line (+) color */
+}
+
+.code-line.deleted {
+  background-color: theme('colors.red.900'); /* Set deleted line (-) color */
+}
+
+.highlight-line {
+  margin-left: -14px;
+  margin-right: -16px;
+  background-color: theme('colors.zinc.800'); /* Set highlight bg color */
+  border-left: 2px solid theme('colors.amber.400'); /* Set highlight accent border color */
+}
+
+.line-number::before {
+  display: inline-block;
+  width: 1rem;
+  text-align: right;
+  margin-right: 16px;
+  margin-left: -8px;
+  color: theme('colors.zinc.500');
+  content: attr(line);
+}
+
+pre[class*="language-"], code[class*="language-"] {
+  font-size: 0.9em; /* Adjust the size as needed */
+}

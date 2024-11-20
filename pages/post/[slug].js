@@ -2,56 +2,91 @@ import { allPosts } from "contentlayer/generated";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import SampleComponent from "../../components/SampleComponent";
 import { NextIntlClientProvider } from "next-intl";
-import Header from "../../components/layout/Header";
-import Page from "../../components/Page";
 import Head from "../../components/Head";
-import { useEffect, useState } from "react";
+import Pre from "../../components/layout/Pre";
 import BlogHeaderV2 from "../../components/layout/BlogHeaderV2";
 import { format } from "date-fns";
 import Link from "next/link";
+import styles from "../../styles/post.module.scss";
+import H from "next/head";
 
 const usedcomponents = {
   SampleComponent,
+  pre: Pre,
 };
 const SinglePost = ({ post }) => {
   const MDXContent = useMDXComponent(post.body.code);
 
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
-
-  if (!hydrated) {
-    return null;
-  }
-
   return (
     <NextIntlClientProvider locale="en-US">
       <Head />
-      <Page>
-        <BlogHeaderV2 />
-        <h1 className="text-xl pb-2">{post.title}</h1>
-        <h2 className="pb-2">{post.subTitle}</h2>
-        <div className="pb-[40px] space-x-2 flex items-center">
-          <div className="flex items-center space-x-1">
-            <p className="text-sm truncate">{post.publishedAt}</p>
-          </div>
-          <div>◆</div>
-          <div className="overflow-hidden truncate items-center">
-            <Link target="_blank" className="text-sm" href={post.mainLink}>
-              {post.mainLink}
-            </Link>
-          </div>
-          <div>◆</div>
-          <div className="overflow-hidden items-center min-w-[80px]">
-            <Link className="text-sm" href="/blog">
-              Back to Blog
-            </Link>
+      <H>
+        <>
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:creator" content="@joe307bad" />
+          <meta name="twitter:site" content="@joe307bad" />
+          <meta
+            name="twitter:title"
+            content={post.title}
+          />
+          <meta
+            name="twitter:description"
+            content={post.subTitle}/>
+          <meta
+            name="twitter:image:src"
+            content="https://joebad.com/joe.png"
+          />
+          <meta name="twitter:image:width" content="1141" />
+          <meta name="twitter:image:height" content="542" />
+        </>
+      </H>
+      <style global jsx>{`
+        html,
+        body {
+          background-color: black;
+          color: white;
+        }
+        a {
+          border-bottom: 5px solid #f26130;
+        }
+      `}</style>
+      <>
+        <div className="flex justify-center">
+          <div className="w-[600px] pt-5 max-w-[100%] px-5">
+            <BlogHeaderV2 />
+            <h1 className="text-xl pb-2">{post.title}</h1>
+            <h2 className="pb-2">{post.subTitle}</h2>
+            <div className="pb-[40px] space-x-2 flex items-center">
+              <div className="flex items-center space-x-1">
+                <p className="text-sm truncate">{post.publishedAt}</p>
+              </div>
+              {post.mainLink && (
+                <>
+                  <div>◆</div>
+                  <div className="overflow-hidden truncate items-center">
+                    <Link
+                      target="_blank"
+                      className="text-sm"
+                      href={post.mainLink}
+                    >
+                      {post.mainLink}
+                    </Link>
+                  </div>
+                </>
+              )}
+              <div>◆</div>
+              <div className="overflow-hidden items-center min-w-[80px] space-y-2">
+                <Link className="text-sm" href="/blog">
+                  Back to Blog
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-        <MDXContent components={usedcomponents} />
-      </Page>
+        <div id={styles.post} className="flex flex-col">
+          <MDXContent components={usedcomponents} />
+        </div>
+      </>
     </NextIntlClientProvider>
   );
 };

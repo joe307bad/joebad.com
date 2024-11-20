@@ -1,0 +1,23 @@
+#post {
+  p{
+    padding-bottom: 20px;
+    max-width: 600px;
+    align-self: center;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  iframe {
+    max-width: 600px;
+    width: 100%;
+    align-self: center;
+    margin-bottom: 20px;
+  }
+}
+
+#codeContainer {
+  position: relative;
+  width: 800px;
+  max-width: 100%;
+  align-self: center;
+}

@@ -10,6 +10,7 @@ import Page from "../components/Page";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
+import "prismjs/themes/prism-okaidia.css";
 
 export default function V2({
   mostRecentMovie,

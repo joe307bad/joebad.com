@@ -4,6 +4,7 @@ import {
   makeSource,
 } from "contentlayer/source-files";
 import readingTime from "reading-time";
+import rehypePrism from 'rehype-prism-plus';
 
 const Post = defineDocumentType(() => ({
   name: "Post",
@@ -12,7 +13,7 @@ const Post = defineDocumentType(() => ({
   fields: {
     title: { type: "string", required: true },
     category: { type: "string", required: true },
-    mainLink: { type: "string", required: true },
+    mainLink: { type: "string", required: false },
     publishedAt: { type: "string", required: true },
     subTitle: { type: "string", required: true },
     tags: {
@@ -76,5 +77,8 @@ const computedFields = {
 const contentLayerConfig = makeSource({
   contentDirPath: "data",
   documentTypes: [Page, Post],
+  mdx: {
+    rehypePlugins: [[rehypePrism, { showLineNumbers: true }]],
+  },
 });
 export default contentLayerConfig;
