@@ -22,27 +22,16 @@ const SinglePost = ({ post }) => {
       <Head />
       <H>
         <>
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:site" content="https://joebad.com" />
-          <meta name="twitter:title" content={post.title} />
-          <meta name="twitter:description" content={post.subTitle} />
-          <meta
-            name="twitter:image"
-            content="https://joebad.com/joe.png"
-          />
-
-          <meta name="description" content={post.subTitle} />
-          
-          <meta name="og:description" content={post.title} />
+          <meta property="og:type" content="website" />
+          <meta property="og:description" content={post.subTitle} />
           <meta property="og:site_name" content="joebad.com" />
-          <meta name="og:title" content={post.title} />
-          <meta property="og:type" content="article" />
+          <meta property="og:title" content={post.title} />
           <meta
             property="og:url"
             content={`https://joebad.com/${post.slug}`}
           />
           <meta
-            name="og:image"
+            property="og:image"
             content="https://joebad.com/joe.png"
           />
         </>
