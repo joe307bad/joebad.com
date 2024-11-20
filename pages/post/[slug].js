@@ -22,22 +22,22 @@ const SinglePost = ({ post }) => {
       <Head />
       <H>
         <>
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:creator" content="@joe307bad" />
-          <meta name="twitter:site" content="@joe307bad" />
+          <meta name="twitter:card" content="summary" />
           <meta
-            name="twitter:title"
-            content={post.title}
-          />
-          <meta
-            name="twitter:description"
-            content={post.subTitle}/>
-          <meta
-            name="twitter:image:src"
+            name="twitter:image"
             content="https://joebad.com/joe.png"
           />
-          <meta name="twitter:image:width" content="1141" />
-          <meta name="twitter:image:height" content="542" />
+          <meta name="twitter:site" content="https://joebad.com" />
+          <meta name="twitter:description" content={post.subTitle} />
+          
+          <meta name="og:description" content={post.title} />
+          <meta property="og:site_name" content="joebad.com" />
+          <meta name="og:title" content={post.title} />
+          <meta property="og:type" content="article" />
+          <meta
+            property="og:url"
+            content={`https://joebad.com/${post.slug}`}
+          />
         </>
       </H>
       <style global jsx>{`
