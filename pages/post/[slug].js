@@ -32,7 +32,7 @@ const SinglePost = ({ post }) => {
           />
           <meta
             property="og:image"
-            content="https://joebad.com/joe.png"
+            content="https://joebad.com/logo-twitter.png"
           />
         </>
       </H>
