@@ -23,10 +23,6 @@ export default function Head() {
         type="font/woff2"
       />
       <meta name="title" content="Joe Badaczewski | Senior Software Engineer" />
-      <meta
-        name="description"
-        content="Joe Badaczewski | Senior Software Engineer at SoftWriters"
-      />
     </H>
   );
 }

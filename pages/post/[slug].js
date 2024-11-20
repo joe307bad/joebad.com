@@ -23,12 +23,15 @@ const SinglePost = ({ post }) => {
       <H>
         <>
           <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content="https://joebad.com" />
+          <meta name="twitter:title" content={post.title} />
+          <meta name="twitter:description" content={post.subTitle} />
           <meta
             name="twitter:image"
             content="https://joebad.com/joe.png"
           />
-          <meta name="twitter:site" content="https://joebad.com" />
-          <meta name="twitter:description" content={post.subTitle} />
+
+          <meta name="description" content={post.subTitle} />
           
           <meta name="og:description" content={post.title} />
           <meta property="og:site_name" content="joebad.com" />
@@ -37,6 +40,10 @@ const SinglePost = ({ post }) => {
           <meta
             property="og:url"
             content={`https://joebad.com/${post.slug}`}
+          />
+          <meta
+            name="og:image"
+            content="https://joebad.com/joe.png"
           />
         </>
       </H>
