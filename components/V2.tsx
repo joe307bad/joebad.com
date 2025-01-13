@@ -94,53 +94,29 @@ export default function V2({
       <br />
       <h2 className="h-[37px] font-bold">Intro</h2>
       <h3>
-        Welcome to my corner of the internet! My name is Joe and I have been
-        programming solutions for several different industries (mainly
-        financial, cloud computing, and health care) for{" "}
-        {new Date().getFullYear() - 2012}+ years. My professional interests
-        include delivering world class web + mobile + desktop user experiences
-        and exploring toolsets that build failure proof software. My personal
-        interests include comic books, sports, running, cosmology, working on
-        side projects, and watching TV and movies.
+        Welcome to my corner of the internet! My name is Joe and I have been writing software professionally for {new Date().getFullYear() - 2012}+  years. I am primarily interested in delivering performant and easily observable web + mobile + desktop applications. My off hours are spent reading comic books, researching sports stats, running, thinking about cosmology, working on side projects, and relaxing watching TV and movies.
         <br />
         <br />
-        <p className="pb-2">Let&apos;s take a quick tour of my home page:</p>
-        <div className="flex space-x-2 pb-2">
-          <div>◆</div>
-          <p>
-            Under <Link href="#projects">Projects</Link> are the side projects I
-            am actively developing.
-          </p>
-        </div>
-        <div className="flex space-x-2 pb-2">
-          <div>◆</div>
-          <p>
-            Under Activity, you can see{" "}
-            <Link href="#programming-on-github">my most recent commit</Link> to
-            my GitHub profile.
-          </p>
-        </div>
-        <div className="flex space-x-2 pb-2">
-          <div>◆</div>
-          <p>
-           I also list the most recent movie/TV show I&apos;ve watched and{" "}
-          <Link href="#rating-tv-and-movies">a basic rating</Link>.
-          </p>
-        </div>
-        <div className="flex space-x-2 pb-2">
-          <div>◆</div>
-          <p>
-           Sometimes I take photos and you can view my{" "}
-          <Link href="#taking-photos">most recent capture</Link>.
-          </p>
-        </div>
-        <div className="flex space-x-2 pb-2">
-          <div>◆</div>
-          <p> Finally, at the bottom you can see my most recent{" "}
-          <Link href="#blog">blog</Link> post.
-          </p>
-        </div>
       </h3>
+
+      <p className="pr-2 pb-2">Recent activity:</p>
+      <div className="flex">
+        <p className="pr-2">
+          <Link href="#projects">Projects</Link>
+        </p>
+        <div className="pr-2">◆</div>
+        <p className="pr-2">
+          <Link href="#programming-on-github">Github commit</Link>
+        </p>
+        <div className="pr-2">◆</div>
+        <p className="pr-2">
+          <Link href="#rating-tv-and-movies">Movie/TV rating</Link>
+        </p>
+        <div className="pr-2">◆</div>
+        <p className="pr-2">
+          <Link href="#blog">Blog post</Link>
+        </p>
+      </div>
       <br />
       <br />
       <h2 id="projects" className="h-[37px] font-bold">
