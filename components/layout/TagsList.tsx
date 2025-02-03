@@ -45,7 +45,8 @@ const color = {
   "grad": "purple",
   "undergrad": "purple",
   "accessibility": "blue",
-  "active development": "blue"
+  "active development": "blue",
+  "closed alpha": "green"
 };
 
 const possibleTagColors = [
