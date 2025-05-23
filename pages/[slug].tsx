@@ -37,7 +37,7 @@ const SinglePost = ({page}) => {
                 
                   <Head title="Joe's CV" />
                       <H>
-                        <title>Joe's CV</title>
+                        <title>Joe&apos;s CV</title>
                         <>
                           <meta property="og:type" content="website" />
                           <meta property="og:description" content="Joe's professional history" />
