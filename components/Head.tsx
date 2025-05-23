@@ -1,9 +1,9 @@
 import H from "next/head";
 
-export default function Head() {
+export default function Head(props) {
   return (
     <H>
-      <title>Joe Badaczewski | Senior Software Engineer</title>
+      <title>{props.title ?? "Joe Badaczewski | Senior Software Engineer"}</title>
       <link rel="icon" href="/favicon.ico" />
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
@@ -22,7 +22,7 @@ export default function Head() {
         crossOrigin=""
         type="font/woff2"
       />
-      <meta name="title" content="Joe Badaczewski | Senior Software Engineer" />
+      <meta name="title" content={props.title ?? "Joe Badaczewski | Senior Software Engineer"} />
     </H>
   );
 }

@@ -3,6 +3,8 @@ import {NextSeo} from "next-seo";
 import styles from "../styles/v2.module.scss";
 import Link from "next/link";
 import Header from "./layout/Header";
+import H from "next/head";
+import Head from "./Head";
 
 export default function CV({page, children}) {
     return (
@@ -14,7 +16,7 @@ export default function CV({page, children}) {
                 }\
             `}</style>
             <NextIntlClientProvider locale="en-US">
-                <NextSeo title={page.title} description={page.seoDescription}/>
+                <NextSeo title="Joe's CV" description={page.seoDescription}/>
                 <div className='flex justify-center'>
                     <div id={styles.v2} className='p-5 max-w-[600px]'>
                         <Header/>

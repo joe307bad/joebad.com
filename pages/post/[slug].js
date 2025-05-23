@@ -19,7 +19,7 @@ const SinglePost = ({ post }) => {
 
   return (
     <NextIntlClientProvider locale="en-US">
-      <Head />
+      <Head title={post.title} />
       <H>
         <>
           <meta property="og:type" content="website" />

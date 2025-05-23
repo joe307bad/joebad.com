@@ -6,6 +6,7 @@ import BlogHeaderV2 from "../components/layout/BlogHeaderV2";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
+import H from "next/head";
 
 const SinglePost = ({ posts }) => {
   const [hydrated, setHydrated] = useState(false);
@@ -19,7 +20,23 @@ const SinglePost = ({ posts }) => {
   }
   return (
     <NextIntlClientProvider locale="en-US">
-      <Head />
+      <Head title="Joe's internet journal" />
+            <H>
+              <>
+                <meta property="og:type" content="website" />
+                <meta property="og:description" content="Writing about programming, comics, and sports." />
+                <meta property="og:site_name" content="joebad.com" />
+                <meta property="og:title" content="Joe's journal" />
+                <meta
+                  property="og:url"
+                  content={`https://joebad.com/blog`}
+                />
+                <meta
+                  property="og:image"
+                  content="https://joebad.com/logo-twitter.png"
+                />
+              </>
+            </H>
       <Page>
         <div className=" w-[600px] max-w-[100%]">
           <BlogHeaderV2 />
