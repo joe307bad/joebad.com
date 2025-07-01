@@ -1,78 +1,128 @@
 import RecentActivity from "../components/RecentActivity";
 
-function Item(props: any) {
+interface ProjectItemProps {
+  title: string;
+  description: string;
+  children?: React.ReactNode;
+}
+
+function ProjectItem({ title, description, children }: ProjectItemProps) {
   return (
     <li className="flex flex-wrap flex-row gap-2">
       <div className="truncate order-first md:order-none flex-1 md:flex-none md:w-[100px] font-bold mb-[-10px]">
-        {props.title}
+        {title}
       </div>
       <div className="w-full order-last md:order-none md:w-auto md:flex-1">
-        {props.description} {props.children}
+        {description} {children}
       </div>
     </li>
   );
 }
 
-function Link(props: any) {
+interface ProjectLinkProps {
+  href: string;
+  children: React.ReactNode;
+}
+
+function ProjectLink({ href, children }: ProjectLinkProps) {
   return (
-    <a className="border-b-2 border-b-[#3a86ff] italic" href={props.href}>
-      {props.children}
+    <a 
+      className="border-b-2 border-(--color-secondary-500) italic" 
+      href={href}
+    >
+      {children}
     </a>
   );
 }
 
-export default function Index(props: any) {
+interface SectionHeadingProps {
+  children: React.ReactNode;
+  color?: 'secondary' | 'accent';
+}
+
+function SectionHeading({ children, color = 'secondary' }: SectionHeadingProps) {
+  const colorClass = color === 'secondary' ? 'text-(--color-secondary-500)' : 'text-(--color-accent-500)';
+  
   return (
-    <div className="gap-4 w-full md:max-w-[768px] flex flex-col self-center">
-      <h1 className="font-mono font-bold text-[#ff006e] mt-10 text-xl">
+    <p className={`font-mono ${colorClass} font-bold pt-10 `}>
+      # {children}
+    </p>
+  );
+}
+
+interface IndexProps {
+  rssData: {
+    items: any[];
+  };
+}
+
+export default function Index({ rssData }: IndexProps) {
+  const projects = [
+    {
+      title: "cards",
+      description: "free, cozy card games",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/cards" },
+        { label: "site", href: "https://cards.joebad.com" }
+      ]
+    },
+    {
+      title: "void", 
+      description: "a simple, intergalactic strategy game",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/end" },
+        { label: "site", href: "https://void.joebad.com" }
+      ]
+    },
+    {
+      title: "fastbreak",
+      description: "daily pro sports pick-em and trivia", 
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/fastbreak" }
+      ]
+    },
+    {
+      title: "act",
+      description: "a general purpose achievement tracking and todo app",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/act" }
+      ]
+    }
+  ];
+
+  return (
+    <div className="gap-4 w-full md:max-w-3xl flex flex-col self-center">
+      <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
         Welcome, my name is Joe Badaczewski
       </h1>
+      
       <p className="font-mono">
         I am a senior software development engineer focused on application
         performance, distributed systems, and user interface design.
       </p>
-      {/* <ul className="flex font-mono gap-3  md:gap-8">
-        <li>
-          <a className="italic font-bold border-b-5 border-b-indigo-500" href="">cv</a>
-        </li>
-        <li>
-          <a className="italic font-bold border-b-5 border-b-green-500" href="">blog</a>
-        </li>
-        <li>
-          <a className="italic font-bold border-b-5 border-b-red-500" href="">github</a>
-        </li>
-        <li>
-          <a className="italic font-bold border-b-5 border-b-orange-500" href="">x/twitter</a>
-        </li>
-        <li>
-          <a className="italic font-bold border-b-5 border-b-blue-500" href="">linkedin</a>
-        </li>
-      </ul> */}
-      <p className="font-mono text-[#3a86ff] font-bold pt-10"># projects</p>
+
+      <SectionHeading>projects</SectionHeading>
+      
       <ul className="font-mono flex flex-col gap-6 md:gap-4">
-        <Item title="cards" description="free, cozy card games">
-          (<Link href="https://github.com/joe307bad/cards">source</Link> |{" "}
-          <Link href="https://cards.joebad.com">site</Link>)
-        </Item>
-        <Item title="void" description="a simple, intergalactic strategy game">
-          (<Link href="https://github.com/joe307bad/end">source</Link> |{" "}
-          <Link href="https://void.joebad.com">site</Link>)
-        </Item>
-        <Item
-          title="fastbreak"
-          description="daily pro sports pick-em and trivia"
-        >
-          (<Link href="https://github.com/joe307bad/fastbreak">source</Link>)
-        </Item>
-        <Item
-          title="act"
-          description="a general purpose achievement tracking and todo app"
-        >
-          (<Link href="https://github.com/joe307bad/act">source</Link>)
-        </Item>
+        {projects.map((project) => (
+          <ProjectItem 
+            key={project.title}
+            title={project.title} 
+            description={project.description}
+          >
+            ({project.links.map((link, index) => (
+              <span key={link.label}>
+                {index > 0 && " | "}
+                <ProjectLink href={link.href}>{link.label}</ProjectLink>
+              </span>
+            ))})
+          </ProjectItem>
+        ))}
       </ul>
-      <p className="font-mono text-[#8338ec] font-bold pt-10"># feed</p>
-      <RecentActivity items={props.rssData.items} />
+
+      <SectionHeading color="accent">feed</SectionHeading>
+      
+      <RecentActivity items={rssData.items} />
     </div>
   );
 }
