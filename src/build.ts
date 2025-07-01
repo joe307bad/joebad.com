@@ -415,6 +415,19 @@ function createHtmlTemplate(
 </html>`;
 }
 
+async function deleteAndRecreateFolder(folderPath: string): Promise<void> {
+  try {
+    // Check if folder exists and delete it
+    await fs.access(folderPath);
+    await fs.rm(folderPath, { recursive: true, force: true });
+  } catch (error) {
+    // Folder doesn't exist, which is fine
+  }
+  
+  // Create the folder (including parent directories if needed)
+  await fs.mkdir(folderPath, { recursive: true });
+}
+
 // Main build function
 async function build() {
   console.log(
@@ -422,8 +435,7 @@ async function build() {
   );
 
   // Ensure dist directory exists
-  await fs.rmdir("dist", { recursive: true });
-  await fs.mkdir("dist", { recursive: true });
+  await deleteAndRecreateFolder("dist")
 
   // Build Tailwind CSS first
   const css = await buildTailwind();
