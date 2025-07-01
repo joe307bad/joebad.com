@@ -25,7 +25,7 @@ export async function buildWithSSR(
     bundle: true,
     external: ["react", "react-dom"],
     define: {
-      "process.env.NODE_ENV": '"development"',
+      "process.env.NODE_ENV": '"production"',
     },
     write: false, // Don't write to disk, we'll handle it
   });
@@ -41,7 +41,7 @@ export async function buildWithSSR(
     bundle: true,
     minify: true,
     define: {
-      "process.env.NODE_ENV": '"development"',
+      "process.env.NODE_ENV": '"production"',
     },
   });
 
@@ -56,16 +56,18 @@ export async function buildWithSSR(
     // Import and render component
     // @ts-ignore
     const { default: App }: AppComponent = await import("../temp-server.mjs");
-    const cleanItems = JSON.parse(JSON.stringify(rssData?.items ?? []))
+    const items = JSON.parse(JSON.stringify(rssData?.items ?? []));
+    const data = { rssData: { items } };
+    
     const htmlContent: string = renderToString(
-      React.createElement(App)
+      React.createElement(App, data as any)
     );
 
     const html = getHtml(
       css ?? "",
       htmlContent,
       `<script src="client.js"></script>`,
-      rssData
+      data.rssData
     );
 
     writeFileSync("dist/index.html", html);

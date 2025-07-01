@@ -13,6 +13,7 @@ import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
 import { getHtml } from "./utils/getHtml";
+import { PageData, RSSData } from "./types";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
