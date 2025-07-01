@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Custom typography styles for markdown content */
+@layer components {
+  .nav-link {
+    @apply text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200;
+  }
+  
+  .nav-link:hover {
+    @apply underline;
+  }
+  
+  .page-meta {
+    @apply text-gray-600 text-sm mb-8 border-b border-gray-200 pb-4;
+  }
+  
+  .page-meta strong {
+    @apply text-gray-800;
+  }
+  
+  .content-article {
+    @apply max-w-none;
+  }
+  
+  .content-article h1 {
+    @apply text-3xl font-bold text-gray-900 mb-6 mt-8 first:mt-0;
+  }
+  
+  .content-article h2 {
+    @apply text-2xl font-semibold text-gray-800 mt-8 mb-4;
+  }
+  
+  .content-article h3 {
+    @apply text-xl font-semibold text-gray-800 mt-6 mb-3;
+  }
+  
+  .content-article p {
+    @apply mb-4 text-gray-700 leading-relaxed;
+  }
+  
+  .content-article ul, .content-article ol {
+    @apply mb-4 ml-6;
+  }
+  
+  .content-article li {
+    @apply mb-2;
+  }
+  
+  .content-article ul li {
+    @apply list-disc;
+  }
+  
+  .content-article ol li {
+    @apply list-decimal;
+  }
+  
+  .content-article code {
+    @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .content-article pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+  }
+  
+  .content-article pre code {
+    @apply bg-transparent text-gray-100 p-0;
+  }
+  
+  .content-article blockquote {
+    @apply border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4;
+  }
+  
+  .content-article a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+  
+  .content-article strong {
+    @apply font-bold;
+  }
+  
+  .content-article em {
+    @apply italic;
+  }
+}

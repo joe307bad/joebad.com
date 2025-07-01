@@ -1,38 +1,58 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme");
-// tailwind.config.js
-module.exports = {
+export default {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/tw-elements/dist/js/**/*.js",
+    "./src/**/*.{js,ts,jsx,tsx,md}",
+    "./src/content/**/*.md",
+    "./dist/**/*.html"
   ],
   theme: {
     extend: {
+
       fontFamily: {
-        roboto: ["Roboto", ...defaultTheme.fontFamily.sans],
+        'mono': ['JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'monospace'],
       },
-      screens: {
-        small: { raw: "(max-height: 375px)" },
-        tall: {
-          raw: `only screen and (max-height: 960px) and (max-width: 480px)`,
-        },
-        wide: {
-          raw: `only screen and (max-height: 480px) and (max-width: 960px)`,
-        },
-        portrait: {
-          raw: "(orientation: portrait)",
-        },
-        landscape: {
-          raw: "(orientation: landscape)",
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: '#374151',
+            h1: {
+              color: '#111827',
+            },
+            h2: {
+              color: '#111827',
+            },
+            h3: {
+              color: '#111827',
+            },
+            code: {
+              color: '#111827',
+              backgroundColor: '#f3f4f6',
+              padding: '0.25rem 0.375rem',
+              borderRadius: '0.25rem',
+              fontWeight: '600',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+            pre: {
+              backgroundColor: '#1f2937',
+              color: '#f9fafb',
+            },
+            'pre code': {
+              backgroundColor: 'transparent',
+              color: 'inherit',
+              padding: '0',
+            },
+          },
         },
       },
     },
   },
   plugins: [
-    require("flowbite/plugin"),
-    require("tw-elements/dist/plugin"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/line-clamp"),
+    require('@tailwindcss/typography'),
   ],
-};
+}
