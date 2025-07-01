@@ -1,6 +1,6 @@
 # joebad.com
 
-A lightweight static site generator that builds a personal website with React components, Markdown content, and RSS feed integration.
+A lightweight static site generator that builds my personal website with React components, Markdown content, and RSS feed integration.
 
 ## Features
 
