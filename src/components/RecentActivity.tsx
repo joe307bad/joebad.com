@@ -1,8 +1,8 @@
 function ActivityItem(props: any) {
   return (
-    <li>
+    <li className="break-words">
       <div className="flex flex-row w-full pb-2">
-        <div className="flex-1">
+        <div className="flex-1 max-w-[100%]">
           <b>{props.relativeTime}</b> • {props.categoryLabel} •{" "}
           {props.description} {props.children}
         </div>
@@ -31,7 +31,7 @@ const RecentActivity = ({ items = [] }) => {
   );
 
   return (
-    <ul className="font-mono flex flex-col gap-6">
+    <ul className="font-mono flex flex-col gap-6 w-full">
       {sortedItems.map((item) => {
         // console.log(item.repo)
         if (item.contentType === "code-commit") {

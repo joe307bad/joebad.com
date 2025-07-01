@@ -3,7 +3,7 @@ import RecentActivity from "../components/RecentActivity";
 function Item(props: any) {
   return (
     <li className="flex flex-wrap flex-row gap-2">
-      <div className="order-first md:order-none flex-1 md:flex-none md:w-[100px] font-bold mb-[-10px]">
+      <div className="truncate order-first md:order-none flex-1 md:flex-none md:w-[100px] font-bold mb-[-10px]">
         {props.title}
       </div>
       <div className="w-full order-last md:order-none md:w-auto md:flex-1">
@@ -23,7 +23,7 @@ function Link(props: any) {
 
 export default function Index(props: any) {
   return (
-    <div className="gap-4 max-w-[768px] flex flex-col self-center">
+    <div className="gap-4 w-full md:max-w-[768px] flex flex-col self-center">
       <h1 className="font-mono font-bold text-[#ff006e] mt-10 text-xl">
         Welcome, my name is Joe Badaczewski
       </h1>
