@@ -51,78 +51,83 @@ function SectionHeading({ children, color = 'secondary' }: SectionHeadingProps) 
 }
 
 interface IndexProps {
-  rssData: {
+  rssData?: {
     items: any[];
   };
 }
 
-export default function Index({ rssData }: IndexProps) {
-  const projects = [
-    {
-      title: "cards",
-      description: "free, cozy card games",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/cards" },
-        { label: "site", href: "https://cards.joebad.com" }
-      ]
-    },
-    {
-      title: "void", 
-      description: "a simple, intergalactic strategy game",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/end" },
-        { label: "site", href: "https://void.joebad.com" }
-      ]
-    },
-    {
-      title: "fastbreak",
-      description: "daily pro sports pick-em and trivia", 
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/fastbreak" }
-      ]
-    },
-    {
-      title: "act",
-      description: "a general purpose achievement tracking and todo app",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/act" }
-      ]
-    }
-  ];
+export default function Index() {
+  // const projects = [
+  //   {
+  //     title: "cards",
+  //     description: "free, cozy card games",
+  //     links: [
+  //       { label: "source", href: "https://github.com/joe307bad/cards" },
+  //       { label: "site", href: "https://cards.joebad.com" }
+  //     ]
+  //   },
+  //   {
+  //     title: "void", 
+  //     description: "a simple, intergalactic strategy game",
+  //     links: [
+  //       { label: "source", href: "https://github.com/joe307bad/end" },
+  //       { label: "site", href: "https://void.joebad.com" }
+  //     ]
+  //   },
+  //   {
+  //     title: "fastbreak",
+  //     description: "daily pro sports pick-em and trivia", 
+  //     links: [
+  //       { label: "source", href: "https://github.com/joe307bad/fastbreak" }
+  //     ]
+  //   },
+  //   {
+  //     title: "act",
+  //     description: "a general purpose achievement tracking and todo app",
+  //     links: [
+  //       { label: "source", href: "https://github.com/joe307bad/act" }
+  //     ]
+  //   }
+  // ];
+
+  // const [count, setCount] = useState(0);
 
   return (
-    <div className="gap-4 w-full md:max-w-3xl flex flex-col self-center">
-      <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
-        Welcome, my name is Joe Badaczewski
-      </h1>
+    <h1>hey</h1>
+    // <div className="gap-4 w-full md:max-w-3xl flex flex-col self-center">
+    //   <p>{count}</p>
+    //   <button onClick={() => setCount(prev => prev + 1)}>Click me</button>
+    //   <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
+    //     Welcome, my name is Joe Badaczewski
+    //   </h1>
       
-      <p className="font-mono">
-        I am a senior software development engineer focused on application
-        performance, distributed systems, and user interface design.
-      </p>
+    //   <p className="font-mono">
+    //     I am a senior software development engineer focused on application
+    //     performance, distributed systems, and user interface design.
+    //   </p>
 
-      <SectionHeading>projects</SectionHeading>
+    //   <SectionHeading>projects</SectionHeading>
       
-      <ul className="font-mono flex flex-col gap-6 md:gap-4">
-        {projects.map((project) => (
-          <ProjectItem 
-            key={project.title}
-            title={project.title} 
-            description={project.description}
-          >
-            ({project.links.map((link, index) => (
-              <span key={link.label}>
-                {index > 0 && " | "}
-                <ProjectLink href={link.href}>{link.label}</ProjectLink>
-              </span>
-            ))})
-          </ProjectItem>
-        ))}
-      </ul>
+    //   <ul className="font-mono flex flex-col gap-6 md:gap-4">
+    //     {projects.map((project) => (
+    //       <ProjectItem 
+    //         key={project.title}
+    //         title={project.title} 
+    //         description={project.description}
+    //       >
+    //         ({project.links.map((link, index) => (
+    //           <span key={link.label}>
+    //             {index > 0 && " | "}
+    //             <ProjectLink href={link.href}>{link.label}</ProjectLink>
+    //           </span>
+    //         ))})
+    //       </ProjectItem>
+    //     ))}
+    //   </ul>
 
-      <SectionHeading color="accent">feed</SectionHeading>
+    //   <SectionHeading color="accent">feed</SectionHeading>
       
-      <RecentActivity items={rssData.items} />
-    </div>
+    //   <RecentActivity items={props.rssData?.items} />
+    // </div>
   );
 }

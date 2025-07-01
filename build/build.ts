@@ -11,32 +11,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { createRequire } from "module";
 import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
+import { buildWithSSR } from "./hydrate";
+import { getHtml } from "./utils/getHtml";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
-
-interface PageData {
-  slug: string;
-  title: string;
-  content: string;
-  frontmatter: Record<string, any>;
-  type: "markdown" | "react";
-}
-
-interface RSSItem {
-  title: string;
-  link: string;
-  description: string;
-  pubDate: string;
-  guid?: string;
-}
-
-interface RSSData {
-  title: string;
-  description: string;
-  link: string;
-  items: RSSItem[];
-}
 
 // Markdown processor
 const processor = remark().use(html);
@@ -151,6 +130,7 @@ function parseRSS(xmlText: string): RSSData {
   }
 }
 
+// Compile MDX files
 async function compileMDX(inputPath: string): Promise<PageData> {
   const mdxSource = await readFile(inputPath, "utf8");
   const { data: frontmatter, content: mdxContent } = matter(mdxSource);
@@ -239,8 +219,10 @@ async function processMarkdown(filePath: string): Promise<PageData> {
 // Compile and process React/TSX files with RSS data
 async function processReactPage(
   filePath: string,
-  rssData?: RSSData
+  rssData?: RSSData,
+  hydrate?: boolean
 ): Promise<PageData> {
+
   console.log(`🔄 Compiling React component: ${filePath}`);
 
   // Create a temporary JS file for compilation
@@ -272,13 +254,8 @@ async function processReactPage(
       `--resolve-extensions=.tsx,.ts,.jsx,.js`, // Resolve these extensions
       `--tsconfig=tsconfig.json`, // Use your tsconfig for path mapping if it exists
     ].join(" ");
-
-    if (isTypeScript) {
-      await execAsync(esbuildConfig);
-    } else {
-      // For JSX files, also use esbuild with same config
-      await execAsync(esbuildConfig);
-    }
+      
+    await execAsync(esbuildConfig);
 
     // Import the compiled component
     const modulePath = path.resolve(tempFile);
@@ -374,45 +351,7 @@ function createHtmlTemplate(
     </article>
   `;
 
-  return `<!DOCTYPE html>
-<html lang="en" class="h-full w-full p-2 bg-[#FFECD1]">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>${css}</style>
-    <!-- Basic Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Primary SEO Tags -->
-    <title>Joe Badaczewski - Senior Software Engineer</title>
-    <meta name="description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
-
-    <link rel="canonical" href="https://joebad.com">
-    
-    <!-- Open Graph Meta Tags (Social Media) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Joe Badaczewski - Senior Software Engineer">
-    <meta property="og:description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
-    <meta property="og:url" content="https://joebad.com">
-    <meta property="og:site_name" content="Joe Badaczewski - Senior Software Engineer">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Joe Badaczewski - Senior Software Engineer">
-    <meta name="twitter:description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
-    <meta name="twitter:creator" content="@joe307bad">
-    
-</head>
-</head>
-<body class="h-full w-full">
-    <main class="flex justify-center">
-      ${contentWrapper}
-    </main>
-</body>
-</html>`;
+  return getHtml(css, contentWrapper)
 }
 
 async function deleteAndRecreateFolder(folderPath: string): Promise<void> {
@@ -474,7 +413,7 @@ async function build() {
   }
 
   // Process React/TSX files
-  console.log("⚛️  Processing React components...");
+  console.log("⚛️  Processing Pages...");
   const reactFiles = await glob("src/pages/**/*.{tsx,jsx,ts,js}");
 
   for (const file of reactFiles) {
@@ -525,6 +464,8 @@ async function build() {
 
     console.log(`✅ Generated: ${outputPath}`);
   }
+
+  await buildWithSSR("src/pages/index.tsx", rssData, css);
 
   // Clean up temp directory
   await fs.rmdir("temp", { recursive: true }).catch(() => {});
