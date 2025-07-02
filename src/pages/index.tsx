@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { Main } from "../components/Main";
 import RecentActivity from "../components/RecentActivity";
+import { SectionHeading } from "../components/SectionHeading";
 
 interface ProjectItemProps {
   title: string;
@@ -33,21 +34,6 @@ function ProjectLink({ href, children }: ProjectLinkProps) {
     >
       {children}
     </a>
-  );
-}
-
-interface SectionHeadingProps {
-  children: React.ReactNode;
-  color?: 'secondary' | 'accent';
-}
-
-function SectionHeading({ children, color = 'secondary' }: SectionHeadingProps) {
-  const colorClass = color === 'secondary' ? 'text-(--color-secondary-500)' : 'text-(--color-accent-500)';
-  
-  return (
-    <p className={`font-mono ${colorClass} font-bold pt-10 `}>
-      # {children}
-    </p>
   );
 }
 
@@ -91,18 +77,12 @@ export default function Index(props: IndexProps) {
     }
   ];
 
-  const [count, setCount] = useState(0);
-
   return (
-    <div className="gap-4 w-full md:max-w-3xl flex flex-col self-center">
-      <p>{count}</p>
-      <button onClick={() => setCount(prev => prev + 1)}>Click me</button>
-      <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
-        Welcome, my name is Joe Badaczewski
-      </h1>
+    <Main>
+      <SectionHeading>intro</SectionHeading>
       
       <p className="font-mono">
-        I am a senior software development engineer focused on application
+        I am a senior software development engineer specializing in web application
         performance, distributed systems, and user interface design.
       </p>
 
@@ -128,6 +108,6 @@ export default function Index(props: IndexProps) {
       <SectionHeading color="accent">feed</SectionHeading>
       
       <RecentActivity items={props.rssData?.items ?? []} />
-    </div>
+    </Main>
   );
 }

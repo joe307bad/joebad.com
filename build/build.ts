@@ -14,6 +14,9 @@ import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
 import { getHtml } from "./utils/getHtml";
 import { PageData, RSSData } from "./types";
+import { Main } from '../src/components/Main'
+import { SectionHeading } from '../src/components/SectionHeading'
+import { copyPublicToDist } from "./utils/movePublicToDist";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
@@ -136,6 +139,7 @@ async function compileMDX(inputPath: string): Promise<PageData> {
   const mdxSource = await readFile(inputPath, "utf8");
   const { data: frontmatter, content: mdxContent } = matter(mdxSource);
 
+  // c.compileMDX
   // Compile MDX to JavaScript
   const compiled = await compile(mdxContent, {
     outputFormat: "program",
@@ -172,9 +176,12 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       components: {
         Accomplishment: (props: any) => props.children,
         Position: (props: any) => props.children,
+        SectionHeading: SectionHeading
       },
     });
-    const htmlContent = renderToStaticMarkup(reactElement);
+
+    const wrapper = React.createElement(Main, { children: reactElement })
+    const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
     await fs.unlink(tempFile).catch(() => {});
@@ -431,31 +438,11 @@ async function build() {
   // Generate HTML files
   console.log("🔨 Generating HTML files...");
   for (const pageData of pages) {
-    let contentWithMeta = pageData.content;
-
-    // Add metadata for markdown files
-    if (
-      pageData.type === "markdown" &&
-      Object.keys(pageData.frontmatter).length > 0
-    ) {
-      const metaHtml = `
-        <div class="page-meta mb-6 p-4 bg-gray-100 rounded-lg">
-          ${Object.entries(pageData.frontmatter)
-            .filter(([key]) => key !== "title")
-            .map(
-              ([key, value]) =>
-                `<span class="inline-block mr-4"><strong>${key}:</strong> ${value}</span>`
-            )
-            .join("")}
-        </div>
-      `;
-      contentWithMeta = metaHtml + pageData.content;
-    }
 
     const html = createHtmlTemplate(
       pageData.title,
-      contentWithMeta,
-      css,
+      pageData.content,
+      css,      
       pageData.type
     );
 
@@ -479,7 +466,10 @@ async function build() {
       pages.filter((p) => p.type === "react").length
     } React) with Tailwind CSS and RSS data`
   );
+  
+  await copyPublicToDist();
 }
+
 
 // Run build if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {

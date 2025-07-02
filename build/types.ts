@@ -1,7 +1,11 @@
+import { DetailedReactHTMLElement, ReactNode } from "react";
+
 export interface PageData {
   slug: string;
   title: string;
   content: string;
+  component?: (...args) => DetailedReactHTMLElement<any, any>;
+  componentString?: string;
   frontmatter: Record<string, any>;
   type: "markdown" | "react";
 }

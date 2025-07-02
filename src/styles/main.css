@@ -9,7 +9,7 @@
     --color-primary-200: #80c4ff;
     --color-primary-300: #4dadff;
     --color-primary-400: #1a95ff;
-    --color-primary-500: #ED2E07;
+    --color-primary-500: #ed2e07;
     --color-primary-600: #0066cc;
     --color-primary-700: #004d99;
     --color-primary-800: #003366;
@@ -18,13 +18,38 @@
     /* Fluorescent Pink/Magenta Secondary */
     --color-secondary-50: #ffe6f7;
     --color-secondary-100: #ffb3e6;
-    --color-secondary-500: #F95738;
+    --color-secondary-500: #f95738;
     --color-secondary-900: #660044;
 
     /* Fluorescent Lime Green Accent */
     --color-accent-50: #f0ffe6;
     --color-accent-100: #ccffb3;
-    --color-accent-500: #F95738;
+    --color-accent-500: #f95738;
     --color-accent-900: #264d00;
+
+    --font-size-heading: theme(fontSize.lg);
+  }
+}
+
+#mdx {
+  h2 {
+    font-family: monospace;
+    font-size: var(--font-size-heading);
+    font-weight: 900;
+  }
+
+  a:not(nav a) {
+    text-decoration: underline;
+  }
+
+  ul {
+    list-style: disc;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+
+    li {
+      padding-bottom: 5px;
+    }
   }
 }

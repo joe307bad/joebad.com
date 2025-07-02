@@ -36,7 +36,7 @@ export function getHtml(css: string, content: string, js?: string, rssData?: any
     
 </head>
 </head>
-<body class="h-full w-full">
+<body class="h-full w-full" id="${!js ? "mdx" : ""}">
     <main id="root" class="flex justify-center">${content}</main>
     <script>window.__RSS_DATA__ = ${JSON.stringify({ items: rssData?.items ?? [] })};</script>
     ${js ? js : ""}
