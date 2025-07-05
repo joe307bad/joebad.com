@@ -7,7 +7,7 @@ export interface PageData {
   component?: (...args) => DetailedReactHTMLElement<any, any>;
   componentString?: string;
   frontmatter: Record<string, any>;
-  type: "markdown" | "react";
+  type: "markdown" | "react" | "blog-post";
 }
 
 export interface RSSItem {

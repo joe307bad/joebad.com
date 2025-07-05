@@ -28,8 +28,8 @@ interface ProjectLinkProps {
 
 function ProjectLink({ href, children }: ProjectLinkProps) {
   return (
-    <a 
-      className="border-b-2 border-(--color-secondary-500) italic" 
+    <a
+      className="border-b-2 border-(--color-secondary-500) no-underline italic"
       href={href}
     >
       {children}
@@ -54,7 +54,7 @@ export default function Index(props: IndexProps) {
       ]
     },
     {
-      title: "void", 
+      title: "void",
       description: "a simple, intergalactic strategy game",
       links: [
         { label: "source", href: "https://github.com/joe307bad/end" },
@@ -63,7 +63,7 @@ export default function Index(props: IndexProps) {
     },
     {
       title: "fastbreak",
-      description: "daily pro sports pick-em and trivia", 
+      description: "daily pro sports pick-em and trivia",
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" }
       ]
@@ -78,36 +78,37 @@ export default function Index(props: IndexProps) {
   ];
 
   return (
-    <Main>
-      <SectionHeading>intro</SectionHeading>
-      
-      <p className="font-mono">
-        I am a senior software development engineer specializing in web application
-        performance, distributed systems, and user interface design.
-      </p>
+      <Main>
+        <SectionHeading>intro</SectionHeading>
 
-      <SectionHeading>projects</SectionHeading>
-      
-      <ul className="font-mono flex flex-col gap-6 md:gap-4">
-        {projects.map((project) => (
-          <ProjectItem 
-            key={project.title}
-            title={project.title} 
-            description={project.description}
-          >
-            ({project.links.map((link, index) => (
-              <span key={link.label}>
-                {index > 0 && " | "}
-                <ProjectLink href={link.href}>{link.label}</ProjectLink>
-              </span>
-            ))})
-          </ProjectItem>
-        ))}
-      </ul>
+        <p className="font-mono">
+          I am a senior software development engineer specializing in web application
+          performance, distributed systems, and user interface design.
+        </p>
 
-      <SectionHeading color="accent">feed</SectionHeading>
-      
-      <RecentActivity items={props.rssData?.items ?? []} />
-    </Main>
+        <SectionHeading>projects</SectionHeading>
+
+        <ul id="projects" className="font-mono flex flex-col gap-6 md:gap-4">
+          {projects.map((project) => (
+            <ProjectItem
+              key={project.title}
+              title={project.title}
+              description={project.description}
+            >
+              ({project.links.map((link, index) => (
+                <span key={link.label}>
+                  {index > 0 && " | "}
+                  <ProjectLink href={link.href}>{link.label}</ProjectLink>
+                </span>
+              ))})
+            </ProjectItem>
+          ))}
+        </ul>
+
+        <SectionHeading color="accent">feed</SectionHeading>
+
+        <RecentActivity items={props.rssData?.items ?? []} />
+      </Main>
+    </div>
   );
 }

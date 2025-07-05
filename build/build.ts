@@ -13,10 +13,11 @@ import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
 import { getHtml } from "./utils/getHtml";
-import { PageData, RSSData } from "./types";
+import { PageData, RSSData, RSSItem } from "./types";
 import { Main } from '../src/components/Main'
 import { SectionHeading } from '../src/components/SectionHeading'
 import { copyPublicToDist } from "./utils/movePublicToDist";
+import { getBlogPageProps } from "./utils/getBlogPageProps";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
@@ -154,6 +155,7 @@ async function compileMDX(inputPath: string): Promise<PageData> {
   try {
     // Ensure temp directory exists
     await fs.mkdir(tempDir, { recursive: true });
+    await fs.mkdir("dist/post", { recursive: true });
 
     // Create the executable module
     // Use 'program' output format to get a complete ES module
@@ -184,7 +186,7 @@ async function compileMDX(inputPath: string): Promise<PageData> {
     const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     const slug = path.basename(inputPath, ".mdx");
 
@@ -193,13 +195,13 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       title: frontmatter.title || slug,
       content: htmlContent,
       frontmatter,
-      type: "markdown",
+      type: !inputPath.includes("posts") ? "markdown" : "blog-post",
     };
   } catch (error) {
     console.error(`❌ Error compiling MDX ${inputPath}:`, error);
 
     // Clean up temp file on error
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     throw error;
   }
@@ -262,7 +264,7 @@ async function processReactPage(
       `--resolve-extensions=.tsx,.ts,.jsx,.js`, // Resolve these extensions
       `--tsconfig=tsconfig.json`, // Use your tsconfig for path mapping if it exists
     ].join(" ");
-      
+
     await execAsync(esbuildConfig);
 
     // Import the compiled component
@@ -283,8 +285,15 @@ async function processReactPage(
       );
     }
 
-    // Pass RSS data as props if available
-    const props = rssData ? { rssData } : {};
+    const props = await (async () => {
+
+      if (filePath.includes("pages\\blog")) {
+        return await getBlogPageProps();
+      }
+
+      return rssData ? { rssData } : {};
+
+    })();
 
     // Render component to HTML with props
     const reactElement = React.createElement(Component, props as any);
@@ -300,7 +309,7 @@ async function processReactPage(
     const slug = path.basename(filePath, path.extname(filePath));
 
     // Clean up temp file
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     return {
       slug,
@@ -313,7 +322,7 @@ async function processReactPage(
     console.error(`❌ Error processing React component ${filePath}:`, error);
 
     // Clean up temp file on error
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     throw error;
   }
@@ -347,7 +356,7 @@ function createHtmlTemplate(
   title: string,
   content: string,
   css: string,
-  pageType: "markdown" | "react" = "markdown"
+  pageType: "markdown" | "react" | "blog-post" = "markdown"
 ): string {
   // For React pages, don't wrap in prose classes as they likely have their own styling
   const contentWrapper =
@@ -370,7 +379,7 @@ async function deleteAndRecreateFolder(folderPath: string): Promise<void> {
   } catch (error) {
     // Folder doesn't exist, which is fine
   }
-  
+
   // Create the folder (including parent directories if needed)
   await fs.mkdir(folderPath, { recursive: true });
 }
@@ -442,12 +451,19 @@ async function build() {
     const html = createHtmlTemplate(
       pageData.title,
       pageData.content,
-      css,      
+      css,
       pageData.type
     );
 
     // Write HTML file
-    const outputPath = path.join("dist", `${pageData.slug}.html`);
+    const outputPath = (() => {
+
+      if (pageData.type === 'blog-post') {
+        return path.join("dist/post", `${pageData.slug}.html`);
+      }
+
+      return path.join("dist", `${pageData.slug}.html`);
+    })();
     await fs.writeFile(outputPath, html);
 
     console.log(`✅ Generated: ${outputPath}`);
@@ -456,30 +472,16 @@ async function build() {
   await buildWithSSR("src/pages/index.tsx", rssData, css);
 
   // Clean up temp directory
-  await fs.rmdir("temp", { recursive: true }).catch(() => {});
+  await fs.rmdir("temp", { recursive: true }).catch(() => { });
 
   console.log("🎉 Build complete!");
   console.log(
-    `📊 Generated ${pages.length} pages (${
-      pages.filter((p) => p.type === "markdown").length
-    } Markdown, ${
-      pages.filter((p) => p.type === "react").length
+    `📊 Generated ${pages.length} pages (${pages.filter((p) => p.type === "markdown").length
+    } Markdown, ${pages.filter((p) => p.type === "react").length
     } React) with Tailwind CSS and RSS data`
   );
-  
+
   await copyPublicToDist();
 }
 
-
-// Run build if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  build().catch(console.error);
-}
-
-export {
-  build,
-  processMarkdown,
-  processReactPage,
-  createHtmlTemplate,
-  fetchRSSFeed,
-};
+build().catch(console.error);
