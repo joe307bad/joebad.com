@@ -78,37 +78,36 @@ export default function Index(props: IndexProps) {
   ];
 
   return (
-      <Main>
-        <SectionHeading>intro</SectionHeading>
+    <Main>
+      <SectionHeading>intro</SectionHeading>
 
-        <p className="font-mono">
-          I am a senior software development engineer specializing in web application
-          performance, distributed systems, and user interface design.
-        </p>
+      <p className="font-mono">
+        I am a senior software development engineer specializing in web application
+        performance, distributed systems, and user interface design.
+      </p>
 
-        <SectionHeading>projects</SectionHeading>
+      <SectionHeading>projects</SectionHeading>
 
-        <ul id="projects" className="font-mono flex flex-col gap-6 md:gap-4">
-          {projects.map((project) => (
-            <ProjectItem
-              key={project.title}
-              title={project.title}
-              description={project.description}
-            >
-              ({project.links.map((link, index) => (
-                <span key={link.label}>
-                  {index > 0 && " | "}
-                  <ProjectLink href={link.href}>{link.label}</ProjectLink>
-                </span>
-              ))})
-            </ProjectItem>
-          ))}
-        </ul>
+      <ul id="projects" className="font-mono flex flex-col gap-6 md:gap-4">
+        {projects.map((project) => (
+          <ProjectItem
+            key={project.title}
+            title={project.title}
+            description={project.description}
+          >
+            ({project.links.map((link, index) => (
+              <span key={link.label}>
+                {index > 0 && " | "}
+                <ProjectLink href={link.href}>{link.label}</ProjectLink>
+              </span>
+            ))})
+          </ProjectItem>
+        ))}
+      </ul>
 
-        <SectionHeading color="accent">feed</SectionHeading>
+      <SectionHeading color="accent">feed</SectionHeading>
 
-        <RecentActivity items={props.rssData?.items ?? []} />
-      </Main>
-    </div>
+      <RecentActivity items={props.rssData?.items ?? []} />
+    </Main>
   );
 }

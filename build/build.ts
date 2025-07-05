@@ -6,7 +6,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { exec } from "child_process";
 import { promisify } from "util";
-import React from "react";
+import React, { FC } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createRequire } from "module";
 import { XMLParser } from "fast-xml-parser";
@@ -14,7 +14,8 @@ import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
 import { getHtml } from "./utils/getHtml";
 import { PageData, RSSData, RSSItem } from "./types";
-import { Main } from '../src/components/Main'
+import { Main } from '../src/components/Main';
+import { Post } from '../src/components/Post';
 import { SectionHeading } from '../src/components/SectionHeading'
 import { copyPublicToDist } from "./utils/movePublicToDist";
 import { getBlogPageProps } from "./utils/getBlogPageProps";
@@ -182,7 +183,12 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       },
     });
 
-    const wrapper = React.createElement(Main, { children: reactElement })
+
+    const isPost = inputPath.includes("posts");
+
+    // TODO this has to be conditional because its being wrapper by the cv page too..... or maybe we want that? probably not, we probably want to wrap this in Post only for blog posts
+    const post = isPost ? React.createElement(Post, { children: reactElement, post: frontmatter } as any) : (props): FC => props.children;
+    const wrapper = React.createElement(Main, { children: post })
     const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
