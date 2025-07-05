@@ -7,14 +7,45 @@ interface ActivityItemProps {
   children?: ReactNode;
 }
 
+interface AnimatedDateProps {
+  children?: string;
+}
+
+const AnimatedDate: React.FC<AnimatedDateProps> = ({
+  children = "2025-07-01T03:44:45Z",
+}) => {
+  const getRelativeTime = (dateString: string): string => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
+
+    if (diffInDays > 0) {
+      return `${diffInDays} day${diffInDays === 1 ? "" : "s"} ago`;
+    } else if (diffInHours > 0) {
+      return `${diffInHours} hour${diffInHours === 1 ? "" : "s"} ago`;
+    } else if (diffInMinutes > 0) {
+      return `${diffInMinutes} minute${diffInMinutes === 1 ? "" : "s"} ago`;
+    } else {
+      return "just now";
+    }
+  };
+
+  const relativeDate = getRelativeTime(children);
+
+  return <b>{relativeDate}</b>;
+};
+
 function ActivityItem(props: ActivityItemProps) {
   return (
     <li className="break-words">
       <div className="flex flex-row w-full pb-2">
-        <div className="flex-1 max-w-[100%]">
-          <b>{props.relativeTime}</b> • {props.categoryLabel} •{" "}
-          {props.description} {props.children}
-        </div>
+        <p className="leading-7">
+          <AnimatedDate>{props.relativeTime}</AnimatedDate> •{" "}
+          {props.categoryLabel} • {props.description} {props.children}
+        </p>
       </div>
     </li>
   );
@@ -51,9 +82,8 @@ const RecentActivity: React.FC<RecentActivityProps> = ({ items = [] }) => {
   );
 
   return (
-    <ul className="font-mono flex flex-col gap-6 w-full">
+    <ul className="font-mono flex flex-col gap-6 w-full ">
       {sortedItems.map((item, index) => {
-        
         if (item.contentType === "code-commit") {
           return (
             <ActivityItem

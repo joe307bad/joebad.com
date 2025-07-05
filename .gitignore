@@ -3,3 +3,10 @@ node_modules
 .idea
 .DS_Store
 dist
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/joebad.com/FileContentIndex/6b9377fd-a328-4dde-97b4-e18c04d17587.vsidx
+.vs/joebad.com/config/applicationhost.config
+.vs/joebad.com/v17/.wsuo
+.vs/joebad.com/v17/DocumentLayout.json
