@@ -8,6 +8,7 @@ export interface PageData {
   componentString?: string;
   frontmatter: Record<string, any>;
   type: "markdown" | "react" | "blog-post";
+  seo?: BlogPostSEO
 }
 
 export interface RSSItem {
@@ -23,4 +24,16 @@ export interface RSSData {
   description: string;
   link: string;
   items: RSSItem[];
+}
+
+export interface BlogPostSEO {
+  title: string;
+  description: string;
+  slug: string;
+  publishedAt: string;
+  modifiedDate?: string;
+  author?: string;
+  tags?: string[];
+  imageUrl?: string;
+  imageAlt?: string;
 }

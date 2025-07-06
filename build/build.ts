@@ -1,5 +1,5 @@
 import fs, { readFile } from "fs/promises";
-import path from "path";
+import path, { join } from "path";
 import { glob } from "glob";
 import matter from "gray-matter";
 import { remark } from "remark";
@@ -13,12 +13,14 @@ import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
 import { getHtml } from "./utils/getHtml";
-import { PageData, RSSData, RSSItem } from "./types";
+import { getBlogPostHtml } from "./utils/getBlogPostHtml";
+import { BlogPostSEO, PageData, RSSData, RSSItem } from "./types";
 import { Main } from '../src/components/Main';
 import { Post } from '../src/components/Post';
 import { SectionHeading } from '../src/components/SectionHeading'
 import { copyPublicToDist } from "./utils/movePublicToDist";
 import { getBlogPageProps } from "./utils/getBlogPageProps";
+import { format } from "date-fns";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
@@ -136,6 +138,8 @@ function parseRSS(xmlText: string): RSSData {
   }
 }
 
+let numberOfPosts = 0;
+
 // Compile MDX files
 async function compileMDX(inputPath: string): Promise<PageData> {
   const mdxSource = await readFile(inputPath, "utf8");
@@ -186,9 +190,15 @@ async function compileMDX(inputPath: string): Promise<PageData> {
 
     const isPost = inputPath.includes("posts");
 
-    // TODO this has to be conditional because its being wrapper by the cv page too..... or maybe we want that? probably not, we probably want to wrap this in Post only for blog posts
-    const post = isPost ? React.createElement(Post, { children: reactElement, post: frontmatter } as any) : (props): FC => props.children;
-    const wrapper = React.createElement(Main, { children: post })
+    if (isPost) {
+      numberOfPosts++;
+    }
+
+    const post = isPost
+      ? React.createElement(Post, { children: reactElement, post: { ...frontmatter, number: numberOfPosts.toString(), date: format(frontmatter.publishedAt, 'yyyy-MM-dd') } })
+      : reactElement;
+
+    const wrapper = React.createElement(Main, { children: post });
     const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
@@ -196,12 +206,23 @@ async function compileMDX(inputPath: string): Promise<PageData> {
 
     const slug = path.basename(inputPath, ".mdx");
 
+    const postProperties: { type: PageData['type'], seo: BlogPostSEO } = {
+      type: 'blog-post',
+      seo: {
+        description: frontmatter.subTitle,
+        title: frontmatter.title,
+        publishedAt: frontmatter.publishedAt,
+        slug
+      }
+    }
+
     return {
       slug,
       title: frontmatter.title || slug,
       content: htmlContent,
       frontmatter,
-      type: !inputPath.includes("posts") ? "markdown" : "blog-post",
+      type: 'markdown',
+      ...(isPost ? postProperties : {})
     };
   } catch (error) {
     console.error(`❌ Error compiling MDX ${inputPath}:`, error);
@@ -362,8 +383,13 @@ function createHtmlTemplate(
   title: string,
   content: string,
   css: string,
-  pageType: "markdown" | "react" | "blog-post" = "markdown"
+  pageType: "markdown" | "react" | "blog-post" = "markdown",
+  seo?: BlogPostSEO
 ): string {
+  if (pageType === "blog-post" && seo) {
+    return getBlogPostHtml(css, content, seo)
+  }
+
   // For React pages, don't wrap in prose classes as they likely have their own styling
   const contentWrapper =
     pageType === "react"
@@ -458,7 +484,8 @@ async function build() {
       pageData.title,
       pageData.content,
       css,
-      pageData.type
+      pageData.type,
+      pageData.seo
     );
 
     // Write HTML file
@@ -487,7 +514,23 @@ async function build() {
     } React) with Tailwind CSS and RSS data`
   );
 
-  await copyPublicToDist();
+  async function copyFile(fileName: string): Promise<void> {
+    const srcPath = join('public', fileName);
+    const destPath = join('dist', fileName);
+
+    try {
+      await fs.copyFile(srcPath, destPath);
+      console.log(`Copied ${fileName} to dist/`);
+    } catch (error) {
+      console.error(`Failed to copy ${fileName}:`, error);
+      throw error;
+    }
+  }
+
+  copyFile("Badaczewski_CV.pdf")
+  copyFile("favicon.ico")
+
+  //await copyPublicToDist();
 }
 
 build().catch(console.error);
