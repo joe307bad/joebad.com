@@ -197,13 +197,13 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       ? React.createElement(Post, { children: reactElement, post: { ...frontmatter, number: numberOfPosts.toString(), date: format(frontmatter.publishedAt, 'yyyy-MM-dd') } })
       : reactElement;
 
-    const wrapper = React.createElement(Main, { children: post });
+    const slug = path.basename(inputPath, ".mdx");
+
+    const wrapper = React.createElement(Main, { children: post, activePage: slug });
     const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
     await fs.unlink(tempFile).catch(() => { });
-
-    const slug = path.basename(inputPath, ".mdx");
 
     const postProperties: { type: PageData['type'], seo: BlogPostSEO } = {
       type: 'blog-post',

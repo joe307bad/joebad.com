@@ -78,7 +78,7 @@ export default function Index(props: IndexProps) {
   ];
 
   return (
-    <Main>
+    <Main activePage="index">
       <SectionHeading>intro</SectionHeading>
 
       <p className="font-mono">

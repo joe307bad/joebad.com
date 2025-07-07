@@ -57,7 +57,7 @@ export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) 
       "@type": "Person",
       "name": "${author}"
     },
-    "datePublished": "${seo.publishedDate}",
+    "datePublished": "${seo.publishedAt}",
     ${seo.modifiedDate ? `"dateModified": "${seo.modifiedDate}",` : ''}
     "url": "${canonicalUrl}",
     "mainEntityOfPage": {

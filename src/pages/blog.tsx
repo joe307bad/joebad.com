@@ -13,7 +13,7 @@ type Post = {
 export default function Blog(props: { posts: Post[] }) {
   
   return (
-    <Main>
+    <Main activePage="blog">
       <SectionHeading>posts</SectionHeading>
       <div className="flex flex-col">
         <div>
