@@ -1,42 +1,28 @@
 import fs, { readFile } from "fs/promises";
-import path from "path";
+import path, { join } from "path";
 import { glob } from "glob";
 import matter from "gray-matter";
 import { remark } from "remark";
 import html from "remark-html";
 import { exec } from "child_process";
 import { promisify } from "util";
-import React from "react";
+import React, { FC } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createRequire } from "module";
 import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
+import { buildWithSSR } from "./hydrate";
+import { getHtml } from "./utils/getHtml";
+import { getBlogPostHtml } from "./utils/getBlogPostHtml";
+import { BlogPostSEO, PageData, RSSData, RSSItem } from "./types";
+import { Main } from '../src/components/Main';
+import { Post } from '../src/components/Post';
+import { SectionHeading } from '../src/components/SectionHeading'
+import { getBlogPageProps } from "./utils/getBlogPageProps";
+import { format } from "date-fns";
 
 const execAsync = promisify(exec);
 const require = createRequire(import.meta.url);
-
-interface PageData {
-  slug: string;
-  title: string;
-  content: string;
-  frontmatter: Record<string, any>;
-  type: "markdown" | "react";
-}
-
-interface RSSItem {
-  title: string;
-  link: string;
-  description: string;
-  pubDate: string;
-  guid?: string;
-}
-
-interface RSSData {
-  title: string;
-  description: string;
-  link: string;
-  items: RSSItem[];
-}
 
 // Markdown processor
 const processor = remark().use(html);
@@ -151,10 +137,14 @@ function parseRSS(xmlText: string): RSSData {
   }
 }
 
+let numberOfPosts = 0;
+
+// Compile MDX files
 async function compileMDX(inputPath: string): Promise<PageData> {
   const mdxSource = await readFile(inputPath, "utf8");
   const { data: frontmatter, content: mdxContent } = matter(mdxSource);
 
+  // c.compileMDX
   // Compile MDX to JavaScript
   const compiled = await compile(mdxContent, {
     outputFormat: "program",
@@ -169,6 +159,7 @@ async function compileMDX(inputPath: string): Promise<PageData> {
   try {
     // Ensure temp directory exists
     await fs.mkdir(tempDir, { recursive: true });
+    await fs.mkdir("dist/post", { recursive: true });
 
     // Create the executable module
     // Use 'program' output format to get a complete ES module
@@ -191,27 +182,52 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       components: {
         Accomplishment: (props: any) => props.children,
         Position: (props: any) => props.children,
+        SectionHeading: SectionHeading
       },
     });
-    const htmlContent = renderToStaticMarkup(reactElement);
+
+
+    const isPost = inputPath.includes("posts");
+
+    if (isPost) {
+      numberOfPosts++;
+    }
+
+    const post = isPost
+      ? React.createElement(Post, { children: reactElement, post: { ...frontmatter, number: numberOfPosts.toString(), date: format(frontmatter.publishedAt, 'yyyy-MM-dd') } })
+      : reactElement;
+
+    const wrapper = React.createElement(Main, { children: post });
+    const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     const slug = path.basename(inputPath, ".mdx");
+
+    const postProperties: { type: PageData['type'], seo: BlogPostSEO } = {
+      type: 'blog-post',
+      seo: {
+        description: frontmatter.subTitle,
+        title: frontmatter.title,
+        publishedAt: frontmatter.publishedAt,
+        slug
+      }
+    }
 
     return {
       slug,
       title: frontmatter.title || slug,
       content: htmlContent,
       frontmatter,
-      type: "markdown",
+      type: 'markdown',
+      ...(isPost ? postProperties : {})
     };
   } catch (error) {
     console.error(`❌ Error compiling MDX ${inputPath}:`, error);
 
     // Clean up temp file on error
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     throw error;
   }
@@ -239,8 +255,10 @@ async function processMarkdown(filePath: string): Promise<PageData> {
 // Compile and process React/TSX files with RSS data
 async function processReactPage(
   filePath: string,
-  rssData?: RSSData
+  rssData?: RSSData,
+  hydrate?: boolean
 ): Promise<PageData> {
+
   console.log(`🔄 Compiling React component: ${filePath}`);
 
   // Create a temporary JS file for compilation
@@ -273,12 +291,7 @@ async function processReactPage(
       `--tsconfig=tsconfig.json`, // Use your tsconfig for path mapping if it exists
     ].join(" ");
 
-    if (isTypeScript) {
-      await execAsync(esbuildConfig);
-    } else {
-      // For JSX files, also use esbuild with same config
-      await execAsync(esbuildConfig);
-    }
+    await execAsync(esbuildConfig);
 
     // Import the compiled component
     const modulePath = path.resolve(tempFile);
@@ -298,8 +311,15 @@ async function processReactPage(
       );
     }
 
-    // Pass RSS data as props if available
-    const props = rssData ? { rssData } : {};
+    const props = await (async () => {
+      
+      if (filePath.includes(`pages${path.sep}blog`)) {
+        return await getBlogPageProps();
+      }
+
+      return rssData ? { rssData } : {};
+
+    })();
 
     // Render component to HTML with props
     const reactElement = React.createElement(Component, props as any);
@@ -315,20 +335,20 @@ async function processReactPage(
     const slug = path.basename(filePath, path.extname(filePath));
 
     // Clean up temp file
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     return {
       slug,
       title,
       content: htmlContent,
       frontmatter: metadata,
-      type: "react",
+      type: filePath.includes("index") ? "index" : "react",
     };
   } catch (error) {
     console.error(`❌ Error processing React component ${filePath}:`, error);
 
     // Clean up temp file on error
-    await fs.unlink(tempFile).catch(() => {});
+    await fs.unlink(tempFile).catch(() => { });
 
     throw error;
   }
@@ -358,12 +378,17 @@ async function buildTailwind(): Promise<string> {
 }
 
 // HTML template wrapper with Tailwind
-function createHtmlTemplate(
+async function createHtmlTemplate(
   title: string,
   content: string,
   css: string,
-  pageType: "markdown" | "react" = "markdown"
-): string {
+  pageType: "index" | "markdown" | "react" | "blog-post" = "markdown",
+  seo?: BlogPostSEO
+): Promise<string> {
+  if (pageType === "blog-post" && seo) {
+    return getBlogPostHtml(css, content, seo)
+  }
+
   // For React pages, don't wrap in prose classes as they likely have their own styling
   const contentWrapper =
     pageType === "react"
@@ -374,45 +399,11 @@ function createHtmlTemplate(
     </article>
   `;
 
-  return `<!DOCTYPE html>
-<html lang="en" class="h-full w-full p-2 bg-[#FFECD1]">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>${css}</style>
-    <!-- Basic Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- Primary SEO Tags -->
-    <title>Joe Badaczewski - Senior Software Engineer</title>
-    <meta name="description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
+  if(pageType != "index") {
+    css += await fs.readFile("src/styles/page.css", "utf-8");
+  }
 
-    <link rel="canonical" href="https://joebad.com">
-    
-    <!-- Open Graph Meta Tags (Social Media) -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Joe Badaczewski - Senior Software Engineer">
-    <meta property="og:description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
-    <meta property="og:url" content="https://joebad.com">
-    <meta property="og:site_name" content="Joe Badaczewski - Senior Software Engineer">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Joe Badaczewski - Senior Software Engineer">
-    <meta name="twitter:description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
-    <meta name="twitter:creator" content="@joe307bad">
-    
-</head>
-</head>
-<body class="h-full w-full">
-    <main class="flex justify-center">
-      ${contentWrapper}
-    </main>
-</body>
-</html>`;
+  return getHtml(css, contentWrapper)
 }
 
 async function deleteAndRecreateFolder(folderPath: string): Promise<void> {
@@ -423,7 +414,7 @@ async function deleteAndRecreateFolder(folderPath: string): Promise<void> {
   } catch (error) {
     // Folder doesn't exist, which is fine
   }
-  
+
   // Create the folder (including parent directories if needed)
   await fs.mkdir(folderPath, { recursive: true });
 }
@@ -474,7 +465,7 @@ async function build() {
   }
 
   // Process React/TSX files
-  console.log("⚛️  Processing React components...");
+  console.log("⚛️  Processing Pages...");
   const reactFiles = await glob("src/pages/**/*.{tsx,jsx,ts,js}");
 
   for (const file of reactFiles) {
@@ -491,63 +482,59 @@ async function build() {
   // Generate HTML files
   console.log("🔨 Generating HTML files...");
   for (const pageData of pages) {
-    let contentWithMeta = pageData.content;
 
-    // Add metadata for markdown files
-    if (
-      pageData.type === "markdown" &&
-      Object.keys(pageData.frontmatter).length > 0
-    ) {
-      const metaHtml = `
-        <div class="page-meta mb-6 p-4 bg-gray-100 rounded-lg">
-          ${Object.entries(pageData.frontmatter)
-            .filter(([key]) => key !== "title")
-            .map(
-              ([key, value]) =>
-                `<span class="inline-block mr-4"><strong>${key}:</strong> ${value}</span>`
-            )
-            .join("")}
-        </div>
-      `;
-      contentWithMeta = metaHtml + pageData.content;
-    }
-
-    const html = createHtmlTemplate(
+    const html = await createHtmlTemplate(
       pageData.title,
-      contentWithMeta,
+      pageData.content,
       css,
-      pageData.type
+      pageData.type,
+      pageData.seo
     );
 
     // Write HTML file
-    const outputPath = path.join("dist", `${pageData.slug}.html`);
+    const outputPath = (() => {
+
+      if (pageData.type === 'blog-post') {
+        return path.join("dist/post", `${pageData.slug}.html`);
+      }
+
+      return path.join("dist", `${pageData.slug}.html`);
+    })();
+
     await fs.writeFile(outputPath, html);
 
     console.log(`✅ Generated: ${outputPath}`);
   }
 
+  await buildWithSSR("src/pages/index.tsx", rssData, css);
+
   // Clean up temp directory
-  await fs.rmdir("temp", { recursive: true }).catch(() => {});
+  await fs.rmdir("temp", { recursive: true }).catch(() => { });
 
   console.log("🎉 Build complete!");
   console.log(
-    `📊 Generated ${pages.length} pages (${
-      pages.filter((p) => p.type === "markdown").length
-    } Markdown, ${
-      pages.filter((p) => p.type === "react").length
+    `📊 Generated ${pages.length} pages (${pages.filter((p) => p.type === "markdown").length
+    } Markdown, ${pages.filter((p) => p.type === "react").length
     } React) with Tailwind CSS and RSS data`
   );
+
+  async function copyFile(fileName: string): Promise<void> {
+    const srcPath = join('public', fileName);
+    const destPath = join('dist', fileName);
+
+    try {
+      await fs.copyFile(srcPath, destPath);
+      console.log(`Copied ${fileName} to dist/`);
+    } catch (error) {
+      console.error(`Failed to copy ${fileName}:`, error);
+      throw error;
+    }
+  }
+
+  copyFile("Badaczewski_CV.pdf")
+  copyFile("favicon.ico")
+
+  //await copyPublicToDist();
 }
 
-// Run build if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  build().catch(console.error);
-}
-
-export {
-  build,
-  processMarkdown,
-  processReactPage,
-  createHtmlTemplate,
-  fetchRSSFeed,
-};
+build().catch(console.error);

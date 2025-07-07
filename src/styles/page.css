@@ -1,0 +1,35 @@
+h2 {
+  font-family: monospace;
+  font-size: var(--font-size-heading);
+  font-weight: 900;
+}
+
+a:not(nav a):not(#projects a) {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: disc;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
+ol {
+  list-style: decimal;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+
+  li {
+    padding-bottom: 5px;
+  }
+}
+
+main {
+  padding-bottom: 100px;
+}
