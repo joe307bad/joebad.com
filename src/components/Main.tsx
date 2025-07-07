@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 export function Main(props: { children: ReactNode }) {
   return (
-    <div className="gap-4 w-full md:max-w-3xl flex flex-col self-center ">
+    <div id="main" className="gap-4 w-full md:max-w-3xl flex flex-col self-center">
       <div className=" gap-4 flex flex-col">
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
           Welcome, my name is Joe Badaczewski

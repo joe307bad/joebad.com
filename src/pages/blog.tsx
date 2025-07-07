@@ -11,7 +11,7 @@ type Post = {
 }
 
 export default function Blog(props: { posts: Post[] }) {
-  console.log({ props })
+  
   return (
     <Main>
       <SectionHeading>posts</SectionHeading>

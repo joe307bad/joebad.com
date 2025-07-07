@@ -18,7 +18,6 @@ import { BlogPostSEO, PageData, RSSData, RSSItem } from "./types";
 import { Main } from '../src/components/Main';
 import { Post } from '../src/components/Post';
 import { SectionHeading } from '../src/components/SectionHeading'
-import { copyPublicToDist } from "./utils/movePublicToDist";
 import { getBlogPageProps } from "./utils/getBlogPageProps";
 import { format } from "date-fns";
 
@@ -313,8 +312,8 @@ async function processReactPage(
     }
 
     const props = await (async () => {
-
-      if (filePath.includes("pages\\blog")) {
+      
+      if (filePath.includes(`pages${path.sep}blog`)) {
         return await getBlogPageProps();
       }
 
@@ -343,7 +342,7 @@ async function processReactPage(
       title,
       content: htmlContent,
       frontmatter: metadata,
-      type: "react",
+      type: filePath.includes("index") ? "index" : "react",
     };
   } catch (error) {
     console.error(`❌ Error processing React component ${filePath}:`, error);
@@ -379,13 +378,13 @@ async function buildTailwind(): Promise<string> {
 }
 
 // HTML template wrapper with Tailwind
-function createHtmlTemplate(
+async function createHtmlTemplate(
   title: string,
   content: string,
   css: string,
-  pageType: "markdown" | "react" | "blog-post" = "markdown",
+  pageType: "index" | "markdown" | "react" | "blog-post" = "markdown",
   seo?: BlogPostSEO
-): string {
+): Promise<string> {
   if (pageType === "blog-post" && seo) {
     return getBlogPostHtml(css, content, seo)
   }
@@ -399,6 +398,10 @@ function createHtmlTemplate(
       ${content}
     </article>
   `;
+
+  if(pageType != "index") {
+    css += await fs.readFile("src/styles/page.css", "utf-8");
+  }
 
   return getHtml(css, contentWrapper)
 }
@@ -480,7 +483,7 @@ async function build() {
   console.log("🔨 Generating HTML files...");
   for (const pageData of pages) {
 
-    const html = createHtmlTemplate(
+    const html = await createHtmlTemplate(
       pageData.title,
       pageData.content,
       css,
@@ -497,6 +500,7 @@ async function build() {
 
       return path.join("dist", `${pageData.slug}.html`);
     })();
+
     await fs.writeFile(outputPath, html);
 
     console.log(`✅ Generated: ${outputPath}`);

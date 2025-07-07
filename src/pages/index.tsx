@@ -88,7 +88,7 @@ export default function Index(props: IndexProps) {
 
       <SectionHeading>projects</SectionHeading>
 
-      <ul id="projects" className="font-mono flex flex-col gap-6 md:gap-4">
+      <ul className="font-mono flex flex-col gap-6 md:gap-4">
         {projects.map((project) => (
           <ProjectItem
             key={project.title}
