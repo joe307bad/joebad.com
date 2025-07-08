@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface ActivityItemProps {
   relativeTime?: string;
@@ -69,7 +69,16 @@ function WithRelativeDates({
   items: ActivityData[];
   children: (items: ActivityData[]) => ReactNode;
 }) {
-  const itemsWithRelativeDate = items.map(addRelativeDate);
+  const [itemsWithRelativeDate, setItemsWithRelativeDate] = useState<ActivityData[]>();
+  
+  useEffect(() => {
+    setItemsWithRelativeDate(items.map(addRelativeDate))
+  }, [])
+
+  if(!itemsWithRelativeDate) {
+    return null
+  }
+
   return children(itemsWithRelativeDate);
 }
 
