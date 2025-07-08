@@ -385,6 +385,11 @@ async function createHtmlTemplate(
   pageType: "index" | "markdown" | "react" | "blog-post" = "markdown",
   seo?: BlogPostSEO
 ): Promise<string> {
+
+  if(pageType != "index") {
+    css += await fs.readFile("src/styles/page.css", "utf-8");
+  }
+  
   if (pageType === "blog-post" && seo) {
     return getBlogPostHtml(css, content, seo)
   }
@@ -398,10 +403,6 @@ async function createHtmlTemplate(
       ${content}
     </article>
   `;
-
-  if(pageType != "index") {
-    css += await fs.readFile("src/styles/page.css", "utf-8");
-  }
 
   return getHtml(css, contentWrapper)
 }
