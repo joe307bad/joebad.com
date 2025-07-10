@@ -3,30 +3,40 @@
 /* Define custom colors using CSS custom properties (Tailwind v4 approach) */
 @layer theme {
   :root {
-    /* Fluorescent Electric Blue Primary */
-    --color-primary-50: #e6f3ff;
-    --color-primary-100: #b3dcff;
-    --color-primary-200: #80c4ff;
-    --color-primary-300: #4dadff;
-    --color-primary-400: #1a95ff;
+    /* Light theme */
+    --color-bg: #ffecd1;
+    --color-bg-dark: #111827;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-text-secondary: #6b7280;
     --color-primary-500: #ed2e07;
-    --color-primary-600: #0066cc;
-    --color-primary-700: #004d99;
-    --color-primary-800: #003366;
-    --color-primary-900: #001a33;
-
-    /* Fluorescent Pink/Magenta Secondary */
-    --color-secondary-50: #ffe6f7;
-    --color-secondary-100: #ffb3e6;
     --color-secondary-500: #f95738;
-    --color-secondary-900: #660044;
-
-    /* Fluorescent Lime Green Accent */
-    --color-accent-50: #f0ffe6;
-    --color-accent-100: #ccffb3;
     --color-accent-500: #f95738;
-    --color-accent-900: #264d00;
-
+    --color-border: #e5e7eb;
     --font-size-heading: theme(fontSize.lg);
+  }
+
+  /* Dark theme */
+  #dark-mode-toggle:checked ~ * {
+    --color-bg: #111827;
+    --color-surface: #1f2937;
+    --color-text: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-primary-500: #f87171;
+    --color-secondary-500: #fca5a5;
+    --color-accent-500: #fca5a5;
+    --color-border: #374151;
+  }
+
+  p, li, h1, h2, h3 {
+    color: var(--color-text);
+  }
+}
+
+@layer base {
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 }

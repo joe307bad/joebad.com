@@ -12,10 +12,10 @@ function ProjectItem({ title, description, children }: ProjectItemProps) {
   return (
     <li className="flex flex-wrap flex-row gap-2">
       <div className="truncate order-first md:order-none flex-1 md:flex-none md:w-[100px] font-bold mb-[-10px]">
-        {title}
+        <p>{title}</p>
       </div>
       <div className="w-full order-last md:order-none md:w-auto md:flex-1">
-        {description} {children}
+        <p>{description} {children}</p>
       </div>
     </li>
   );

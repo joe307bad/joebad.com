@@ -18,7 +18,7 @@ export default function Blog(props: { posts: Post[] }) {
       <div className="flex flex-col">
         <div>
           {props.posts.map((post, i) => (
-            <div className="flex md:gap-8 gap-2 font-mono pb-2"><div><b>{props.posts.length - i}.</b></div> <div className="whitespace-nowrap">{post.date}</div> <div className="truncate"><a href={`/post/${post.slug}`}>{post.title}</a></div></div>
+            <div className="flex md:gap-8 gap-2 font-mono pb-2"><div><p><b>{props.posts.length - i}.</b></p></div> <div className="whitespace-nowrap"><p>{post.date}</p></div> <div className="truncate"><a href={`/post/${post.slug}`}>{post.title}</a></div></div>
           ))}
         </div>
       </div>

@@ -7,7 +7,7 @@ export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) 
   
   return `
 <!DOCTYPE html>
-<html lang="en" class="h-full w-full p-2 bg-[#FFECD1]">
+<html id="html" lang="en" class="h-full w-full bg-(--color-bg)">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,7 +73,26 @@ export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) 
   </script>
 </head>
 <body class="h-full w-full">
-    <main id="root" class="flex justify-center">${content}</main>
+    <input type="checkbox" style="display: none" id="dark-mode-toggle"></input>
+    <main id="root" class="p-2 min-h-[100%] justify-center items-start flex bg-(--color-bg)">${content}</main>
+    <script>
+        const checkbox = document.getElementById('dark-mode-toggle');
+        const switchBg = document.getElementById('switch-bg');
+        const switchCircle = document.getElementById('switch-circle');
+        const html = document.getElementById('html');
+
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                html.classList.remove('bg-(--color-bg-dark)')
+                html.classList.add('bg-(--color-bg)')
+                switchCircle.classList.add('translate-x-4');
+            } else {
+                html.classList.add('bg-(--color-bg-dark)')
+                html.classList.remove('bg-(--color-bg)')
+                switchCircle.classList.remove('translate-x-4');
+            }
+        });
+    </script>
 </body>
 </html>
 `;
