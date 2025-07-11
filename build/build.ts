@@ -12,6 +12,7 @@ import { createRequire } from "module";
 import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
+import { buildWithSSR as ssrMdx } from "./hydrate-mdx";
 import { getHtml } from "./utils/getHtml";
 import { getBlogPostHtml } from "./utils/getBlogPostHtml";
 import { BlogPostSEO, PageData, RSSData, RSSItem } from "./types";
@@ -455,15 +456,15 @@ async function build() {
     console.log(`✅ Processed Markdown: ${pageData.title}`);
   }
 
-  // Process mdx files
-  console.log("📄 Processing MDX files...");
-  const mdxFiles = await glob("src/content/**/*.mdx");
+  // // Process mdx files
+  // console.log("📄 Processing MDX files...");
+  // const mdxFiles = await glob("src/content/**/*.mdx");
 
-  for (const file of mdxFiles) {
-    const pageData = await compileMDX(file);
-    pages.push(pageData);
-    console.log(`✅ Processed MDX: ${pageData.title}`);
-  }
+  // for (const file of mdxFiles) {
+  //   const pageData = await compileMDX(file);
+  //   pages.push(pageData);
+  //   console.log(`✅ Processed MDX: ${pageData.title}`);
+  // }
 
   // Process React/TSX files
   console.log("⚛️  Processing Pages...");
@@ -508,6 +509,7 @@ async function build() {
   }
 
   await buildWithSSR("src/pages/index.tsx", rssData, css);
+  await ssrMdx("src/content/cv.mdx", rssData, css);
 
   // Clean up temp directory
   await fs.rmdir("temp", { recursive: true }).catch(() => { });
