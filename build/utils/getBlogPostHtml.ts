@@ -1,14 +1,18 @@
+import { readFile } from "fs/promises";
 import { BlogPostSEO } from "../types";
 
-export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) {
+export async function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) {
   const fullTitle = `${seo.title} - Joe Badaczewski`;
   const canonicalUrl = `https://joebad.com/post/${seo.slug}`;
   const author = seo.author || 'Joe Badaczewski';
+  const initializeDarkMode = await readFile("build/utils/initializeDarkMode.js", "utf8");
+  const toggleDarkModeListeners = await readFile("build/utils/toggleDarkModeListeners.js", "utf8");
   
   return `
 <!DOCTYPE html>
-<html lang="en" class="h-full w-full p-2 bg-[#FFECD1]">
+<html id="html" lang="en" class="h-full w-full bg-(--color-bg)">
 <head>
+  <script>${initializeDarkMode}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -57,7 +61,7 @@ export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) 
       "@type": "Person",
       "name": "${author}"
     },
-    "datePublished": "${seo.publishedDate}",
+    "datePublished": "${seo.publishedAt}",
     ${seo.modifiedDate ? `"dateModified": "${seo.modifiedDate}",` : ''}
     "url": "${canonicalUrl}",
     "mainEntityOfPage": {
@@ -73,7 +77,8 @@ export function getBlogPostHtml(css: string, content: string, seo: BlogPostSEO) 
   </script>
 </head>
 <body class="h-full w-full">
-    <main id="root" class="flex justify-center">${content}</main>
+    <main id="root" class="p-2 min-h-[100%] justify-center items-start flex bg-(--color-bg)">${content}</main>
+    <script>${toggleDarkModeListeners}</script>
 </body>
 </html>
 `;

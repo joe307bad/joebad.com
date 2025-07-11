@@ -63,7 +63,7 @@ export async function buildWithSSR(
       React.createElement(App, data as any)
     );
 
-    const html = getHtml(
+    const html = await getHtml(
       css ?? "",
       htmlContent,
       `<script src="client.js"></script>`,

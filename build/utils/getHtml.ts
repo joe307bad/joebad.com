@@ -1,11 +1,19 @@
-import { RSSData } from "../types";
+import { readFile } from "fs/promises";
 
-export function getHtml(css: string, content: string, js?: string, rssData?: any) {
+export async function getHtml(
+  css: string,
+  content: string,
+  js?: string,
+  rssData?: any
+) {
+  const initializeDarkMode = await readFile("build/utils/initializeDarkMode.js", "utf8");
+  const toggleDarkModeListeners = await readFile("build/utils/toggleDarkModeListeners.js", "utf8");
 
   return `
 <!DOCTYPE html>
-<html lang="en" class="h-full w-full p-2 bg-[#FFECD1]">
+<html id="html" lang="en" class="h-full w-full">
 <head>
+  <script>${initializeDarkMode}</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>${css}</style>
@@ -33,13 +41,14 @@ export function getHtml(css: string, content: string, js?: string, rssData?: any
     <meta name="twitter:title" content="Joe Badaczewski - Senior Software Engineer">
     <meta name="twitter:description" content="Joe Badaczewski is a senior software development engineer focused on application performance, distributed systems, and user interface design.">
     <meta name="twitter:creator" content="@joe307bad">
-    
 </head>
-</head>
-<body class="h-full w-full" id="${!js ? "mdx" : ""}">
-    <main id="root" class="flex justify-center">${content}</main>
-    <script>window.__RSS_DATA__ = ${JSON.stringify({ items: rssData?.items ?? [] })};</script>
+<body class="h-full w-full">
+    <main id="root" class="p-2 min-h-[100%] w-full justify-center items-start flex bg-(--color-bg)">${content}</main>
+    <script>window.__RSS_DATA__ = ${JSON.stringify({
+      items: rssData?.items ?? [],
+    })};</script>
     ${js ? js : ""}
+    <script>${toggleDarkModeListeners}</script>
 </body>
 </html>
 `;

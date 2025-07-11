@@ -12,6 +12,7 @@ import { createRequire } from "module";
 import { XMLParser } from "fast-xml-parser";
 import { compile } from "@mdx-js/mdx";
 import { buildWithSSR } from "./hydrate";
+import { buildWithSSR as ssrMdx } from "./hydrate-mdx";
 import { getHtml } from "./utils/getHtml";
 import { getBlogPostHtml } from "./utils/getBlogPostHtml";
 import { BlogPostSEO, PageData, RSSData, RSSItem } from "./types";
@@ -197,13 +198,13 @@ async function compileMDX(inputPath: string): Promise<PageData> {
       ? React.createElement(Post, { children: reactElement, post: { ...frontmatter, number: numberOfPosts.toString(), date: format(frontmatter.publishedAt, 'yyyy-MM-dd') } })
       : reactElement;
 
-    const wrapper = React.createElement(Main, { children: post });
+    const slug = path.basename(inputPath, ".mdx");
+
+    const wrapper = React.createElement(Main, { children: post, activePage: slug });
     const htmlContent = renderToStaticMarkup(wrapper);
 
     // Clean up temp file
     await fs.unlink(tempFile).catch(() => { });
-
-    const slug = path.basename(inputPath, ".mdx");
 
     const postProperties: { type: PageData['type'], seo: BlogPostSEO } = {
       type: 'blog-post',
@@ -385,6 +386,11 @@ async function createHtmlTemplate(
   pageType: "index" | "markdown" | "react" | "blog-post" = "markdown",
   seo?: BlogPostSEO
 ): Promise<string> {
+
+  if(pageType != "index") {
+    css += await fs.readFile("src/styles/page.css", "utf-8");
+  }
+  
   if (pageType === "blog-post" && seo) {
     return getBlogPostHtml(css, content, seo)
   }
@@ -398,10 +404,6 @@ async function createHtmlTemplate(
       ${content}
     </article>
   `;
-
-  if(pageType != "index") {
-    css += await fs.readFile("src/styles/page.css", "utf-8");
-  }
 
   return getHtml(css, contentWrapper)
 }
@@ -454,15 +456,15 @@ async function build() {
     console.log(`✅ Processed Markdown: ${pageData.title}`);
   }
 
-  // Process mdx files
-  console.log("📄 Processing MDX files...");
-  const mdxFiles = await glob("src/content/**/*.mdx");
+  // // Process mdx files
+  // console.log("📄 Processing MDX files...");
+  // const mdxFiles = await glob("src/content/**/*.mdx");
 
-  for (const file of mdxFiles) {
-    const pageData = await compileMDX(file);
-    pages.push(pageData);
-    console.log(`✅ Processed MDX: ${pageData.title}`);
-  }
+  // for (const file of mdxFiles) {
+  //   const pageData = await compileMDX(file);
+  //   pages.push(pageData);
+  //   console.log(`✅ Processed MDX: ${pageData.title}`);
+  // }
 
   // Process React/TSX files
   console.log("⚛️  Processing Pages...");
@@ -507,6 +509,7 @@ async function build() {
   }
 
   await buildWithSSR("src/pages/index.tsx", rssData, css);
+  await ssrMdx("src/content/cv.mdx", rssData, css);
 
   // Clean up temp directory
   await fs.rmdir("temp", { recursive: true }).catch(() => { });
