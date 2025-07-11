@@ -1,60 +1,36 @@
-# joebad.com
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A lightweight static site generator that builds my personal website with React components, Markdown content, and RSS feed integration.
+## Getting Started
 
-## Features
-
-- 🏗️ **Static Site Generation** - Compiles React/TSX components and Markdown files to static HTML
-- 📡 **RSS Feed Integration** - Automatically fetches and displays recent activity from https://rss.joebad.com
-- 🎨 **Tailwind CSS** - Built-in styling with Tailwind CSS compilation
-- ⚡ **Fast & Light** - Generates optimized static HTML files (homepage is less than 6kb)
-- 🔄 **Daily Updates** - Automatically rebuilds daily to fetch fresh RSS content
-
-## Quick Start
+First, run the development server:
 
 ```bash
-# Install dependencies
-yarn
-
-# Build the site
-yarn build
-
-# Development with file watching
+npm run dev
+# or
 yarn dev
-
-# Use serve to view locally built static files
-npx serve ./dist
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-## How It Works
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-The build process:
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-1. **Fetches RSS data** from `https://rss.joebad.com`
-2. **Processes React components** from `src/pages/` (gets RSS data as props)
-3. **Processes Markdown files** from `src/content/`
-4. **Compiles Tailwind CSS** from `src/styles/main.css`
-5. **Generates static HTML** files in `dist/`
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Project Structure
+## Learn More
 
-```
-src/
-├── pages/           # React/TSX components (become HTML pages)
-├── content/         # Markdown files
-├── components/      # Shared React components
-└── styles/          # Tailwind CSS source
-└── build.ts         # Build script that builds static html in ./dist
-```
+To learn more about Next.js, take a look at the following resources:
 
-## Daily Builds
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-The site automatically rebuilds daily via GitHub Actions to pull in fresh RSS content, keeping the activity feed current without manual intervention.
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Tech Stack
+## Deploy on Vercel
 
-- **TypeScript** - Type-safe development
-- **React** - Component-based pages
-- **Tailwind CSS** - Utility-first styling
-- **Remark** - Markdown processing
-- **esbuild** - Fast TypeScript compilation
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

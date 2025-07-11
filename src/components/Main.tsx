@@ -1,35 +1,23 @@
+"use client";
+
+import { useTheme } from "next-themes";
 import { ReactNode, useEffect, useState } from "react";
 
 function DarkModeSwitch() {
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-  const [rendered, setRendered] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    setRendered(true);
-  }, [])
+  if (!mounted) return null;
 
-  if(!rendered) {
-    return null;
-  }
-
-  const translate = (() => {
-    try {
-      // @ts-ignore
-      return localStorage.getItem('dark_mode') === 'true' ? "translate-x-4" : ""
-    } catch (e) { 
-      console.log({e})
-      return "";
-    }
-  })()
-  
+  const translate = theme === "dark" ? "translate-x-4" : "";
 
   return (
-    <div className="flex items-baseline pt-[5px] space-x-3">
-      <label
-        for="dark-mode-toggle"
-        class="relative inline-flex items-center cursor-pointer"
-      >
-        <input id="dark-mode-toggle" type="checkbox" className="sr-only" />
+    <button
+      onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+    >
+      <div className="flex items-baseline pt-[5px] space-x-3">
         <div
           id="switch-bg"
           className="relative w-8 h-4 bg-(--color-primary-500) rounded-full transition-colors duration-200"
@@ -39,8 +27,8 @@ function DarkModeSwitch() {
             className={`absolute top-0.5 left-0.5 w-3 h-3 bg-(--color-text) rounded-full transition-transform duration-200 ${translate}`}
           ></div>
         </div>
-      </label>
-    </div>
+      </div>
+    </button>
   );
 }
 

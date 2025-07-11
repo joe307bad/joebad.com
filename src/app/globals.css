@@ -18,7 +18,7 @@
   }
 
   /* Dark theme */
-  #dark-mode-toggle:checked ~ * {
+  .dark {
     --color-bg: #111827;
     --color-surface: #1f2937;
     --color-text: #f9fafb;
