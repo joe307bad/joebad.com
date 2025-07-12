@@ -1,6 +1,16 @@
 import { Main } from "../components/Main";
 import RecentActivity from "../components/RecentActivity";
 import { SectionHeading } from "../components/SectionHeading";
+import { XMLParser } from 'fast-xml-parser';
+
+interface ActivityData {
+  contentType: string;
+  pubDate: string;
+  title?: string;
+  link: string;
+  description?: string;
+  relativeDate?: string;
+}
 
 interface ProjectItemProps {
   title: string;
@@ -37,13 +47,41 @@ function ProjectLink({ href, children }: ProjectLinkProps) {
   );
 }
 
-interface IndexProps {
-  rssData?: {
-    items: any[];
-  };
+// Fetch RSS data
+async function getRSSData(): Promise<ActivityData[]> {
+  try {
+    const response = await fetch('https://rss.joebad.com');
+    const xmlText = await response.text();
+    
+    const parser = new XMLParser();
+    const xmlDoc = parser.parse(xmlText);
+    
+    // RSS structure: rss.channel.item or rss.channel.item[]
+    const items = xmlDoc.rss?.channel?.item || [];
+    const itemsArray = Array.isArray(items) ? items : [items];
+    
+    const rss: ActivityData[] = itemsArray.map((item: any) => ({
+      id: item.guid || item.link || '',
+      contentType: item.contentType,
+      title: item.title || '',
+      description: item.description || '',
+      link: item.link || '',
+      pubDate: item.pubDate || '',
+      // Add other fields as needed
+    }));
+    
+    // Sort by most recent first
+    rss.sort((a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime());
+    
+    return rss;
+  } catch (error) {
+    console.error('Failed to fetch RSS data:', error);
+    return [];
+  }
 }
 
-export default function Index(props: IndexProps) {
+export default async function Index() {
+  const rss = await getRSSData();
   const projects = [
     {
       title: "cards",
@@ -80,14 +118,11 @@ export default function Index(props: IndexProps) {
   return (
     <Main activePage="index">
       <SectionHeading>intro</SectionHeading>
-
       <p className="font-mono">
         I am a senior software development engineer specializing in web application
         performance, distributed systems, and user interface design.
       </p>
-
       <SectionHeading>projects</SectionHeading>
-
       <ul className="font-mono flex flex-col gap-6 md:gap-4">
         {projects.map((project) => (
           <ProjectItem
@@ -104,10 +139,8 @@ export default function Index(props: IndexProps) {
           </ProjectItem>
         ))}
       </ul>
-
       <SectionHeading color="accent">feed</SectionHeading>
-
-      <RecentActivity items={props.rssData?.items ?? []} />
+      <RecentActivity items={rss} />
     </Main>
   );
 }

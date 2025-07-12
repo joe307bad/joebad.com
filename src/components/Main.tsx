@@ -46,7 +46,7 @@ export function Main(props: { children: ReactNode; activePage: string }) {
   })();
 
   return (
-    <div className="gap-4 w-full md:max-w-3xl flex flex-col">
+    <div className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
       <div className=" gap-4 flex flex-col">
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
           Welcome, my name is Joe Badaczewski

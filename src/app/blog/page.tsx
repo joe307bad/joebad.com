@@ -4,17 +4,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import "../page.css";
+import { format } from "date-fns";
 
-type Post = {
-  title?: string;
-  date?: string;
-  author?: string;
-  tags?: string[];
-  description?: string;
-  slug?: string;
-};
-
-async function getPosts() {
+async function getPosts(): Promise<Post[]> {
   const contentDir = path.join(process.cwd(), "src/content/post");
   const files = fs.readdirSync(contentDir);
 
@@ -50,7 +42,7 @@ export default async function BlogPage() {
                 </p>
               </div>{" "}
               <div className="whitespace-nowrap">
-                <p>{post.date}</p>
+                <p>{format(post.publishedAt ?? 0, "yyyy-MM-dd")}</p>
               </div>{" "}
               <div className="truncate">
                 <a href={`/post/${post.slug}`}>{post.title}</a>

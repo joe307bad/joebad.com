@@ -51,15 +51,6 @@ function ActivityItem(props: ActivityItemProps) {
   );
 }
 
-interface ActivityData {
-  contentType: string;
-  pubDate: string;
-  title?: string;
-  link: string;
-  description?: string;
-  relativeDate?: string;
-}
-
 interface RecentActivityProps {
   items?: ActivityData[];
 }
