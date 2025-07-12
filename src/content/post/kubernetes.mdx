@@ -9,9 +9,9 @@ tags:
 ---
 
 I started exploring the basics of provisioning and manipulating a Kubernetes cluster. At first I began the course [Kubernetes the hard way on Azure](https://github.com/ivanfioravanti/kubernetes-the-hard-way-on-azure). This was really useful to get my hands dirty by provisioning a Kubernetes cluster on Azure by creating every resource manually. Upon completing this tutorial, I now have a good grasp on the inner workings of Kubernetes, networking strategies with Azure's Virtual Networks and Netwok Security Groups, and bootstrapping a Kubernetes control plane for high availability (all behind a publicly available load balancer).
-<br />
+
 After I had all of these resources provisioned, Azure made it easy to nuke everything by deleting the resource group. No suprise costs!
-<br />
+
 The goal for this learning path is to become a more knowlegable engineer regarding highly available applications using Kubernetes. So even though Azure (and general cloud) knowledge is invaluable, I want to create a customer focused application to run in my new Kubernetes cluster. From here, I began research on how I can accelarate my development flow with Kubernetes. A quick question to ChatGPT on my options revealed `minikube`. I've heard of `minikube` many times before and I gave it a shot.
-<br />
+
 It was a cinch to get `minikube` running locally. Now I have a local Kubernetes dashboard where I can schedule deployments and inspect my nodes, pods and control plane in a secure, local environment. In later future notes I will cover my exploration of `minikube` in the context of building a functional, production ready application, deploying that application to an Azure Kubernetes cluster, and the best practices for iterating on a product focused on high availability and redundancy.
