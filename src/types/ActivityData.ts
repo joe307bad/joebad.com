@@ -1,4 +1,4 @@
-interface ActivityData {
+export interface ActivityData {
   contentType: string;
   pubDate: string;
   title?: string;

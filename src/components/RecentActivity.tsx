@@ -1,5 +1,6 @@
 "use client";
  
+import { ActivityData } from "@/types/ActivityData";
 import { ReactNode, useEffect, useState } from "react";
 
 interface ActivityItemProps {

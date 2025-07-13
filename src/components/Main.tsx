@@ -1,23 +1,29 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { ReactNode, useEffect, useState } from "react";
 
 function DarkModeSwitch() {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, systemTheme } = useTheme();
+  
+  const currentTheme = theme === 'system' ? systemTheme : theme
+  
+  const isDark = currentTheme === 'dark'
 
   useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
 
-  const translate = theme === "dark" ? "translate-x-4" : "";
+  const translate = isDark ? "translate-x-4" : "";
 
   return (
-    <button
-      onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
-    >
-      <div className="flex items-baseline pt-[5px] space-x-3">
+    <div className="flex items-baseline pt-[5px] space-x-3">
+      <button
+        onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
+      >
         <div
           id="switch-bg"
           className="relative w-8 h-4 bg-(--color-primary-500) rounded-full transition-colors duration-200"
@@ -27,8 +33,8 @@ function DarkModeSwitch() {
             className={`absolute top-0.5 left-0.5 w-3 h-3 bg-(--color-text) rounded-full transition-transform duration-200 ${translate}`}
           ></div>
         </div>
-      </div>
-    </button>
+      </button>
+    </div>
   );
 }
 
@@ -48,37 +54,40 @@ export function Main(props: { children: ReactNode; activePage: string }) {
   return (
     <div className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
       <div className=" gap-4 flex flex-col">
-        <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 text-xl">
+        <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-xl">
           Welcome, my name is Joe Badaczewski
         </h1>
-        <div className="flex gap-4">
-          <nav className="font-mono font-bold italic text-md gap-4 flex">
+        <div className="flex gap-4 max-w-[100%] overflow-y-scroll">
+          <nav className="font-mono font-bold italic text-sm md:text-lg gap-4 flex">
             <div className="flex flex-col items-center">
-              <a href="/" className="border-b-2 border-(--color-secondary-500)">
+              <Link
+                href="/"
+                className="border-b-2 border-(--color-secondary-500)"
+              >
                 home
-              </a>
+              </Link>
               <div className="text-(--color-primary-500)">
                 {isHome ? "•" : ""}
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <a
+              <Link
                 href="/cv"
                 className="border-b-2 border-(--color-secondary-500)"
               >
                 cv
-              </a>
+              </Link>
               <div className="text-(--color-primary-500)">
                 {isCv ? "•" : ""}
               </div>
             </div>
             <div className="flex flex-col items-center">
-              <a
+              <Link
                 href="/blog"
                 className="border-b-2 border-(--color-secondary-500)"
               >
                 blog
-              </a>
+              </Link>
               <div className="text-(--color-primary-500)">
                 {isBlog ? "•" : ""}
               </div>
@@ -86,27 +95,33 @@ export function Main(props: { children: ReactNode; activePage: string }) {
             <div className="flex flex-col items-center">
               <a
                 href="https://x.com/joe307bad"
-                className="border-b-2 border-(--color-secondary-500)"
+                className="border-b-2 border-(--color-secondary-500) flex gap-2 items-center"
+                target="_blank"
               >
                 x
+                <ArrowUpRight className="h-4 w-4" />
               </a>
               <div></div>
             </div>
             <div className="flex flex-col items-center">
               <a
                 href="https://github.com/joe307bad"
-                className="border-b-2 border-(--color-secondary-500)"
+                className="border-b-2 border-(--color-secondary-500) flex gap-2 items-center"
+                target="_blank"
               >
                 github
+                <ArrowUpRight className="h-4 w-4" />
               </a>
               <div></div>
             </div>
             <div className="flex flex-col items-center">
               <a
                 href="https://linkedin.com/in/joebad"
-                className="border-b-2 border-(--color-secondary-500)"
+                className="border-b-2 border-(--color-secondary-500) flex gap-2 items-center"
+                target="_blank"
               >
                 linkedin
+                <ArrowUpRight className="h-4 w-4" />
               </a>
               <div></div>
             </div>

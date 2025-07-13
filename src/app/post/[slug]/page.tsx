@@ -8,8 +8,7 @@ import { format } from "date-fns";
 import { Main } from "@/components/Main";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
-import "../../../page.css";
-import Head from "next/head";
+import "../../page.css";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -57,46 +56,93 @@ async function getPostBySlug(slug: string) {
   return null;
 }
 
+export async function generateMetadata({ params: p }: { params: Promise<Record<string, string>> }) {
+  const params = await p;
+  const post = await getPostBySlug(params.slug).then(p => p?.frontmatter);
 
-export async function generateMetadata({ params }: { params: any }) {
-  const post = await getPostBySlug((await params).slug);
-  const seo = post?.frontmatter ?? {};
-  const canonicalUrl = `https://joebad.com.com/post/${params.slug}`; // or however you construct your URL
+  if (!post) {
+    return {
+      title: "Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: seo.title,
-    description: seo.description,
-    author: {
-      "@type": "Person",
-      name: "Joe Badaczewski",
-    },
-    datePublished: seo.publishedAt,
-    ...(seo.modifiedDate && { dateModified: seo.modifiedDate }),
-    url: canonicalUrl,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": canonicalUrl,
-    },
-    ...(seo.imageUrl && {
-      image: {
-        "@type": "ImageObject",
-        url: seo.imageUrl,
-        ...(seo.imageAlt && { caption: seo.imageAlt }),
-      },
-    }),
-  };
+  const baseUrl = "https://joebad.com";
+  const postUrl = `${baseUrl}/post/${params.slug}`;
+  // const imageUrl = post.featuredImage
+  //   ? `${baseUrl}${post.featuredImage}`
+  //   : `${baseUrl}/default-og-image.jpg`;
 
   return {
-    title: seo.title,
-    description: seo.description,
+    // Basic metadata
+    title: `${post.title}`,
+    description: post.excerpt || post.description,
+    keywords: post.tags?.join(", "),
+    authors: [{ name: "Joe Badaczewski" }],
+    creator: "Joe Badaczewski",
+    publisher: "Your Site Name",
+
+    // Canonical URL
+    alternates: {
+      canonical: postUrl,
+    },
+
+    // Open Graph
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt || post.description,
+      url: postUrl,
+      siteName: "https://joebad.com",
+      images: [
+        {
+          // url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      locale: "en_US",
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt,
+      authors: ["Joe Badaczewski"],
+      section: post.category,
+      tags: post.tags,
+    },
+
+    // Twitter Card
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt || post.description,
+      // images: [imageUrl],
+      creator: "@joe307bad",
+      site: "@yoursite", // Your site's Twitter handle
+    },
+
+    // Additional SEO
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
+    },
+
+    // Schema.org structured data
     other: {
-      "script:ld+json": JSON.stringify(jsonLd),
+      "article:published_time": post.publishedAt,
+      "article:modified_time": post.updatedAt,
+      "article:author": "Joe Badaczewski",
+      "article:section": post.category,
+      "article:tag": post.tags?.join(","),
     },
   };
 }
-
 
 // Page component
 export default async function PostPage({
@@ -105,8 +151,6 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const post = await getPostBySlug((await params).slug);
-  const title = `${post?.frontmatter.title} - Joe Badaczewski`;
-  const canonicalUrl = `https://joebad.com/post/${post.slug}`;
 
   if (!post) {
     notFound();
@@ -114,46 +158,6 @@ export default async function PostPage({
 
   return (
     <>
-      <Head>
-        <head>
-          <meta charSet="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-          <title>{title}</title>
-          <meta name="description" content={post.frontmatter.subTitle} />
-          <meta name="author" content="Joe Badaczewski" />
-
-          <link rel="canonical" href={canonicalUrl} />
-
-          <meta
-            property="article:published_time"
-            content="${seo.publishedAt}"
-          />
-          <meta property="article:author" content="Joe Badaczewski" />
-
-          <meta property="og:type" content="article" />
-          <meta property="og:title" content={canonicalUrl} />
-          <meta property="og:description" content={post.frontmatter.subTitle} />
-          <meta property="og:url" content={canonicalUrl} />
-          <meta
-            property="og:site_name"
-            content="Joe Badaczewski - Senior Software Engineer"
-          />
-          <meta property="og:locale" content="en_US" />
-
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={title} />
-          <meta
-            name="twitter:description"
-            content={post.frontmatter.subTitle}
-          />
-          <meta name="twitter:creator" content="@joe307bad" />
-        </head>
-      </Head>
       <Main activePage={post.slug}>
         <article>
           <div className="pb-20 flex gap-4 flex-col">
