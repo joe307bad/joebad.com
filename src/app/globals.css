@@ -1,0 +1,43 @@
+/* @tw safelist: translate-x-4 */
+@import "tailwindcss";
+
+/* Define custom colors using CSS custom properties (Tailwind v4 approach) */
+@layer theme {
+  :root {
+    /* Light theme */
+    --color-bg: #ffecd1;
+    --color-bg-dark: #111827;
+    --color-surface: #ffffff;
+    --color-text: #1f2937;
+    --color-text-secondary: #6b7280;
+    --color-primary-500: #ed2e07;
+    --color-secondary-500: #f95738;
+    --color-accent-500: #f95738;
+    --color-border: #e5e7eb;
+    --font-size-heading: theme(fontSize.lg);
+  }
+
+  /* Dark theme */
+  .dark {
+    --color-bg: #111827;
+    --color-surface: #1f2937;
+    --color-text: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-primary-500: #f87171;
+    --color-secondary-500: #fca5a5;
+    --color-accent-500: #fca5a5;
+    --color-border: #374151;
+  }
+
+  p, li, h1, h2, h3 {
+    color: var(--color-text);
+  }
+}
+
+@layer base {
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+}
