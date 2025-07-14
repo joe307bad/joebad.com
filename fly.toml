@@ -15,7 +15,7 @@ app = "joebadcom"
   timeout = "5s"
   grace_period = "5s"
   method = "GET"
-  path = "/health"
+  path = "/api/health"
 
 [[vm]]
   cpu_kind = "shared"
