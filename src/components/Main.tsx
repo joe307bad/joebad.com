@@ -60,7 +60,7 @@ export function Main(props: { children: ReactNode; activePage: string; isPage?: 
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-xl">
           Welcome, my name is Joe Badaczewski
         </h1>
-        <div className="flex gap-4 max-w-[100%] overflow-y-scroll">
+        <div className="flex gap-4 max-w-[100%] overflow-y-auto">
           <nav className="font-mono font-bold italic text-sm md:text-lg gap-4 flex">
             <div className="flex flex-col items-center">
               <Link
