@@ -46,20 +46,9 @@ app = "joebadcom"
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
-
+    
   [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
-
-  [[services.http_checks]]
-    interval = "10s"
-    grace_period = "5s"
-    method = "get"
-    path = "/"
-    protocol = "http"
-    restart_limit = 0
-    timeout = "2s"
-    tls_skip_verify = false
-    headers = {}
+    grace_period = "10s"
+    interval = "30s"
+    restart_limit = 3
+    timeout = "5s"
