@@ -105,7 +105,6 @@ function ProjectLink({ href, children }: ProjectLinkProps) {
   );
 }
 
-// Fetch RSS data
 async function getRSSData(): Promise<ActivityData[]> {
   try {
     const response = await fetch("https://rss.joebad.com");
@@ -114,7 +113,6 @@ async function getRSSData(): Promise<ActivityData[]> {
     const parser = new XMLParser();
     const xmlDoc = parser.parse(xmlText);
 
-    // RSS structure: rss.channel.item or rss.channel.item[]
     const items = xmlDoc.rss?.channel?.item || [];
     const itemsArray = Array.isArray(items) ? items : [items];
 
@@ -125,10 +123,8 @@ async function getRSSData(): Promise<ActivityData[]> {
       description: item.description || "",
       link: item.link || "",
       pubDate: item.pubDate || "",
-      // Add other fields as needed
     }));
 
-    // Sort by most recent first
     rss.sort(
       (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
     );
