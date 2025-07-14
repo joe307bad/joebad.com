@@ -20,8 +20,9 @@ function DarkModeSwitch() {
   const translate = isDark ? "translate-x-4" : "";
 
   return (
-    <div className="flex items-baseline pt-[5px] space-x-3">
+    <div className="flex items-baseline pt-[5px] space-x-3 absolute right-[10px] top-[6px] md:relative md:right-auto md:top-auto">
       <button
+        aria-label="Theme selector"
         onClick={() => setTheme((prev) => (prev === "dark" ? "light" : "dark"))}
       >
         <div
@@ -38,7 +39,7 @@ function DarkModeSwitch() {
   );
 }
 
-export function Main(props: { children: ReactNode; activePage: string }) {
+export function Main(props: { children: ReactNode; activePage: string; isPage?: boolean }) {
   const [isHome, isCv, isBlog] = (() => {
     if (props.activePage === "index") {
       return [true, false, false];
@@ -51,8 +52,10 @@ export function Main(props: { children: ReactNode; activePage: string }) {
     return [false, false, true];
   })();
 
+  const id = props.isPage ? "page" : "";
+
   return (
-    <div className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
+    <div id={id} className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
       <div className=" gap-4 flex flex-col">
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-xl">
           Welcome, my name is Joe Badaczewski

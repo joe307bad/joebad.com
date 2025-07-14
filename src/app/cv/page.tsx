@@ -75,7 +75,7 @@ export default async function CVPage() {
   const { content } = matter(fileContent);
 
   return (
-    <Main activePage="cv">
+    <Main isPage activePage="cv">
       <MDXRemote source={content} components={{ SectionHeading }} />
     </Main>
   );

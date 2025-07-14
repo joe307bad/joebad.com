@@ -158,7 +158,7 @@ export default async function PostPage({
 
   return (
     <>
-      <Main activePage={post.slug}>
+      <Main isPage activePage={post.slug}>
         <article>
           <div className="pb-20 flex gap-4 flex-col">
             <SectionHeading>post</SectionHeading>

@@ -91,7 +91,7 @@ export default async function BlogPage() {
   const posts: Post[] = await getPosts();
 
   return (
-    <Main activePage="blog">
+    <Main isPage activePage="blog">
       <SectionHeading>posts</SectionHeading>
       <div className="flex flex-col">
         <div>
