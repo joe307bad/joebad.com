@@ -51,13 +51,14 @@ RUN chown nextjs:nodejs .next
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+# Only copy static assets, not ISR cache
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # If standalone mode is not working, copy the full .next directory
 # COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 # COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
-# Create cache directory for ISR
+# Create cache directory for ISR (but don't pre-populate it)
 RUN mkdir -p .next/cache
 RUN chown -R nextjs:nodejs .next/cache
 

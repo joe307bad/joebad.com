@@ -1,0 +1,10 @@
+node_modules
+.next/cache
+.env*.local
+*.log
+.git
+.gitignore
+README.md
+.DS_Store
+coverage
+.nyc_output
