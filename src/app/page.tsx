@@ -150,18 +150,19 @@ export default async function Index() {
       ],
     },
     {
+      title: "fastbreak",
+      description: "daily pro sports pick-em and trivia",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/fastbreak" },
+        { label: "alpha", href: "https://github.com/joe307bad/fastbreak/releases" },
+      ],
+    },
+    {
       title: "void",
       description: "a simple, intergalactic strategy game",
       links: [
         { label: "source", href: "https://github.com/joe307bad/end" },
         { label: "site", href: "https://void.joebad.com" },
-      ],
-    },
-    {
-      title: "fastbreak",
-      description: "daily pro sports pick-em and trivia",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/fastbreak" },
       ],
     },
     {
