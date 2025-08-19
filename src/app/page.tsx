@@ -151,7 +151,7 @@ export default async function Index() {
     },
     {
       title: "fastbreak",
-      description: "daily pro sports pick-em and trivia",
+      description: "daily sports analytics",
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" },
         { label: "alpha", href: "https://github.com/joe307bad/fastbreak/releases" },
