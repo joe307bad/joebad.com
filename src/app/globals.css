@@ -34,7 +34,76 @@
   }
 }
 
+@keyframes colorShiftLight {
+  0% { background-color: #ff0000; }
+  5% { background-color: #ff4500; }
+  10% { background-color: #ff6b00; }
+  15% { background-color: #ff8c00; }
+  20% { background-color: #ffa500; }
+  25% { background-color: #ffb347; }
+  30% { background-color: #ffc649; }
+  35% { background-color: #ffd700; }
+  40% { background-color: #ffdf4d; }
+  45% { background-color: #ffe066; }
+  50% { background-color: #ffeb99; }
+  55% { background-color: #ffe066; }
+  60% { background-color: #ffdf4d; }
+  65% { background-color: #ffd700; }
+  70% { background-color: #ffc649; }
+  75% { background-color: #ffb347; }
+  80% { background-color: #ffa500; }
+  85% { background-color: #ff8c00; }
+  90% { background-color: #ff6b00; }
+  95% { background-color: #ff4500; }
+  100% { background-color: #ff0000; }
+}
+
+@keyframes colorShiftDark {
+  0% { background-color: #4f46e5; }
+  5% { background-color: #6366f1; }
+  10% { background-color: #7c3aed; }
+  15% { background-color: #8b5cf6; }
+  20% { background-color: #a855f7; }
+  25% { background-color: #c084fc; }
+  30% { background-color: #d8b4fe; }
+  35% { background-color: #e879f9; }
+  40% { background-color: #f0abfc; }
+  45% { background-color: #f5d0fe; }
+  50% { background-color: #fae8ff; }
+  55% { background-color: #f5d0fe; }
+  60% { background-color: #f0abfc; }
+  65% { background-color: #e879f9; }
+  70% { background-color: #d8b4fe; }
+  75% { background-color: #c084fc; }
+  80% { background-color: #a855f7; }
+  85% { background-color: #8b5cf6; }
+  90% { background-color: #7c3aed; }
+  95% { background-color: #6366f1; }
+  100% { background-color: #4f46e5; }
+}
+
 @layer base {
+  body {
+    position: relative;
+  }
+  
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #ff0000;
+    animation: colorShiftLight 15s ease-in-out infinite;
+    z-index: 1000;
+  }
+
+  .dark body::before {
+    background-color: #4f46e5;
+    animation: colorShiftDark 15s ease-in-out infinite;
+  }
+
   a {
     color: var(--color-text);
     text-decoration: none;
