@@ -1,13 +1,19 @@
 ---
 title: Introducing Elo+ for MLB
 category: analytics
-publishedAt: 2025-08-23
+publishedAt: 2025-08-25
 subTitle: A crude resurrection of the fabled FiveThirtyEight Elo ratings that has been augmented with ML.NET
 tags:
   - machine learning
 ---
 
 ## Top Elo+ Ratings
+
+These ratings were generated based on team, pitching, and batting statistics gathered from baseball-reference.com and FanGraphs. 
+
+This system runs the Elo rating formula across 100 games from 2024, then uses that data to train a machine learning model. The model looks at who actually won each game and compares it to what the Elo ratings predicted. When there's an upset - where a team with better pitching, batting, and overall record still loses - the ML model learns from this and adjusts how it calculates future Elo ratings to better account for these kinds of surprises.
+
+**The Elo+ model achieved a 2% improvement in predictive accuracy over standard Elo ratings using an 80/20 train-test split validation methodology.**
 
 | Rank | Team | Standard Elo | Elo+ | Adjustment | ML Confidence |
 |------|------|--------------|------|------------|---------------|
@@ -108,8 +114,7 @@ tags:
 
 ## Machine Learning Analysis
 
-### Feature Engineering
-
+## Feature Engineering
 
 Feature Statistics:
 - Games: 100
@@ -118,7 +123,7 @@ Feature Statistics:
 - Avg OPS diff: 0.008
 
 
-### Model Training Results
+## Model Training Results
 
 
 | Metric | Value |
@@ -131,7 +136,7 @@ Feature Statistics:
 | Log Loss | 0.858 |
 
 
-### Statistics
+## Statistics
 
 Elo+ Statistics:
 - Avg Standard Elo: 1600.0

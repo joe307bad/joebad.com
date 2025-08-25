@@ -20,9 +20,11 @@ async function getPosts(): Promise<Post[]> {
 
       return {
         slug: file.replace(".mdx", ""),
+        publishedAt: frontMatter.publishedAt,
         ...frontMatter,
       };
-    });
+    })
+    .sort((a, b) => b.publishedAt - a.publishedAt);
 
   return posts;
 }

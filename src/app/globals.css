@@ -113,12 +113,15 @@
   /* Table styling for MDX content */
   table {
     width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    overflow: hidden;
+
+    tbody {
+      border-collapse: collapse;
+      margin: 1rem 0;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
   }
 
   th, td {
