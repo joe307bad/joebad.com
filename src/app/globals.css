@@ -109,4 +109,49 @@
     text-decoration: none;
     transition: color 0.2s ease;
   }
+
+  /* Table styling for MDX content */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+  }
+
+  th {
+    background-color: var(--color-bg);
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:nth-child(even) {
+    background-color: color-mix(in srgb, var(--color-bg) 30%, transparent);
+  }
+
+  /* Dark theme table adjustments */
+  .dark table {
+    border-color: var(--color-border);
+  }
+
+  .dark th {
+    background-color: var(--color-surface);
+  }
+
+  .dark tr:nth-child(even) {
+    background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
+  }
 }

@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { Main } from "@/components/Main";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
+import remarkGfm from "remark-gfm";
 import "../../page.css";
 
 // Generate static params for all MDX files
@@ -42,7 +43,7 @@ async function getPostBySlug(slug: string) {
 
     if (postSlug === slug) {
       // Process markdown content with remark
-      const processedContent = await remark().use(remarkHtml).process(content);
+      const processedContent = await remark().use(remarkGfm).use(remarkHtml).process(content);
 
       return {
         frontmatter: data,
