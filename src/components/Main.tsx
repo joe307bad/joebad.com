@@ -8,10 +8,10 @@ import { ReactNode, useEffect, useState } from "react";
 function DarkModeSwitch() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme, systemTheme } = useTheme();
-  
-  const currentTheme = theme === 'system' ? systemTheme : theme
-  
-  const isDark = currentTheme === 'dark'
+
+  const currentTheme = theme === "system" ? systemTheme : theme;
+
+  const isDark = currentTheme === "dark";
 
   useEffect(() => setMounted(true), []);
 
@@ -39,7 +39,17 @@ function DarkModeSwitch() {
   );
 }
 
-export function Main(props: { children: ReactNode; activePage: string; isPage?: boolean }) {
+export function Main(props: {
+  title?: string;
+  children: ReactNode;
+  activePage: string;
+  isPage?: boolean;
+}) {
+  const title =
+    !props.title || props.title?.trim() === ""
+      ? "Welcome, my name is Joe Badaczewski"
+      : props.title;
+
   const [isHome, isCv, isBlog] = (() => {
     if (props.activePage === "index") {
       return [true, false, false];
@@ -58,7 +68,7 @@ export function Main(props: { children: ReactNode; activePage: string; isPage?: 
     <div id={id} className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
       <div className=" gap-4 flex flex-col">
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-xl">
-          Welcome, my name is Joe Badaczewski
+          {title}
         </h1>
         <div className="flex gap-4 max-w-[100%] overflow-y-auto">
           <nav className="font-mono font-bold italic text-sm md:text-lg gap-4 flex">

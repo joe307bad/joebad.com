@@ -31,7 +31,7 @@ async function getPosts(): Promise<Post[]> {
 
 export const metadata = {
   // Basic metadata
-  title: "Joe's digital journal",
+  title: "Applied software research by Joe Badaczewski",
   description:
     "Explore my digital journal where I write about building software",
   keywords: "Joe Badaczewski blog, digital journal, software engineering blog",
@@ -44,7 +44,7 @@ export const metadata = {
   // Open Graph
   openGraph: {
     type: "website",
-    title: "Joe's digital journal",
+    title: "Applied software research by Joe Badaczewski",
     description:
       "Explore my digital journal where I write about building software",
     url: "https://joebad.com/blog",
@@ -63,7 +63,7 @@ export const metadata = {
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Joe's digital journal",
+    title: "Applied software research by Joe Badaczewski",
     description:
       "Explore my digital journal where I write about building software",
     // images: ["https://joebad.com/blog-og-image.jpg"],
@@ -93,8 +93,9 @@ export default async function BlogPage() {
   const posts: Post[] = await getPosts();
 
   return (
-    <Main isPage activePage="blog">
+    <Main title="Welcome, my name is Joe Badaczewski" isPage activePage="blog">
       <SectionHeading>posts</SectionHeading>
+      <h2>Applied software research, a blog by Joe Badaczewski</h2>
       <div className="flex flex-col">
         <div>
           {posts.map((post, i) => (

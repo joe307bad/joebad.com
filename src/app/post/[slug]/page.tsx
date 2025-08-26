@@ -159,7 +159,7 @@ export default async function PostPage({
 
   return (
     <>
-      <Main isPage activePage={post.slug}>
+      <Main title="Applied software research, a blog by Joe Badaczewski" isPage activePage={post.slug}>
         <article>
           <div className="pb-20 flex gap-4 flex-col">
             <SectionHeading>post</SectionHeading>
