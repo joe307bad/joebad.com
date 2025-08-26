@@ -7,122 +7,123 @@ tags:
   - machine learning
 ---
 
-## Final Elo+ Ratings
+## Overview
 
-The application of Elo ratings to athletic competitions was pioneered by Nate Silver of FiveThirtyEight, beginning with [baseball in 2006](https://web.archive.org/web/20060822122806/http://baseballprospectus.com/article.php?articleid=5247) and expanding to [football in 2014](https://fivethirtyeight.com/features/introducing-nfl-elo-ratings/). This system draws inspiration from those foundational models, leveraging [baseballr](https://cran.r-project.org/package=baseballr) for comprehensive data collection and [ML.NET](https://dotnet.microsoft.com/en-us/apps/machinelearning-ai/ml-dotnet) for advanced machine learning capabilities.
+[Elo rating systems](https://en.wikipedia.org/wiki/Elo_rating_system) have found widespread application in competitive sports analytics. Nate Silver used Elo ratings for [baseball analysis in 2006](https://web.archive.org/web/20060822122806/http://baseballprospectus.com/article.php?articleid=5247) and later expanded the approach to [NFL predictions in 2014](https://fivethirtyeight.com/features/introducing-nfl-elo-ratings/). These systems have proven highly effective for quantifying team strength and performance trends. Building on this established foundation, the Elo+ rating system uses [baseballr](https://cran.r-project.org/package=baseballr) for data collection and [ML.NET](https://dotnet.microsoft.com/en-us/apps/machinelearning-ai/ml-dotnet) for advanced machine learning capabilities.
 
 The Elo+ ratings were generated based on wins, loses and advanced team, pitching, and batting statistics gathered from baseball-reference.com and FanGraphs. 
 
-This system runs the Elo rating formula across 700 games from the beginning of the 2024, then uses that data to train a machine learning model. The model looks at who actually won each game and compares it to what the Elo ratings predicted. When there's an upset - where a team with better pitching, batting, and overall record still loses - the ML model learns from this and adjusts how it calculates future Elo ratings to better account for these kinds of surprises.
+This system runs the Elo rating formula across 1,000 games from the beginning of the 2024, then uses that data to train a machine learning model. The model looks at who actually won each game and compares it to what the Elo ratings predicted. When there's an upset - where a team with better pitching, batting, and overall record still loses - the ML model learns from this and adjusts how it calculates future Elo ratings to better account for these kinds of surprises.
 
-**The Elo+ model achieved a 10.4% improvement in predictive accuracy over standard Elo ratings using an 80/20 train-test split validation methodology.**
+**The Elo+ model achieved a 13.3% improvement in predictive accuracy over standard Elo ratings using an [80/20 train-test split validation methodology](https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/prepare-data-ml-net#split-data-into-training--test-sets).**
+
+## Final Elo+ Ratings
 
 | Rank | Team | Elo+ | Standard Elo | Adjustment | ML Confidence |
 |------|------|------|--------------|------------|---------------|
-| 1 | New York Yankees | 1732.4 | 1726.5 | +5.9 | 69.5% |
-| 2 | Philadelphia Phillies | 1723.5 | 1723.5 | ±0.0 | 49.3% |
-| 3 | Baltimore Orioles | 1695.6 | 1695.6 | ±0.0 | 52.5% |
-| 4 | Los Angeles Dodgers | 1686.0 | 1686.0 | ±0.0 | 46.4% |
-| 5 | Cleveland Guardians | 1668.6 | 1664.3 | +4.3 | 64.4% |
-| 6 | Kansas City Royals | 1664.7 | 1659.0 | +5.7 | 69.0% |
-| 7 | Atlanta Braves | 1654.5 | 1658.2 | -3.7 | 62.4% |
-| 8 | Seattle Mariners | 1636.2 | 1636.2 | ±0.0 | 47.5% |
-| 9 | Milwaukee Brewers | 1626.3 | 1622.3 | +3.9 | 63.1% |
-| 10 | Houston Astros | 1623.0 | 1627.0 | -3.9 | 36.9% |
-| 11 | Tampa Bay Rays | 1615.6 | 1619.8 | -4.2 | 36.1% |
-| 12 | San Francisco Giants | 1609.5 | 1602.5 | +7.0 | 73.4% |
-| 13 | San Diego Padres | 1601.8 | 1598.1 | +3.7 | 37.6% |
-| 14 | Minnesota Twins | 1601.5 | 1605.9 | -4.3 | 35.6% |
-| 15 | Chicago Cubs | 1591.0 | 1591.0 | ±0.0 | 56.5% |
+| 1 | New York Yankees | 1761.4 | 1761.4 | ±0.0 | 45.1% |
+| 2 | Philadelphia Phillies | 1723.0 | 1723.0 | ±0.0 | 56.3% |
+| 3 | Baltimore Orioles | 1705.4 | 1705.4 | ±0.0 | 47.9% |
+| 4 | Cleveland Guardians | 1690.4 | 1690.4 | ±0.0 | 46.9% |
+| 5 | Seattle Mariners | 1662.0 | 1658.8 | +3.2 | 60.8% |
+| 6 | Los Angeles Dodgers | 1652.5 | 1652.5 | ±0.0 | 44.6% |
+| 7 | Kansas City Royals | 1640.0 | 1640.0 | ±0.0 | 54.9% |
+| 8 | Milwaukee Brewers | 1625.0 | 1625.0 | ±0.0 | 48.3% |
+| 9 | San Francisco Giants | 1613.9 | 1613.9 | ±0.0 | 54.3% |
+| 10 | Toronto Blue Jays | 1613.6 | 1613.6 | ±0.0 | 51.7% |
+| 11 | Minnesota Twins | 1611.4 | 1607.4 | +4.0 | 36.6% |
+| 12 | San Diego Padres | 1606.2 | 1606.2 | ±0.0 | 52.4% |
+| 13 | Pittsburgh Pirates | 1602.1 | 1606.2 | -4.1 | 63.6% |
+| 14 | St. Louis Cardinals | 1601.1 | 1597.0 | +4.1 | 36.4% |
+| 15 | Cincinnati Reds | 1599.7 | 1599.7 | ±0.0 | 53.1% |
 
 ## Elo+ Statistics
 
-Elo+ Statistics:
 - Avg Standard Elo: 1600.0
-- Avg Elo+: 1600.0
-- Avg ML Adjustment: -0.0
-- Max Adjustment: 7.2
-- Min Adjustment: -7.2
+- Avg Elo+: 1600.2
+- Avg ML Adjustment: 0.2
+- Max Adjustment: 6.0
+- Min Adjustment: -4.9
 - Teams with ML data: 30/30
 
 ## Final Elo Ratings
 
 | Rank | Team | Elo Rating |
 |------|------|------------|
-| 1 | New York Yankees | 1726.526 |
-| 2 | Philadelphia Phillies | 1723.546 |
-| 3 | Baltimore Orioles | 1695.596 |
-| 4 | Los Angeles Dodgers | 1686.003 |
-| 5 | Cleveland Guardians | 1664.272 |
-| 6 | Kansas City Royals | 1659.010 |
-| 7 | Atlanta Braves | 1658.222 |
-| 8 | Seattle Mariners | 1636.150 |
-| 9 | Houston Astros | 1626.963 |
-| 10 | Milwaukee Brewers | 1622.325 |
-| 11 | Tampa Bay Rays | 1619.819 |
-| 12 | Minnesota Twins | 1605.858 |
-| 13 | San Francisco Giants | 1602.475 |
-| 14 | San Diego Padres | 1598.053 |
-| 15 | Chicago Cubs | 1590.995 |
-| 16 | Boston Red Sox | 1583.298 |
-| 17 | Arizona Diamondbacks | 1582.962 |
-| 18 | Toronto Blue Jays | 1579.306 |
-| 19 | New York Mets | 1576.078 |
-| 20 | Texas Rangers | 1572.934 |
-| 21 | Detroit Tigers | 1571.722 |
-| 22 | Pittsburgh Pirates | 1560.109 |
-| 23 | Washington Nationals | 1553.631 |
-| 24 | St. Louis Cardinals | 1550.135 |
-| 25 | Los Angeles Angels | 1537.897 |
-| 26 | Miami Marlins | 1536.012 |
-| 27 | Chicago White Sox | 1532.079 |
-| 28 | Oakland Athletics | 1520.949 |
-| 29 | Colorado Rockies | 1515.306 |
-| 30 | Cincinnati Reds | 1511.768 |
+| 1 | New York Yankees | 1761.427 |
+| 2 | Philadelphia Phillies | 1722.999 |
+| 3 | Baltimore Orioles | 1705.420 |
+| 4 | Cleveland Guardians | 1690.377 |
+| 5 | Seattle Mariners | 1658.798 |
+| 6 | Los Angeles Dodgers | 1652.458 |
+| 7 | Kansas City Royals | 1639.996 |
+| 8 | Milwaukee Brewers | 1624.983 |
+| 9 | San Francisco Giants | 1613.867 |
+| 10 | Toronto Blue Jays | 1613.568 |
+| 11 | Minnesota Twins | 1607.367 |
+| 12 | Pittsburgh Pirates | 1606.229 |
+| 13 | San Diego Padres | 1606.175 |
+| 14 | Cincinnati Reds | 1599.705 |
+| 15 | St. Louis Cardinals | 1596.968 |
+| 16 | Washington Nationals | 1595.657 |
+| 17 | Houston Astros | 1595.058 |
+| 18 | Arizona Diamondbacks | 1588.355 |
+| 19 | Tampa Bay Rays | 1582.733 |
+| 20 | Boston Red Sox | 1573.222 |
+| 21 | Detroit Tigers | 1569.692 |
+| 22 | Texas Rangers | 1568.386 |
+| 23 | Atlanta Braves | 1565.402 |
+| 24 | New York Mets | 1560.121 |
+| 25 | Miami Marlins | 1547.642 |
+| 26 | Los Angeles Angels | 1543.627 |
+| 27 | Colorado Rockies | 1541.191 |
+| 28 | Chicago Cubs | 1527.678 |
+| 29 | Oakland Athletics | 1496.243 |
+| 30 | Chicago White Sox | 1444.657 |
 
 ## Elo Rating Statistics
 
 | Metric | Value |
 |--------|-------|
 | Average Rating | 1600.000 |
-| Highest Rating | 1726.526 |
-| Lowest Rating | 1511.768 |
-| Rating Spread | 214.758 points |
+| Highest Rating | 1761.427 |
+| Lowest Rating | 1444.657 |
+| Rating Spread | 316.770 points |
 
 ## Team Performance Summary
 
 | Team | Record | Win % | Elo Rating |
 |------|--------|-------|------------|
-| Philadelphia Phillies | 34-14 | 0.708 | 1723.546 |
-| New York Yankees | 33-15 | 0.688 | 1726.526 |
-| Los Angeles Dodgers | 31-16 | 0.660 | 1686.003 |
-| Baltimore Orioles | 29-15 | 0.659 | 1695.596 |
-| Cleveland Guardians | 30-17 | 0.638 | 1664.272 |
-| Atlanta Braves | 26-15 | 0.634 | 1658.222 |
-| Kansas City Royals | 29-19 | 0.604 | 1659.010 |
-| Milwaukee Brewers | 27-19 | 0.587 | 1622.325 |
-| Chicago Cubs | 26-22 | 0.542 | 1590.995 |
-| Seattle Mariners | 25-22 | 0.532 | 1636.150 |
-| Minnesota Twins | 24-22 | 0.522 | 1605.858 |
-| Tampa Bay Rays | 25-23 | 0.521 | 1619.819 |
-| Detroit Tigers | 23-23 | 0.500 | 1571.722 |
-| Texas Rangers | 24-24 | 0.500 | 1572.934 |
-| Boston Red Sox | 23-24 | 0.489 | 1583.298 |
-| San Diego Padres | 22-23 | 0.489 | 1598.053 |
-| San Francisco Giants | 23-25 | 0.479 | 1602.475 |
-| Arizona Diamondbacks | 22-25 | 0.468 | 1582.962 |
-| Pittsburgh Pirates | 22-26 | 0.458 | 1560.109 |
-| New York Mets | 21-25 | 0.457 | 1576.078 |
-| Houston Astros | 21-26 | 0.447 | 1626.963 |
-| Washington Nationals | 20-25 | 0.444 | 1553.631 |
-| Toronto Blue Jays | 20-25 | 0.444 | 1579.306 |
-| St. Louis Cardinals | 20-26 | 0.435 | 1550.135 |
-| Cincinnati Reds | 19-28 | 0.404 | 1511.768 |
-| Oakland Athletics | 19-30 | 0.388 | 1520.949 |
-| Los Angeles Angels | 18-29 | 0.383 | 1537.897 |
-| Colorado Rockies | 15-31 | 0.326 | 1515.306 |
-| Miami Marlins | 15-33 | 0.312 | 1536.012 |
-| Chicago White Sox | 14-33 | 0.298 | 1532.079 |
+| Philadelphia Phillies | 46-20 | 0.697 | 1722.999 |
+| New York Yankees | 48-21 | 0.696 | 1761.427 |
+| Cleveland Guardians | 43-22 | 0.662 | 1690.377 |
+| Baltimore Orioles | 44-23 | 0.657 | 1705.420 |
+| Los Angeles Dodgers | 40-25 | 0.615 | 1652.458 |
+| Milwaukee Brewers | 39-28 | 0.582 | 1624.983 |
+| Kansas City Royals | 39-29 | 0.574 | 1639.996 |
+| Seattle Mariners | 38-30 | 0.559 | 1658.798 |
+| Atlanta Braves | 35-29 | 0.547 | 1565.402 |
+| Minnesota Twins | 35-32 | 0.522 | 1607.367 |
+| San Diego Padres | 35-34 | 0.507 | 1606.175 |
+| San Francisco Giants | 33-34 | 0.493 | 1613.867 |
+| Toronto Blue Jays | 33-34 | 0.493 | 1613.568 |
+| Boston Red Sox | 33-34 | 0.493 | 1573.222 |
+| St. Louis Cardinals | 32-34 | 0.485 | 1596.968 |
+| Detroit Tigers | 32-34 | 0.485 | 1569.692 |
+| Pittsburgh Pirates | 32-34 | 0.485 | 1606.229 |
+| Cincinnati Reds | 32-35 | 0.478 | 1599.705 |
+| Tampa Bay Rays | 32-35 | 0.478 | 1582.733 |
+| Chicago Cubs | 32-35 | 0.478 | 1527.678 |
+| Arizona Diamondbacks | 32-35 | 0.478 | 1588.355 |
+| Texas Rangers | 31-34 | 0.477 | 1568.386 |
+| Washington Nationals | 31-35 | 0.470 | 1595.657 |
+| Houston Astros | 30-37 | 0.448 | 1595.058 |
+| New York Mets | 28-37 | 0.431 | 1560.121 |
+| Los Angeles Angels | 25-41 | 0.379 | 1543.627 |
+| Oakland Athletics | 26-43 | 0.377 | 1496.243 |
+| Colorado Rockies | 24-43 | 0.358 | 1541.191 |
+| Miami Marlins | 23-43 | 0.348 | 1547.642 |
+| Chicago White Sox | 17-50 | 0.254 | 1444.657 |
 
 ## Machine Learning Analysis
 
@@ -159,21 +160,21 @@ The machine learning model uses the following features to predict game outcomes:
 ## Feature Engineering Statistics
 
 Feature Statistics:
-- Games: 700
-- Home wins: 362 (51.7%)
-- Avg Elo diff: 2.3
-- Avg OPS diff: 0.002
+- Games: 1000
+- Home wins: 517 (51.7%)
+- Avg Elo diff: -1.3
+- Avg OPS diff: -0.001
 
 ## Model Training Results
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| Accuracy | 0.621 (62.1%) | Overall prediction correctness |
-| Precision | 0.667 | True positives / (True + False positives) |
-| Recall | 0.623 | True positives / (True positives + False negatives) |
-| F1 Score | 0.644 | Harmonic mean of precision and recall |
-| AUC | 0.666 | Area under ROC curve (0.5 = random, 1.0 = perfect) |
-| Log Loss | 0.932 | Lower is better (measures prediction confidence) |
+| Accuracy | 0.650 (65.0%) | Overall prediction correctness |
+| Precision | 0.660 | True positives / (True + False positives) |
+| Recall | 0.647 | True positives / (True positives + False negatives) |
+| F1 Score | 0.653 | Harmonic mean of precision and recall |
+| AUC | 0.701 | Area under ROC curve (0.5 = random, 1.0 = perfect) |
+| Log Loss | 0.916 | Lower is better (measures prediction confidence) |
 
 ## System Configuration
 
@@ -185,10 +186,10 @@ Feature Statistics:
 | Elo+ Learning Rate | 0.30 |
 
 
-**Generated:** 2025-08-25 19:48:04
+**Generated:** 2025-08-25 22:31:00
 
-**Games Processed:** 700
+**Games Processed:** 1,000
 
 **Processing Time:** 0.02 seconds
 
-*Report generated by [Fastbreak Elo+ System](https://github.com/joe307bad/fastbreak/tree/4905239625f89e5fc0ef3b3e2af95653cf1ce10d/server/src/Fastbreak.Cli) on 2025-08-25 19:48:04*
+*Report generated by [Fastbreak Elo+ System](https://github.com/joe307bad/fastbreak/tree/4905239625f89e5fc0ef3b3e2af95653cf1ce10d/server/src/Fastbreak.Cli) on 2025-08-25 22:31:00*
