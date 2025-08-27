@@ -31,9 +31,9 @@ async function getPosts(): Promise<Post[]> {
 
 export const metadata = {
   // Basic metadata
-  title: "Applied software research by Joe Badaczewski",
+  title: "Applied software research, a blog by Joe Badaczewski",
   description:
-    "Explore my digital journal where I write about building software",
+    "Explore my blog where I write about research and building software",
   keywords: "Joe Badaczewski blog, digital journal, software engineering blog",
 
   // Canonical URL
@@ -44,29 +44,36 @@ export const metadata = {
   // Open Graph
   openGraph: {
     type: "website",
-    title: "Applied software research by Joe Badaczewski",
+    title: "Applied software research, a blog by Joe Badaczewski",
     description:
-      "Explore my digital journal where I write about building software",
+      "Explore my blog where I write about research and building software",
     url: "https://joebad.com/blog",
     siteName: "joebad.com",
-    // images: [
-    //   {
-    //     url: "https://joebad.com/blog-og-image.jpg",
-    //     width: 1200,
-    //     height: 630,
-    //     alt: "Joe Badaczewski's Digital Journal - Tech Blog",
-    //   },
-    // ],
+    images: [
+      {
+        url: "https://joebad.com/joe.png",
+        width: 1200,
+        height: 630,
+        alt: "Applied software research, a blog by Joe Badaczewski",
+      },
+    ],
     locale: "en_US",
   },
 
   // Twitter Card
   twitter: {
     card: "summary_large_image",
-    title: "Applied software research by Joe Badaczewski",
+    title: "Applied software research, a blog by Joe Badaczewski",
     description:
-      "Explore my digital journal where I write about building software",
-    // images: ["https://joebad.com/blog-og-image.jpg"],
+      "Explore my blog where I write about research and building software",
+    images: [
+      {
+        url: `https://joebad.com/joe.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Joe Badaczewski - Senior Software Engineer',
+      },
+    ],
     creator: "@joe307bad",
   },
 

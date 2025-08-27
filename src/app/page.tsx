@@ -60,14 +60,14 @@ export const metadata = {
       "Joe Badaczewski is a senior software engineer specializing in web application performance, distributed systems, and user interface design.",
     url: baseUrl,
     siteName: "joebad.com",
-    // images: [
-    //   {
-    //     url: `${baseUrl}/og-image.jpg`,
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'John Doe - Full Stack Developer Portfolio',
-    //   },
-    // ],
+    images: [
+      {
+        url: `${baseUrl}/joe.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Joe Badaczewski - Senior Software Engineer',
+      },
+    ],
     locale: "en_US",
   },
 
@@ -77,7 +77,7 @@ export const metadata = {
     title: "Joe Badaczewski - Senior Software Engineer",
     description:
       "Joe Badaczewski is a senior software engineer specializing in web application performance, distributed systems, and user interface design.",
-    // images: [`${baseUrl}/og-image.jpg`],
+    images: [`${baseUrl}/joe.png`],
     creator: "@joe307bad", // Your Twitter handle
   },
 

@@ -14,7 +14,7 @@ import rehypeSlug from "rehype-slug";
 import { rehype } from "rehype";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
-import remarkSubSuper from 'remark-supersub';
+import remarkSubSuper from "remark-supersub";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -60,10 +60,8 @@ async function getPostBySlug(slug: string) {
         // @ts-ignore
         .use(rehypeAutolinkHeadings, {
           behavior: "prepend",
-          content: fromHtmlIsomorphic(
-            "<span># </span>",
-            { fragment: true }
-          ).children,
+          content: fromHtmlIsomorphic("<span># </span>", { fragment: true })
+            .children,
         })
         .process(processedContent);
 
@@ -107,7 +105,7 @@ export async function generateMetadata({
     keywords: post.tags?.join(", "),
     authors: [{ name: "Joe Badaczewski" }],
     creator: "Joe Badaczewski",
-    publisher: "Your Site Name",
+    publisher: "joebad.com",
 
     // Canonical URL
     alternates: {
@@ -123,7 +121,7 @@ export async function generateMetadata({
       siteName: "https://joebad.com",
       images: [
         {
-          // url: imageUrl,
+          url: `https://joebad.com/joe.png`,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -142,9 +140,16 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt || post.description,
-      images: ["/joe.png"],
+      images: [
+        {
+          url: `https://joebad.com/joe.png`,
+          width: 1200,
+          height: 630,
+          alt: "Joe Badaczewski - Senior Software Engineer",
+        },
+      ],
       creator: "@joe307bad",
-      site: "@yoursite", // Your site's Twitter handle
+      site: "@joe307bad", // Your site's Twitter handle
     },
 
     // Additional SEO
@@ -196,10 +201,11 @@ export default async function PostPage({
             <h1 className="text-2xl font-bold font-mono">
               {post.frontmatter.title}
             </h1>
-            <h2 className="font-mono text-lg">
-              {post.frontmatter.subTitle}
-            </h2>
-            <time dateTime={post.frontmatter.publishedAt} className="text-sm text-(--color-text)">
+            <h2 className="font-mono text-lg">{post.frontmatter.subTitle}</h2>
+            <time
+              dateTime={post.frontmatter.publishedAt}
+              className="text-sm text-(--color-text)"
+            >
               {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
             </time>
             <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
