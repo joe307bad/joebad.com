@@ -14,6 +14,7 @@ import rehypeSlug from "rehype-slug";
 import { rehype } from "rehype";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
+import remarkSubSuper from 'remark-supersub';
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -49,7 +50,8 @@ async function getPostBySlug(slug: string) {
       // Process markdown content with remark
       const processedContent = await remark()
         .use(remarkGfm)
-        .use(remarkHtml)
+        .use(remarkHtml, { sanitize: false })
+        .use(remarkSubSuper)
         .process(content);
 
       const file = await rehype()
