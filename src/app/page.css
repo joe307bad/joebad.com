@@ -5,7 +5,7 @@
     font-weight: 900;
   }
 
-  a:not(nav a):not(#projects a) {
+  a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a) {
     text-decoration: underline;
   }
 

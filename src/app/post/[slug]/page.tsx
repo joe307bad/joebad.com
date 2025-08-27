@@ -10,6 +10,10 @@ import { remark } from "remark";
 import remarkHtml from "remark-html";
 import remarkGfm from "remark-gfm";
 import "../../page.css";
+import rehypeSlug from "rehype-slug";
+import { rehype } from "rehype";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -43,12 +47,28 @@ async function getPostBySlug(slug: string) {
 
     if (postSlug === slug) {
       // Process markdown content with remark
-      const processedContent = await remark().use(remarkGfm).use(remarkHtml).process(content);
+      const processedContent = await remark()
+        .use(remarkGfm)
+        .use(remarkHtml)
+        .process(content);
+
+      const file = await rehype()
+        .data("settings", { fragment: true })
+        .use(rehypeSlug)
+        // @ts-ignore
+        .use(rehypeAutolinkHeadings, {
+          behavior: "prepend",
+          content: fromHtmlIsomorphic(
+            "<span># </span>",
+            { fragment: true }
+          ).children,
+        })
+        .process(processedContent);
 
       return {
         frontmatter: data,
         content: processedContent.toString(),
-        rawContent: content, // Keep original content if needed
+        rawContent: file,
         slug: postSlug,
       };
     }
@@ -57,9 +77,13 @@ async function getPostBySlug(slug: string) {
   return null;
 }
 
-export async function generateMetadata({ params: p }: { params: Promise<Record<string, string>> }) {
+export async function generateMetadata({
+  params: p,
+}: {
+  params: Promise<Record<string, string>>;
+}) {
   const params = await p;
-  const post = await getPostBySlug(params.slug).then(p => p?.frontmatter);
+  const post = await getPostBySlug(params.slug).then((p) => p?.frontmatter);
 
   if (!post) {
     return {
@@ -116,7 +140,7 @@ export async function generateMetadata({ params: p }: { params: Promise<Record<s
       card: "summary_large_image",
       title: post.title,
       description: post.excerpt || post.description,
-      // images: [imageUrl],
+      images: ["/joe.png"],
       creator: "@joe307bad",
       site: "@yoursite", // Your site's Twitter handle
     },
@@ -159,7 +183,11 @@ export default async function PostPage({
 
   return (
     <>
-      <Main title="Applied software research, a blog by Joe Badaczewski" isPage activePage={post.slug}>
+      <Main
+        title="Applied software research, a blog by Joe Badaczewski"
+        isPage
+        activePage={post.slug}
+      >
         <article>
           <div className="pb-20 flex gap-4 flex-col">
             <SectionHeading>post</SectionHeading>
@@ -167,9 +195,11 @@ export default async function PostPage({
               {post.frontmatter.title}
             </h1>
             <h2 className="font-mono text-lg">
-              {format(post.frontmatter.publishedAt, "yyyy-MM-dd")} •{" "}
               {post.frontmatter.subTitle}
             </h2>
+            <time dateTime={post.frontmatter.publishedAt} className="text-sm text-(--color-text)">
+              {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
+            </time>
             <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
             <MDXRemote source={post.content} components={{ SectionHeading }} />
           </div>
