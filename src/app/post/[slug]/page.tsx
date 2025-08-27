@@ -101,7 +101,7 @@ export async function generateMetadata({
   return {
     // Basic metadata
     title: `${post.title}`,
-    description: post.excerpt || post.description,
+    description: post.subTitle,
     keywords: post.tags?.join(", "),
     authors: [{ name: "Joe Badaczewski" }],
     creator: "Joe Badaczewski",
@@ -116,7 +116,7 @@ export async function generateMetadata({
     openGraph: {
       type: "article",
       title: post.title,
-      description: post.excerpt || post.description,
+      description: post.subTitle,
       url: postUrl,
       siteName: "https://joebad.com",
       images: [
@@ -139,7 +139,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description: post.excerpt || post.description,
+      description:  post.subTitle,
       images: [
         {
           url: `https://joebad.com/joe.png`,
@@ -149,7 +149,7 @@ export async function generateMetadata({
         },
       ],
       creator: "@joe307bad",
-      site: "@joe307bad", // Your site's Twitter handle
+      site: "joebad.com",
     },
 
     // Additional SEO
