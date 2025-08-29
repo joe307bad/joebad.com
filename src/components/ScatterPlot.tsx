@@ -54,6 +54,9 @@ export function ScatterPlot({
               stroke="var(--color-secondary-500)"
               strokeWidth={2}
               opacity={0.8}
+              data-x={d.x}
+              data-y={d.y}
+              data-label={d.label || `Point ${i + 1}`}
             />
           ))}
           

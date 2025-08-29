@@ -59,21 +59,24 @@ export function ChartEnhancer({
   }, [chartType, data]);
 
   const addBarInteractivity = (svg: any, chartData: any[]) => {
-    svg.selectAll('rect')
+    svg.selectAll('rect[data-name]')
       .style('cursor', 'pointer')
       .on('mouseover', function(event: MouseEvent) {
         const rect = event.target as SVGRectElement;
-        const rectIndex = Array.from(rect.parentElement!.querySelectorAll('rect')).indexOf(rect);
         
         d3.select(rect)
           .transition()
           .duration(100)
           .style('opacity', '0.8');
 
+        // Read data from data attributes
+        const name = rect.getAttribute('data-name') || 'Unknown';
+        const value = rect.getAttribute('data-value') || 'Unknown';
+
         setTooltip({
           x: event.clientX,
           y: event.clientY,
-          content: `Value: ${chartData[rectIndex]?.value || 'Unknown'}`
+          content: `${name}: ${value}`
         });
       })
       .on('mouseout', function(event: MouseEvent) {
@@ -89,22 +92,25 @@ export function ChartEnhancer({
   };
 
   const addScatterInteractivity = (svg: any, chartData: any[]) => {
-    svg.selectAll('circle')
+    svg.selectAll('circle[data-x]')
       .style('cursor', 'pointer')
       .on('mouseover', function(event: MouseEvent) {
         const circle = event.target as SVGCircleElement;
-        const circleIndex = Array.from(circle.parentElement!.querySelectorAll('circle')).indexOf(circle);
         
         d3.select(circle)
           .transition()
           .duration(100)
           .attr('r', 8);
 
-        const point = chartData[circleIndex];
+        // Read data from data attributes
+        const x = circle.getAttribute('data-x') || '0';
+        const y = circle.getAttribute('data-y') || '0';
+        const label = circle.getAttribute('data-label') || 'Point';
+
         setTooltip({
           x: event.clientX,
           y: event.clientY,
-          content: `${point?.label || 'Point'}: (${point?.x}, ${point?.y})`
+          content: `${label}: (${x}, ${y})`
         });
       })
       .on('mouseout', function(event: MouseEvent) {

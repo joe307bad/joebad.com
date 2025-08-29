@@ -46,6 +46,8 @@ export function Chart({
               fill="var(--color-primary-500)"
               stroke="var(--color-secondary-500)"
               strokeWidth={1}
+              data-name={d.name}
+              data-value={d.value}
             />
           ))}
           
