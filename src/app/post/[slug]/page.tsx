@@ -8,6 +8,8 @@ import { Chart } from "@/components/Chart";
 import { ScatterPlot } from "@/components/ScatterPlot";
 import { LineChart } from "@/components/LineChart";
 import { HorizontalBarChart } from "@/components/HorizontalBarChart";
+import { EnhancedChart } from "@/components/EnhancedChart";
+import { EnhancedScatterPlot } from "@/components/EnhancedScatterPlot";
 import { format } from "date-fns";
 import { Main } from "@/components/Main";
 import remarkGfm from "remark-gfm";
@@ -197,7 +199,9 @@ export default async function PostPage({
                 Chart,
                 ScatterPlot,
                 LineChart,
-                HorizontalBarChart
+                HorizontalBarChart,
+                EnhancedChart,
+                EnhancedScatterPlot
               }} 
               options={{
                 mdxOptions: {
