@@ -17,6 +17,7 @@
     --font-size-heading: theme(fontSize.lg);
     --font-size-heading2: theme(fontSize.xl);
     --font-size-heading3: theme(fontSize.base);
+    --font-size-heading4: theme(fontSize.sm);
   }
 
   /* Dark theme */
@@ -32,6 +33,7 @@
     --font-size-heading: theme(fontSize.lg);
     --font-size-heading2: theme(fontSize.xl);
     --font-size-heading3: theme(fontSize.base);
+    --font-size-heading4: theme(fontSize.sm);
   }
 
   p, li, h1 {
@@ -39,6 +41,10 @@
   }
 
   h2, h3 {
+    color: var(--color-accent-500);
+  }
+
+  h4 {
     color: var(--color-accent-500);
   }
 }

@@ -19,25 +19,24 @@ When the model is highly confident in its prediction (above 60% threshold), the 
 
 **The Elo+ model analyzed all 2,430 MLB games from 2024 and achieved a 8.4% improvement in predictive accuracy over the baseline <span id="2-back-to-top">[^[2]^](#2)</span> using a [80/20 train-test split validation methodology](https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/prepare-data-ml-net#split-data-into-training--test-sets).**
 
-## Top 15 MLB teams of 2024 ranked by Elo+
+## Top 10 MLB teams of 2024 ranked by Elo+
 
 | Rank | Team | Elo+ | Standard Elo | Adjustment | ML Confidence |
 |------|------|------|--------------|------------|---------------|
-| 1 | Los Angeles Dodgers | 1712.7 | 1717.4 | -4.6 | 65.5% |
-| 2 | San Diego Padres | 1693.3 | 1693.3 | ±0.0 | 43.6% |
-| 3 | New York Mets | 1677.7 | 1684.0 | -6.3 | 29.0% |
-| 4 | Detroit Tigers | 1669.6 | 1672.7 | -3.0 | 60.1% |
-| 5 | Houston Astros | 1664.5 | 1661.5 | +3.1 | 39.8% |
-| 6 | Milwaukee Brewers | 1662.7 | 1662.7 | ±0.0 | 51.9% |
-| 7 | Atlanta Braves | 1659.5 | 1653.2 | +6.3 | 71.0% |
-| 8 | Seattle Mariners | 1659.2 | 1652.6 | +6.6 | 72.1% |
-| 9 | Arizona Diamondbacks | 1656.0 | 1656.0 | ±0.0 | 56.4% |
-| 10 | St. Louis Cardinals | 1644.7 | 1644.7 | ±0.0 | 59.2% |
-| 11 | Philadelphia Phillies | 1641.0 | 1641.0 | ±0.0 | 58.5% |
-| 12 | New York Yankees | 1631.1 | 1626.4 | +4.6 | 65.4% |
-| 13 | Chicago Cubs | 1630.7 | 1626.9 | +3.9 | 37.1% |
-| 14 | Cleveland Guardians | 1614.9 | 1618.0 | -3.1 | 60.2% |
-| 15 | San Francisco Giants | 1607.2 | 1607.2 | ±0.0 | 40.8% |
+| 1 | Los Angeles Dodgers | 1535.1 | 1535.3 | -0.2 | 58.8% |
+| 2 | Arizona Diamondbacks | 1534.9 | 1535.3 | -0.4 | 57.2% |
+| 3 | Milwaukee Brewers | 1529.0 | 1529.1 | -0.1 | 57.7% |
+| 4 | San Diego Padres | 1527.3 | 1527.3 | +0.1 | 59.1% |
+| 5 | New York Yankees | 1525.4 | 1525.7 | -0.3 | 60.6% |
+| 6 | Baltimore Orioles | 1523.8 | 1523.8 | +0.0 | 57.4% |
+| 7 | Cleveland Guardians | 1523.4 | 1523.4 | -0.0 | 57.6% |
+| 8 | Philadelphia Phillies | 1523.3 | 1523.2 | +0.1 | 58.3% |
+| 9 | Minnesota Twins | 1522.1 | 1522.4 | -0.3 | 58.1% |
+| 10 | Kansas City Royals | 1518.2 | 1517.8 | +0.4 | 61.3% |
+| 11 | Houston Astros | 1518.2 | 1518.2 | +0.0 | 56.9% |
+| 12 | Atlanta Braves | 1513.2 | 1512.4 | +0.8 | 64.3% |
+| 13 | New York Mets | 1507.1 | 1506.9 | +0.1 | 60.1% |
+| 14 | Boston Red Sox | 1506.4 | 1506.4 | -0.0 | 56.1% |
 
 ## Deep dive into Elo+
 
@@ -74,6 +73,212 @@ And there are other advaned statistics we use to enhance predictions that won't 
 • **Log-Loss** - Confidence penalty score that punishes being very wrong when very confident. Lower numbers are better.
 
 • **AUC (Area Under the ROC Curve)** - Ranking ability score measuring how well the system distinguishes good teams from bad teams. 0.5 is random guessing, 1.0 is perfect.
+
+## Show me the math!
+
+There is a lot of advanced math that enables the predictive analysis behind the Elo+ system. Let's take a look step by step on how we move from traditional Elo ratings to an ML enhanced E
+
+###  Traditional Elo Rating Foundation
+
+#### Expected Win Probability: 
+
+$$
+P_{expected} = 1 / (1 + 10^{((R_{opponent} - R_{team}) / 400)})
+$$
+
+- Classical Elo formula for calculating win probability between two teams
+- 400-point scale ensures intuitive odds ratios (400 points = 10:1 odds)
+
+
+#### Home Field Advantage: 
+
+$$
+P_{home} = 1 / (1 + 10^{(R_{away} -  (R_{home} + HFA))} / 400)
+$$
+
+- Adjusts home team rating by HFA = 68.0 points for MLB
+- Empirically derived to give ~54% win probability for evenly matched teams
+
+
+#### Rating Update Formula: 
+
+$$
+R_{new} = R_{old} + K × (S_{actual} - P_{expected})
+$$
+
+- K = 4.0 for MLB (FiveThirtyEight standard)
+- S_actual = 1.0 (win), 0.5 (tie), 0.0 (loss)
+- Zero-sum system: winner's gain equals loser's loss
+
+### Core Elo+ Tilting Models
+
+#### Linear Combination Model:
+
+$$ 
+P_{final} = (1 - α) × P_{elo} + α × P_{ml}
+$$
+
+- α ∈ [0, 1] is the tilting parameter
+- α = 0: Pure Elo, α = 1: Pure ML, α = 0.5: Equal weighting
+- Most straightforward ensemble approach
+
+#### Weighted Average Model: 
+
+$$
+P_final = (w_{elo} × P_{elo} + w_{ml} × P_{ml}) / (w_{elo} + w_{ml})
+$$
+
+- Independent weight control for each system
+- Allows asymmetric trust allocation based on historical performance
+
+#### Confidence-Weighted Model: 
+
+$$
+P_{final} = P_{elo} + α × C_{ml} × (P_{ml} - P_{elo})
+$$
+
+- C_ml is ML model confidence score [0, 1]
+- Only tilts when ML model is confident
+- Gracefully degrades to pure Elo when confidence is low
+
+### Hyperparameter Optimization
+
+#### Alpha Optimization: 
+
+$$
+α* = argmin_α L(validation_{set}, α)
+$$
+
+- Grid search over α ∈ [0.0, 1.0] with step 0.1
+- Uses validation set to prevent overfitting
+
+#### Log-Loss (Cross-Entropy): 
+
+$$
+LogLoss = -1/N × Σ[y_i ×  log(p_i) + (1-y_i) × log(1-p_i)]
+$$
+
+- Primary optimization metric for probabilistic predictions
+- Heavily penalizes confident wrong predictions
+
+#### Brier Score: 
+
+$$
+BrierScore = 1/N × Σ(p_i - y_i)²
+$$
+
+- Mean squared error of probability predictions
+- Measures both calibration and resolution
+
+### Performance Evaluation Metrics
+
+#### Accuracy: 
+
+$$
+Accuracy = CorrectPredictions / TotalPredictions
+$$
+
+- Basic classification performance metric
+- Percentage of correct binary win/loss predictions
+
+#### Precision: 
+
+$$
+Precision = TruePositives / (TruePositives + FalsePositives)
+$$
+
+- Accuracy of positive (home win) predictions
+- Measures false positive rate control
+
+#### Recall (Sensitivity): 
+
+$$
+Recall = TruePositives / (TruePositives + FalseNegatives)
+$$
+
+- True positive rate for home wins
+- Measures model's ability to identify actual home wins
+
+#### F1-Score: 
+
+$$
+F1 = 2 × (Precision × Recall) / (Precision + Recall)
+$$
+
+- Harmonic mean of precision and recall
+- Balanced measure of classification performance
+
+#### ROC AUC: 
+
+$$
+AUC = Σ[(FPR_{i+1} - FPR_i) × (TPR_i + TPR_{i+1}) / 2]
+$$
+
+- Area under receiver operating characteristic curve
+- Measures discrimination ability across all probability thresholds
+
+#### Calibration Error: 
+
+$$
+CalError = Σ[w_i × |f_i - o_i|]
+$$
+
+- w_i = bin weight, f_i = mean predicted probability,o_i = observed frequency
+- Measures how well predicted probabilities match actualfrequencies
+ 
+### Statistical Validation Framework
+
+#### Train/Validation/Test Split: 
+  - 70% / 15% / 15%
+  - Chronological splitting preserves temporal order
+  - Prevents data leakage from future to past
+
+#### Baseline Accuracy: 
+
+$$
+Baseline = max(HomeWins, AwayWins) / TotalGames
+$$
+
+- Always predict majority class performance
+- Minimum threshold for meaningful improvement
+
+#### Cross-Validation: 
+
+$$
+CV_Score = 1/k × Σ_{i=1}^k Score_i
+$$
+
+- k-fold validation with temporal ordering maintained
+- Robust estimate of hyperparameter performance
+
+### Theoretical Foundations
+
+#### Elo Performance Distribution: 
+
+$$
+Performance ~ N(Rating, σ²) where 
+$$
+
+- σ = 200
+- Assumes normal distribution of game performance around true skill
+- Performance difference standard deviation = 200√2
+
+#### 400-Point Scale Interpretation:
+
+- 100 points ≈ 64% win probability
+- 200 points ≈ 76% win probability
+- 400 points ≈ 91% win probability (10:1 odds)
+
+#### ML Enhancement Objective: 
+
+$$
+Minimize E[(P_{predicted} - P_{actual})²]
+$$
+
+- Reduces prediction error through contextual information
+- Addresses Elo's limitation of using only historical win/loss results
+
+
 
 <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
 

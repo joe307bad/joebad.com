@@ -17,6 +17,9 @@ import "../../page.css";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import remarkSubSuper from "remark-supersub";
+import remarkMath from 'remark-math'
+import rehypeKatex from "rehype-katex";
+import 'katex/dist/katex.min.css'
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -205,9 +208,10 @@ export default async function PostPage({
               }} 
               options={{
                 mdxOptions: {
-                  remarkPlugins: [remarkGfm, remarkSubSuper],
+                  remarkPlugins: [remarkGfm, remarkSubSuper, remarkMath],
                   rehypePlugins: [
                     rehypeSlug, 
+                    rehypeKatex,
                     [rehypeAutolinkHeadings, {
                       behavior: "prepend",
                       content: [{ type: 'text', value: '# ' }]

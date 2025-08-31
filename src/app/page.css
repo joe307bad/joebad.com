@@ -10,7 +10,12 @@
     font-size: var(--font-size-heading3);
   }
 
-  a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a) {
+  h4 {
+    font-family: monospace;
+    font-size: var(--font-size-heading4);
+  }
+
+  a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a, h4 a) {
     text-decoration: underline;
   }
 
