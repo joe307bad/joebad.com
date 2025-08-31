@@ -1,11 +1,21 @@
 #page {
   h2 {
     font-family: monospace;
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-heading2);
     font-weight: 900;
   }
 
-  a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a) {
+  h3 {
+    font-family: monospace;
+    font-size: var(--font-size-heading3);
+  }
+
+  h4 {
+    font-family: monospace;
+    font-size: var(--font-size-heading4);
+  }
+
+  a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a, h4 a) {
     text-decoration: underline;
   }
 
@@ -43,6 +53,12 @@
     table {
       overflow-x: auto;
       display: block;
+    }
+
+    .katex-display {
+      overflow-y: hidden;
+      overflow-x: auto;
+      max-width: 100%;
     }
   }
 }

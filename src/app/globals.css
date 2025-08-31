@@ -15,6 +15,9 @@
     --color-accent-500: #f95738;
     --color-border: #e5e7eb;
     --font-size-heading: theme(fontSize.lg);
+    --font-size-heading2: theme(fontSize.xl);
+    --font-size-heading3: theme(fontSize.base);
+    --font-size-heading4: theme(fontSize.sm);
   }
 
   /* Dark theme */
@@ -27,10 +30,22 @@
     --color-secondary-500: #fca5a5;
     --color-accent-500: #fca5a5;
     --color-border: #374151;
+    --font-size-heading: theme(fontSize.lg);
+    --font-size-heading2: theme(fontSize.xl);
+    --font-size-heading3: theme(fontSize.base);
+    --font-size-heading4: theme(fontSize.sm);
   }
 
-  p, li, h1, h2, h3 {
+  p, li, h1 {
     color: var(--color-text);
+  }
+
+  h2, h3 {
+    color: var(--color-accent-500);
+  }
+
+  h4 {
+    color: var(--color-accent-500);
   }
 }
 

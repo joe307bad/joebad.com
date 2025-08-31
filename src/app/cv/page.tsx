@@ -27,14 +27,14 @@ export const metadata = {
       "View Joe Badaczewski's comprehensive CV and professional experience as a senior software engineer. Expertise in web application performance, distributed systems, and user interface design.",
     url: "https://joebad.com/cv",
     siteName: "joebad.com",
-    // images: [
-    //   {
-    //     url: "https://joebad.com/cv-og-image.jpg",
-    //     width: 1200,
-    //     height: 630,
-    //     alt: 'Joe Badaczewski - CV & Professional Experience',
-    //   },
-    // ],
+    images: [
+      {
+        url: `https://joebad.com/joe.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Joe Badaczewski - Senior Software Engineer',
+      },
+    ],
     locale: "en_US",
   },
 
@@ -44,7 +44,14 @@ export const metadata = {
     title: "Joe Badaczewski - CV & Professional Experience",
     description:
       "View Joe Badaczewski's comprehensive CV and professional experience as a senior software engineer. Expertise in web application performance, distributed systems, and user interface design.",
-    // images: ["https://joebad.com/cv-og-image.jpg"],
+    images: [
+      {
+        url: `https://joebad.com/joe.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Joe Badaczewski - Senior Software Engineer',
+      },
+    ],
     creator: "@joe307bad",
   },
 

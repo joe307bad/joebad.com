@@ -4,17 +4,22 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import { SectionHeading } from "@/components/SectionHeading";
+import { Chart } from "@/components/Chart";
+import { ScatterPlot } from "@/components/ScatterPlot";
+import { LineChart } from "@/components/LineChart";
+import { HorizontalBarChart } from "@/components/HorizontalBarChart";
+import { EnhancedChart } from "@/components/EnhancedChart";
+import { EnhancedScatterPlot } from "@/components/EnhancedScatterPlot";
 import { format } from "date-fns";
 import { Main } from "@/components/Main";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import remarkGfm from "remark-gfm";
 import "../../page.css";
 import rehypeSlug from "rehype-slug";
-import { rehype } from "rehype";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
 import remarkSubSuper from "remark-supersub";
+import remarkMath from 'remark-math'
+import rehypeKatex from "rehype-katex";
+import 'katex/dist/katex.min.css'
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -47,28 +52,9 @@ async function getPostBySlug(slug: string) {
     const postSlug = data.slug || filename.replace(".mdx", "");
 
     if (postSlug === slug) {
-      // Process markdown content with remark
-      const processedContent = await remark()
-        .use(remarkGfm)
-        .use(remarkHtml, { sanitize: false })
-        .use(remarkSubSuper)
-        .process(content);
-
-      const file = await rehype()
-        .data("settings", { fragment: true })
-        .use(rehypeSlug)
-        // @ts-ignore
-        .use(rehypeAutolinkHeadings, {
-          behavior: "prepend",
-          content: fromHtmlIsomorphic("<span># </span>", { fragment: true })
-            .children,
-        })
-        .process(processedContent);
-
       return {
         frontmatter: data,
-        content: processedContent.toString(),
-        rawContent: file,
+        content: content,
         slug: postSlug,
       };
     }
@@ -209,7 +195,31 @@ export default async function PostPage({
               {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
             </time>
             <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
-            <MDXRemote source={post.content} components={{ SectionHeading }} />
+            <MDXRemote 
+              source={post.content} 
+              components={{ 
+                SectionHeading,
+                Chart,
+                ScatterPlot,
+                LineChart,
+                HorizontalBarChart,
+                EnhancedChart,
+                EnhancedScatterPlot
+              }} 
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm, remarkSubSuper, remarkMath],
+                  rehypePlugins: [
+                    rehypeSlug, 
+                    rehypeKatex,
+                    [rehypeAutolinkHeadings, {
+                      behavior: "prepend",
+                      content: [{ type: 'text', value: '# ' }]
+                    }]
+                  ]
+                }
+              }}
+            />
           </div>
         </article>
       </Main>
