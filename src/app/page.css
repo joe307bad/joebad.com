@@ -54,5 +54,11 @@
       overflow-x: auto;
       display: block;
     }
+
+    .katex-display {
+      overflow-y: hidden;
+      overflow-x: auto;
+      max-width: 100%;
+    }
   }
 }
