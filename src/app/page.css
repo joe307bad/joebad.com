@@ -1,8 +1,13 @@
 #page {
   h2 {
     font-family: monospace;
-    font-size: var(--font-size-heading);
+    font-size: var(--font-size-heading2);
     font-weight: 900;
+  }
+
+  h3 {
+    font-family: monospace;
+    font-size: var(--font-size-heading3);
   }
 
   a:not(nav a):not(#projects a):not(h1 a, h2 a, h3 a) {

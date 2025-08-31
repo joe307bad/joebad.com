@@ -39,162 +39,41 @@ When the model is highly confident in its prediction (above 60% threshold), the 
 | 14 | Cleveland Guardians | 1614.9 | 1618.0 | -3.1 | 60.2% |
 | 15 | San Francisco Giants | 1607.2 | 1607.2 | ±0.0 | 40.8% |
 
-## Elo+ Statistics
+## Deep dive into Elo+
 
-- Avg Standard Elo: 1600.0
-- Avg Elo+: 1600.0
-- Avg ML Adjustment: 0.0
-- Max Adjustment: 6.6
-- Min Adjustment: -6.6
-- Teams with ML data: 30/30
+When building machine learning models that can forecast future outcomes, there is always a black box of uncertainty. Certain questions arise: How was the model trained? How was it tested? What information does the modal have to make informed decisions? I am going to layout the answers to these questions for Elo+.
 
-## Final Elo Ratings
+### First, let's cover terminology: 
 
-| Rank | Team | Elo Rating |
-|------|------|------------|
-| 1 | Los Angeles Dodgers | 1717.351 |
-| 2 | San Diego Padres | 1693.288 |
-| 3 | New York Mets | 1684.033 |
-| 4 | Detroit Tigers | 1672.655 |
-| 5 | Milwaukee Brewers | 1662.729 |
-| 6 | Houston Astros | 1661.459 |
-| 7 | Arizona Diamondbacks | 1656.036 |
-| 8 | Atlanta Braves | 1653.187 |
-| 9 | Seattle Mariners | 1652.554 |
-| 10 | St. Louis Cardinals | 1644.695 |
-| 11 | Philadelphia Phillies | 1640.970 |
-| 12 | Chicago Cubs | 1626.857 |
-| 13 | New York Yankees | 1626.439 |
-| 14 | Cleveland Guardians | 1617.975 |
-| 15 | San Francisco Giants | 1607.243 |
-| 16 | Tampa Bay Rays | 1606.626 |
-| 17 | Baltimore Orioles | 1604.714 |
-| 18 | Texas Rangers | 1587.125 |
-| 19 | Kansas City Royals | 1581.746 |
-| 20 | Pittsburgh Pirates | 1578.475 |
-| 21 | Cincinnati Reds | 1577.421 |
-| 22 | Miami Marlins | 1563.920 |
-| 23 | Boston Red Sox | 1563.107 |
-| 24 | Colorado Rockies | 1558.485 |
-| 25 | Oakland Athletics | 1537.312 |
-| 26 | Washington Nationals | 1531.685 |
-| 27 | Toronto Blue Jays | 1524.625 |
-| 28 | Minnesota Twins | 1495.947 |
-| 29 | Chicago White Sox | 1448.044 |
-| 30 | Los Angeles Angels | 1423.296 |
+• **Elo Rating** - Like a credit score for sports teams that goes up when they win and down when they lose. In Elo+, teams start at 1600 points and stronger teams have higher numbers.
 
-## Elo Rating Statistics
+• **K-Factor** - Controls how much a team's rating changes after each game. Set to 24 for baseball because even good teams
+  lose often, so we don't want ratings to swing wildly after one game.
 
-| Metric | Value |
-|--------|-------|
-| Average Rating | 1600.000 |
-| Highest Rating | 1717.351 |
-| Lowest Rating | 1423.296 |
-| Rating Spread | 294.055 points |
+• **Home Field Advantage** - Extra points (68) added to the home team's rating before calculating win probability. This accounts for familiar surroundings, crowd support, and not having to travel.
 
-## Team Performance Summary
+### Machine Learning Terms:
+• **Training/Validation/Test Split** - Like studying for a test: use some games to teach the system (training), some to fine-tune it (validation), and save some games it's never seen to measure real performance (testing).
 
-| Team | Record | Win % | Elo Rating |
-|------|--------|-------|------------|
-| Los Angeles Dodgers | 97-63 | 0.606 | 1717.351 |
-| Philadelphia Phillies | 95-67 | 0.586 | 1640.970 |
-| New York Yankees | 94-68 | 0.580 | 1626.439 |
-| San Diego Padres | 92-68 | 0.575 | 1693.288 |
-| Milwaukee Brewers | 93-69 | 0.574 | 1662.729 |
-| Cleveland Guardians | 92-69 | 0.571 | 1617.975 |
-| Baltimore Orioles | 91-72 | 0.558 | 1604.714 |
-| Arizona Diamondbacks | 89-73 | 0.549 | 1656.036 |
-| New York Mets | 89-73 | 0.549 | 1684.033 |
-| Atlanta Braves | 89-73 | 0.549 | 1653.187 |
-| Houston Astros | 88-73 | 0.547 | 1661.459 |
-| Kansas City Royals | 86-76 | 0.531 | 1581.746 |
-| Detroit Tigers | 86-76 | 0.531 | 1672.655 |
-| Seattle Mariners | 85-77 | 0.525 | 1652.554 |
-| St. Louis Cardinals | 84-79 | 0.515 | 1644.695 |
-| Chicago Cubs | 83-79 | 0.512 | 1626.857 |
-| Minnesota Twins | 82-80 | 0.506 | 1495.947 |
-| Boston Red Sox | 81-82 | 0.497 | 1563.107 |
-| San Francisco Giants | 80-82 | 0.494 | 1607.243 |
-| Tampa Bay Rays | 80-82 | 0.494 | 1606.626 |
-| Texas Rangers | 79-84 | 0.485 | 1587.125 |
-| Cincinnati Reds | 77-85 | 0.475 | 1577.421 |
-| Pittsburgh Pirates | 76-86 | 0.469 | 1578.475 |
-| Toronto Blue Jays | 75-88 | 0.460 | 1524.625 |
-| Washington Nationals | 71-91 | 0.438 | 1531.685 |
-| Oakland Athletics | 69-93 | 0.426 | 1537.312 |
-| Los Angeles Angels | 63-99 | 0.389 | 1423.296 |
-| Miami Marlins | 62-100 | 0.383 | 1563.920 |
-| Colorado Rockies | 61-101 | 0.377 | 1558.485 |
-| Chicago White Sox | 41-122 | 0.252 | 1448.044 |
+• **Alpha Parameter** - The "volume knob" that controls how much we trust machine learning vs traditional Elo. At 0.3, we trust Elo 70% and ML 30% when making the final prediction.
 
-## Machine Learning Analysis
+• **Feature Engineering** - Choosing which baseball stats (ERA, WHIP, OPS) matter most for predicting games. Like picking the most important ingredients for a recipe.
 
-## ML Features
+### Baseball Statistics:
+• **WHIP** - Walks plus hits per inning pitched; measures how many baserunners a pitcher allows. Lower is better for pitchers.
 
-The machine learning model uses the following features to predict game outcomes:
+• **OPS** - On-base plus slugging percentage; measures how good hitters are at getting on base and hitting for power. Higher is better for batters.
 
-**Elo-based Features:**
-- Home Team Elo Rating
-- Away Team Elo Rating
-- Elo Rating Difference (Home - Away)
+• **FIP** - Fielding Independent Pitching; measures pitcher performance on things they control (strikeouts, walks, home runs), ignoring fielding. Lower is better.
 
-**Starting Pitcher Features:**
-- Home ERA Advantage (normalized vs league average)
-- Away ERA Advantage (normalized vs league average)
-- Home WHIP Advantage (normalized vs league average)
-- Away WHIP Advantage (normalized vs league average)
-- Home Strikeout Rate (K/9 normalized)
-- Away Strikeout Rate (K/9 normalized)
+And there are other advaned statistics we use to enhance predictions that won't be covered here.
 
-**Team Performance Features:**
-- OPS Differential (Home OPS - Away OPS)
-- ERA+ Differential (Home ERA+ - Away ERA+)
-- FIP Differential (Away FIP - Home FIP, lower is better)
+### Performance Metrics:
+• **Accuracy** - Simple percentage of games predicted correctly. Elo+ achieved 60.7% vs 52.2% baseline (always picking home team).
 
-**Advanced Statistics:**
-- Pitcher Matchup Advantage (combined pitcher advantage score)
+• **Log-Loss** - Confidence penalty score that punishes being very wrong when very confident. Lower numbers are better.
 
-**Normalization Constants (2023 MLB Season):**
-- League Average ERA: 4.28
-- League Average WHIP: 1.31
-- League Average K/9: 8.8
-
-## Feature Engineering Statistics
-
-Feature Statistics:
-- Games: 2430
-- Home wins: 1268 (52.2%)
-- Avg Elo diff: -1.1
-- Avg OPS diff: -0.000
-
-## Model Training Results
-
-| Metric | Value | Description |
-|--------|-------|-------------|
-| Accuracy | 0.607 (60.7%) | Overall prediction correctness |
-| Precision | 0.594 | True positives / (True + False positives) |
-| Recall | 0.707 | True positives / (True positives + False negatives) |
-| F1 Score | 0.646 | Harmonic mean of precision and recall |
-| AUC | 0.652 | Area under ROC curve (0.5 = random, 1.0 = perfect) |
-| Log Loss | 0.956 | Lower is better (measures prediction confidence) |
-
-## System Configuration
-
-| Parameter | Value |
-|-----------|-------|
-| K-Factor | 24 |
-| Default Rating | 1600 |
-| ML Training Split | 0.8 |
-| Elo+ Learning Rate | 0.30 |
-
-
-**Generated:** 2025-08-26 20:49:12
-
-**Games Processed:** 2430
-
-**Processing Time:** 0.03 seconds
-
-*Report generated by [Fastbreak Elo+ System](https://github.com/joe307bad/fastbreak/tree/4905239625f89e5fc0ef3b3e2af95653cf1ce10d/server/src/Fastbreak.Cli) on 2025-08-26 20:49:12*
+• **AUC (Area Under the ROC Curve)** - Ranking ability score measuring how well the system distinguishes good teams from bad teams. 0.5 is random guessing, 1.0 is perfect.
 
 <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
 
