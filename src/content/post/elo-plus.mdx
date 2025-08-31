@@ -17,7 +17,7 @@ The Elo+ rating system starts <span id="1-back-to-top">[^[1]^](#1)</span> with t
 
 When the model is highly confident in its prediction (above 60% threshold), the system applies a small adjustment to the traditional Elo rating based on whether the model's prediction was accurate. If the model correctly predicts an upset or dominant performance, teams get bonus points added to their rating, but if the model is confident yet wrong, points are subtracted as a penalty. This creates enhanced "Elo+" ratings that combine the reliability of traditional win-loss records with the predictive power of advanced baseball analytics and supervised learning algorithms.
 
-**The Elo+ model analyzed all 2,430 MLB games from 2024 and achieved a 8.4% improvement in predictive accuracy over the baseline <span id="2-back-to-top">[^[2]^](#2)</span> using a [80/20 train-test split validation methodology](https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/prepare-data-ml-net#split-data-into-training--test-sets).**
+**The Elo+ model analyzed all 2,430 MLB games from 2024 and achieved a 2.8% improvement in predictive accuracy over the baseline <span id="2-back-to-top">[^[2]^](#2)</span> using a [65/15/20 train-test split validation methodology](https://learn.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/prepare-data-ml-net#split-data-into-training--test-sets).**
 
 ## Top 10 MLB teams of 2024 ranked by Elo+
 
@@ -33,10 +33,6 @@ When the model is highly confident in its prediction (above 60% threshold), the 
 | 8 | Philadelphia Phillies | 1523.3 | 1523.2 | +0.1 | 58.3% |
 | 9 | Minnesota Twins | 1522.1 | 1522.4 | -0.3 | 58.1% |
 | 10 | Kansas City Royals | 1518.2 | 1517.8 | +0.4 | 61.3% |
-| 11 | Houston Astros | 1518.2 | 1518.2 | +0.0 | 56.9% |
-| 12 | Atlanta Braves | 1513.2 | 1512.4 | +0.8 | 64.3% |
-| 13 | New York Mets | 1507.1 | 1506.9 | +0.1 | 60.1% |
-| 14 | Boston Red Sox | 1506.4 | 1506.4 | -0.0 | 56.1% |
 
 ## Deep dive into Elo+
 
@@ -44,35 +40,51 @@ When building machine learning models that can forecast future outcomes, there i
 
 ### First, let's cover terminology: 
 
-• **Elo Rating** - Like a credit score for sports teams that goes up when they win and down when they lose. In Elo+, teams start at 1600 points and stronger teams have higher numbers.
+• **Elo Rating** - Think of Elo ratings like credit scores for sports teams. After each game, the winner gains points and the loser loses points. The amount gained/lost depends on how surprising the result was. If a strong team beats a weak team (expected result), only a few points change hands. If a weak team upsets a strong team (surprising result), many points change hands.
 
-• **K-Factor** - Controls how much a team's rating changes after each game. Set to 24 for baseball because even good teams
-  lose often, so we don't want ratings to swing wildly after one game.
+• **K-Factor** - Controls how much a team's rating changes after each game. Set to 4 for baseball because even good teams lose often, so we don't want ratings to swing wildly after one game.
 
 • **Home Field Advantage** - Extra points (68) added to the home team's rating before calculating win probability. This accounts for familiar surroundings, crowd support, and not having to travel.
 
 ### Machine Learning Terms:
-• **Training/Validation/Test Split** - Like studying for a test: use some games to teach the system (training), some to fine-tune it (validation), and save some games it's never seen to measure real performance (testing).
+- **Training/Validation/Test Split** - Like studying for a test: use some games to teach the system (training), some to fine-tune it (validation), and save some games it's never seen to measure real performance (testing).
 
-• **Alpha Parameter** - The "volume knob" that controls how much we trust machine learning vs traditional Elo. At 0.3, we trust Elo 70% and ML 30% when making the final prediction.
+   - Three-Way Split (65%/15%/20%):
+     - **Training Set (65%)**: Teach both Elo ratings and ML model what winning looks like
+     - **Validation Set (15%)**: Find the best α value without cheating  
+     - **Test Set (20%)**: Final, unbiased evaluation of system performance
 
-• **Feature Engineering** - Choosing which baseball stats (ERA, WHIP, OPS) matter most for predicting games. Like picking the most important ingredients for a recipe.
+- **Alpha Parameter** - The "volume knob" that controls how much we trust machine learning vs traditional Elo. At 0.3, we trust Elo 70% and ML 30% when making the final prediction.
+
+- **Feature Engineering** - Choosing which baseball stats (ERA, WHIP, OPS) matter most for predicting games. Like picking the most important ingredients for a recipe.
 
 ### Baseball Statistics:
-• **WHIP** - Walks plus hits per inning pitched; measures how many baserunners a pitcher allows. Lower is better for pitchers.
+- **WHIP** - Walks plus hits per inning pitched; measures how many baserunners a pitcher allows. Lower is better for pitchers.
 
-• **OPS** - On-base plus slugging percentage; measures how good hitters are at getting on base and hitting for power. Higher is better for batters.
+- **OPS** - On-base plus slugging percentage; measures how good hitters are at getting on base and hitting for power. Higher is better for batters.
 
-• **FIP** - Fielding Independent Pitching; measures pitcher performance on things they control (strikeouts, walks, home runs), ignoring fielding. Lower is better.
+- **FIP** - Fielding Independent Pitching; measures pitcher performance on things they control (strikeouts, walks, home runs), ignoring fielding. Lower is better.
 
 And there are other advaned statistics we use to enhance predictions that won't be covered here.
 
 ### Performance Metrics:
-• **Accuracy** - Simple percentage of games predicted correctly. Elo+ achieved 60.7% vs 52.2% baseline (always picking home team).
 
-• **Log-Loss** - Confidence penalty score that punishes being very wrong when very confident. Lower numbers are better.
+- **Accuracy**: Simple percentage of games predicted correctly
+  - **Example**: If we predict 100 games and get 58 right, accuracy = 58%
+  - **Limitation**: Doesn't account for confidence - being 51% confident vs 99% confident both count the same
 
-• **AUC (Area Under the ROC Curve)** - Ranking ability score measuring how well the system distinguishes good teams from bad teams. 0.5 is random guessing, 1.0 is perfect.
+- **Log-Loss (Logarithmic Loss)**: Measures how confident we are in correct predictions
+  - **Better**: Lower scores are better (0 is perfect, higher is worse)
+  - **Example**: Predict 90% confidence and team wins: Very low penalty; Predict 90% confidence and team loses: High penalty
+
+- **Brier Score**: Average of `(predicted_probability - actual_result)²`
+  - **Range**: 0 to 1 (lower is better)
+  - **Example**: Predict 70% and team wins (result=1): `(0.70 - 1.0)² = 0.09`
+  - **Advantage**: Rewards both accuracy and appropriate confidence levels
+
+**ROC AUC**: Area under receiver operating curve (discrimination ability)
+- **Range**: 0.5 (random) to 1.0 (perfect)  
+- **Interpretation**: Probability that model ranks a randomly chosen winning team higher than a randomly chosen losing team
 
 ## Show me the math!
 
@@ -284,5 +296,5 @@ $$
 
 <span id="1">1.</span> The Elo+ rating system uses [baseballr](https://cran.r-project.org/package=baseballr) for data collection and [ML.NET](https://dotnet.microsoft.com/en-us/apps/machinelearning-ai/ml-dotnet) for advanced machine learning capabilities. <a href="#1-back-to-top">^</a>
 
-<span id="2">2.</span> The baseline is the simplest possible prediction strategy. For Elo+, the baseline is always picking the home team to win. If the ML model beats this baseline by 8.5%, it means the model's accuracy is 8.5 percentage points higher than this naive approach. This shows the model has learned meaningful patterns beyond just picking the most common outcome. <a href="#2-back-to-top">^</a>
+<span id="2">2.</span> The baseline is the simplest possible prediction strategy. For Elo+, the baseline is always picking the home team to win. If the ML model beats this baseline by 2.8%, it means the model's accuracy is 2.8 percentage points higher than this naive approach. This shows the model has learned meaningful patterns beyond just picking the most common outcome. <a href="#2-back-to-top">^</a>
 
