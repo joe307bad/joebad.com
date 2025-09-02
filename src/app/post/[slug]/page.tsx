@@ -21,6 +21,7 @@ import remarkMath from 'remark-math'
 import rehypeKatex from "rehype-katex";
 import 'katex/dist/katex.min.css'
 import { Sticky } from "@/components/Sticky";
+import { ScrollToHash } from "@/components/ScrollToHash";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -177,6 +178,7 @@ export default async function PostPage({
 
   return (
     <>
+      <ScrollToHash />
       <Main
         title="Applied software research, a blog by Joe Badaczewski"
         isPage
