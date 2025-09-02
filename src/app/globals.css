@@ -177,4 +177,8 @@
     background-color: color-mix(in srgb, var(--color-surface) 50%, transparent);
   }
 
+  pre {
+    width: 100%;
+    overflow-x: auto;
+  }
 }
