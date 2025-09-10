@@ -142,19 +142,19 @@ export default async function Index() {
   const rss = await getRSSData();
   const projects = [
     {
+      title: "fastbreak",
+      description: "machine learning + sports analytics",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/fastbreak" },
+        { label: "research", href: "https://github.com/joe307bad/fastbreak/tree/main/server/src/Fastbreak.Research.Cli/Commands" },
+      ],
+    },
+    {
       title: "cards",
       description: "free, cozy card games",
       links: [
         { label: "source", href: "https://github.com/joe307bad/cards" },
         { label: "site", href: "https://cards.joebad.com" },
-      ],
-    },
-    {
-      title: "fastbreak",
-      description: "daily sports analytics",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/fastbreak" },
-        { label: "alpha", href: "https://github.com/joe307bad/fastbreak/releases" },
       ],
     },
     {
