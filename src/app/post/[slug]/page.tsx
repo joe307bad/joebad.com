@@ -22,6 +22,8 @@ import rehypeKatex from "rehype-katex";
 import 'katex/dist/katex.min.css'
 import { Sticky } from "@/components/Sticky";
 import { ScrollToHash } from "@/components/ScrollToHash";
+import { WeeklyPerformanceChart } from '@/components/02-fantasy-breakout-charts';
+import { WeeklyDataTable } from "@/components/02-fantasy-breakout-charts/WeeklyDataTable";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -208,7 +210,9 @@ export default async function PostPage({
                 HorizontalBarChart,
                 EnhancedChart,
                 EnhancedScatterPlot,
-                Sticky
+                Sticky,
+                WeeklyPerformanceChart,
+                WeeklyDataTable
               }} 
               options={{
                 mdxOptions: {
