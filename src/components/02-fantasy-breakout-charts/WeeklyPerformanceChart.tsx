@@ -250,7 +250,7 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
 
   if (loading) {
     return (
-      <div className="my-8">
+      <div>
         <h2 className="text-xl font-semibold mb-4">Loading fantasy breakout data...</h2>
       </div>
     );
@@ -258,7 +258,7 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
 
   if (error) {
     return (
-      <div className="my-8">
+      <div>
         <h2 className="text-xl font-semibold mb-4 text-red-600">Error loading data</h2>
         <p className="text-sm text-gray-600">
           Failed to load fantasy breakout data: {error}

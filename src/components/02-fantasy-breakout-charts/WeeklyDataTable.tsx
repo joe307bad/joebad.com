@@ -196,7 +196,7 @@ export function WeeklyDataTable() {
   const weekData = weeklyPredictions.find(w => w.week === currentWeek);
 
   return (
-    <div className="w-full my-8">
+    <div className="w-full">
       <div className="mb-4 flex items-center gap-4">
         <label htmlFor="week-selector" className="font-medium">
           Select Week for 2024:

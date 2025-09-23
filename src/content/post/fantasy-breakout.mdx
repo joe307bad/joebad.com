@@ -52,6 +52,26 @@ The consistency improvement is particularly significant - the hybrid model maint
 
 <WeeklyDataTable />
 
+<Sticky header="Open source written in R, F#, and trained using ML.NET">
+  This analysis leverages comprehensive NFL and fantasy football data sources processed through ML.NET:
+
+  **Data Sources:**
+  - **NFL Data**: `nflfastR` for player rosters and schedules; `nflreadr` for player stats, snap counts, roster data, and injury reports
+  - **Fantasy Data**: FantasyPros expert consensus rankings (ECR) for players ranked 100-300, excluding QBs
+
+  **Key Metrics Collected:**
+  - Second-year player rosters from the current season
+  - Snap counts with week-to-week changes (Year 1 and Year 2 data)
+  - Fantasy points with performance deltas (previous week vs current)
+  - Defense rankings from optional local CSV files
+  - Active roster status and injury report data
+  - Current week opponents for matchup analysis
+
+  **ML Pipeline**: The combined data feeds into an ML.NET SDCA Logistic Regression model that identifies second-year fantasy breakout candidates with comprehensive metrics for predictive analysis.
+  <br />
+  [You can follow these directions to recreate all the data in this blog post.](https://github.com/joe307bad/fastbreak/tree/560dc7ed9f58a8ffd226eeb6aa629ecb6efba909/server/src/Fastbreak.Research.Cli/Commands/02-nfl-fantasy-breakout-predict)
+</Sticky>
+
 ## Building the Hybrid Model: From Domain Expertise to Machine Learning
 
 ### Stage 1: The Composite Scoring Foundation
