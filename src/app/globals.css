@@ -8,12 +8,13 @@
     --color-bg: #ffecd1;
     --color-bg-dark: #111827;
     --color-surface: #ffffff;
+    --color-highlight: #fdbfb3;
     --color-text: #1f2937;
     --color-text-secondary: #6b7280;
     --color-primary-500: #ed2e07;
     --color-secondary-500: #f95738;
     --color-accent-500: #f95738;
-    --color-border: #e5e7eb;
+    --color-border: #6b7280;;
     --font-size-heading: theme(fontSize.lg);
     --font-size-heading2: theme(fontSize.xl);
     --font-size-heading3: theme(fontSize.base);
@@ -24,6 +25,7 @@
   .dark {
     --color-bg: #111827;
     --color-surface: #1f2937;
+    --color-highlight: #8828289b;
     --color-text: #f9fafb;
     --color-text-secondary: #d1d5db;
     --color-primary-500: #f87171;
