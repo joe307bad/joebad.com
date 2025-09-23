@@ -9,7 +9,7 @@ tags:
 
 ## Undervalued players in fantasy football
 
-Building predictive models for fantasy football presents unique challenges. The game involves countless variables ranging fromplayer health, team dynamics, and weather conditions, to coaching decisions and defensive matchups. This complexity, combined with the inherent volatility of single-game performances, makes accurate prediction particularly difficult. My approach to fantasy football has reflected this observation: I typically enable auto draft, minimize trades and transactions. I usaully adopt the role of watchmaker: creating my team and setting it in motion, intervening only when necessary.
+Building predictive models for fantasy football presents unique challenges. The game involves countless variables ranging from player health, team dynamics, and weather conditions, to coaching decisions and defensive matchups. This complexity, combined with the inherent volatility of single-game performances, makes accurate prediction particularly difficult. My approach to fantasy football has reflected this observation: I typically enable auto draft, minimize trades and transactions. I usaully adopt the role of watchmaker: creating my team and setting it in motion, intervening only when necessary.
 
 Yet despite these challenges, patterns do emerge. Players with certain characteristics like favorable matchups, increasing snap counts, or specific team situations, tend to outperform expectations more often than pure chance would suggest. Participants who can identify these patterns and understand current NFL dynamics gain meaningful advantages.
 
@@ -21,7 +21,9 @@ This blog post explores building a hybrid predictive model that combines domain 
 
 We analyzed 243 second-year player performances across 15 weeks of the 2024 NFL season (weeks 3-17), focusing on running backs, wide receivers, and tight ends. Each week, we predicted the top 10 most likely breakout candidates (players exceeding 5+ point fantasy improvement).
 
-First, we built a composite scoring model using six weighted factors: draft capital, performance history, age, expert consensus rankings, defensive matchups, and snap count trends. Across 150 top-10 predictions (10 per week × 15 weeks), this baseline model correctly identified 50 breakout performances, achieving 33.3% accuracy.
+We consider these second-year players "sleepers" because they have an [Expert Consensus Rating](https://www.fantasypros.com/about/faq/football-draft-accuracy-methodology/) (which is basically average fantasy draft position) of greater than 100. So in a league of 12 teams, most rosters would be full before these players are drafted.
+
+To build our predictive system, we start by building a composite scoring model using six weighted factors: draft capital, performance history, age, expert consensus rankings, defensive matchups, and snap count trends. Across 150 top-10 predictions (10 per week × 15 weeks), this baseline model correctly identified 50 breakout performances, achieving 33.3% accuracy.
 
 We then developed a confidence-based model that weighted our composite score (60%) with binary playing time indicators (20%) and performance momentum metrics (20%). This hybrid approach improved to 71 correct predictions from 150 opportunities - a 47.3% accuracy rate and 42% relative improvement over the baseline. 
 
@@ -46,7 +48,7 @@ The consistency improvement is particularly significant - the hybrid model maint
 
 ## Predictive results from analyzing 15 weeks in 2024
 
-<WeeklyPerformanceChart width={1000} height={500} />
+<WeeklyPerformanceChart />
 
 <WeeklyDataTable />
 
@@ -62,7 +64,7 @@ $$
 
 **Draft Capital Component (0-50 points)** - Weights draft position inversely, with undrafted free agents receiving maximum points based on the assumption that later selections have greater potential for performance gains.
 
-**Performance History Component (0-40 points)** - Quantifies Year 1 production gaps, assigning higher scores to players with minimal prior fantasy output.
+**Performance History Component (0-30 points)** - Quantifies Year 1 production gaps, assigning higher scores to players with minimal prior fantasy output.
 
 **Age Factor Component (0-20 points)** - Applies age-based weighting with younger players (≤22) receiving maximum scores.
 
@@ -126,32 +128,15 @@ This dual-sorting approach ensures we're comparing the best predictions from eac
 
 The machine learning enhancement allows the model to identify when the composite score should be weighted differently based on context. For example, it might learn that high composite scores are more predictive for running backs than wide receivers, or that snap count trends become more important late in the season.
 
-[placeholder for decision tree visualization showing ML model logic paths]
-
-## The Data
-
-We analyzed the 2024 NFL season, weeks 3-17, focusing on second-year players at skill positions (RB, WR, TE). The methodology:
-
-- **243 total player observations** across all weeks
-- **70/30 data split** for training and testing
-- **5.0 fantasy point threshold** to define a "breakout" performance
-- **Fair comparison methodology** limiting both models to their top 10 weekly predictions
-
 ## Week-by-Week Performance: The Hybrid Advantage
 
-Here's where the hybrid approach really shines. Let's look at how the enhanced model performed compared to using composite scoring alone:
-
-[placeholder for line chart showing weekly performance comparison: Composite Score Baseline vs Hybrid ML Model across weeks 3-17]
-
-Some clear patterns emerge:
+Here's where the hybrid approach really shines. When we look at how the enhanced model performed compared to using composite scoring alone, some clear patterns emerge.
 
 **Early Season (Weeks 3-6):** The hybrid model showed immediate improvement over the baseline composite approach. Week 3 saw 7 correct predictions versus 6 from composite scoring alone.
 
 **Mid-Season Volatility (Weeks 7-12):** This is where the machine learning enhancement really paid off. Week 8 demonstrated the hybrid model's superior adaptability with 7 hits compared to the baseline's 4 hits. Even in tough weeks like Week 10, both approaches struggled, but the hybrid model maintained slight advantages.
 
 **Late Season Surge (Weeks 13-17):** The hybrid model's pattern recognition capabilities became increasingly valuable as the season progressed, ending strong with 6 hits in Week 17 compared to the baseline composite method's 4.
-
-[placeholder for table showing cumulative success rates and hit percentages by time period]
 
 ## Why the Hybrid Approach Works: Leveraging Both Strengths
 
@@ -174,8 +159,6 @@ The machine learning layer adds capabilities that pure composite scoring cannot 
 **Non-Linear Relationships**: While a composite score might treat all "high opportunity" situations equally, ML can distinguish between different types of opportunity and their likelihood of success.
 
 **Temporal Learning**: The model adapts throughout the season, learning that certain patterns become more or less predictive as the year progresses.
-
-[placeholder for radar chart comparing methodologies across dimensions: Accuracy, Interpretability, Adaptability, User Trust, Implementation Complexity]
 
 ## Empirical Performance Analysis
 
@@ -203,24 +186,6 @@ The SDCA Logistic Regression model identifies which features most strongly predi
 
 ### Model Evaluation Metrics
 
-The ML.NET model evaluation on the 20% test set reveals strong predictive capabilities:
-
-$$
-Accuracy = \frac{TP + TN}{TP + TN + FP + FN}
-$$
-
-$$
-Precision = \frac{TP}{TP + FP}
-$$
-
-$$
-Recall = \frac{TP}{TP + FN}
-$$
-
-$$
-F1 = \frac{2 \times Precision \times Recall}{Precision + Recall}
-$$
-
 **ML.NET Binary Classification Metrics:**
 - **AUC (Area Under ROC Curve)**: 0.826 - Excellent discrimination ability
 - **Binary Accuracy**: 71.2% - Correct classification rate
@@ -238,8 +203,6 @@ $$
 - **Hybrid Recall**: 72.7% (Baseline: 27.3%)
 
 The F1 Score comparison demonstrates the substantial improvement: the hybrid model achieved 0.604 compared to baseline composite scoring's 0.300, representing a near-doubling of balanced prediction performance.
-
-[placeholder for confusion matrix visualization comparing true/false positives and negatives for both methods]
 
 The recall differential is particularly significant: the hybrid model identified 45.5% more actual breakout performances that the baseline composite method missed. From a practical standpoint, this means finding significantly more of those needle-in-the-haystack players who actually deliver big weeks.
 
@@ -266,8 +229,6 @@ Examining specific player predictions provides insight into where the hybrid mod
 **Josh Downs (WR, IND)** - Week 8: ML confidence of 37.5% identified a 20.9-point performance that composite scoring missed (score: 68). Another example of the ML model detecting actionable signals that traditional analysis overlooks.
 
 The pattern? The hybrid model excels at finding players with moderate-to-strong breakout potential that traditional methods miss, but the biggest fantasy explosions often remain unpredictable regardless of methodology.
-
-[placeholder for scatter plot showing ML confidence vs actual fantasy point delta, with composite scores as color coding]
 
 ## Understanding the Performance Differential: Data Complexity and Pattern Recognition
 
@@ -330,7 +291,3 @@ The 60/20/20 weighting (composite score/playing time/momentum) proved effective,
 For fantasy football analytics, this hybrid approach offers a practical path forward: leverage established knowledge about what drives player performance, then use machine learning to identify when and how those patterns apply differently across contexts. The result is better predictions that fantasy players can still understand and trust.
 
 The future of fantasy analytics likely lies in this type of thoughtful integration - not replacing human insights with algorithms, but using algorithms to enhance and contextualize human insights for better decision-making.
-
----
-
-*This analysis was conducted using real NFL data from the 2024 season with a rigorous train/test methodology. All code and data processing scripts are available for reproduction and validation.*

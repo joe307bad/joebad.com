@@ -199,7 +199,7 @@ export function WeeklyDataTable() {
     <div className="w-full my-8">
       <div className="mb-4 flex items-center gap-4">
         <label htmlFor="week-selector" className="font-medium">
-          Select Week:
+          Select Week for 2024:
         </label>
         <select
           id="week-selector"
@@ -207,13 +207,13 @@ export function WeeklyDataTable() {
           onChange={(e) => setCurrentWeek(Number(e.target.value))}
           className="px-3 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           style={{
-            backgroundColor: 'var(--color-background)',
+            backgroundColor: 'var(--color-bg)',
             color: 'var(--color-text)',
             borderColor: 'var(--color-border, #d1d5db)'
           }}
         >
           {weeklyPredictions.map(week => (
-            <option key={week.week} value={week.week}>
+            <option style={{ backgroundColor: 'var(--color-bg)' }} key={week.week} value={week.week}>
               Week {week.week}
             </option>
           ))}
