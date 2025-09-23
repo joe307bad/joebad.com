@@ -8,6 +8,7 @@ import {
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import { Sticky } from '../Sticky';
 
 interface PlayerPrediction {
   player: string;
@@ -219,7 +220,39 @@ export function WeeklyDataTable() {
         </select>
       </div>
 
-      {weekData && <WeeklyDataTableContent weekData={weekData} />}
+      {weekData && (
+        <>
+          <Sticky header={`Week ${weekData.week} Overview`}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <div className="text-sm opacity-70">Total Players</div>
+                <div className="text-xl font-bold">{weekData.totalPlayers}</div>
+              </div>
+              <div>
+                <div className="text-sm opacity-70">ML Top 10 Hits</div>
+                <div className="text-xl font-bold">{weekData.mlTop10Hits}/10</div>
+                <div className="text-xs opacity-70">
+                  {(weekData.mlPrecisionTop10 * 100).toFixed(0)}% accuracy
+                </div>
+              </div>
+              <div>
+                <div className="text-sm opacity-70">Sleeper Top 10 Hits</div>
+                <div className="text-xl font-bold">{weekData.sleeperTop10Hits}/10</div>
+                <div className="text-xs opacity-70">
+                  {(weekData.sleeperPrecisionTop10 * 100).toFixed(0)}% accuracy
+                </div>
+              </div>
+              <div>
+                <div className="text-sm opacity-70">Top 3 Hits</div>
+                <div className="text-xl font-bold">
+                  ML: {weekData.mlTop3Hits} | Sleeper: {weekData.sleeperTop3Hits}
+                </div>
+              </div>
+            </div>
+          </Sticky>
+          <WeeklyDataTableContent weekData={weekData} />
+        </>
+      )}
     </div>
   );
 }

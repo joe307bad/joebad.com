@@ -7,17 +7,17 @@ tags:
   - machine learning
 ---
 
-## Fantasy football is random
+## Undervalued players in fantasy football
 
-I have always asserted that the success of a fantasy football team is random. This belief has driven me to enable auto draft in the beginning of the season. During the season, I mostly avoid trades and transactions. I take the role of the watchmaker: I create my team and set it in motion, only intervening when absolutely necessary. I still love the gamble and the exposure I receive to players I normally wouldn't follow or hear about. So I play fantasy football every year hoping that gamble will hit.
+Building predictive models for fantasy football presents unique challenges. The game involves countless variables ranging fromplayer health, team dynamics, and weather conditions, to coaching decisions and defensive matchups. This complexity, combined with the inherent volatility of single-game performances, makes accurate prediction particularly difficult. My approach to fantasy football has reflected this observation: I typically enable auto draft, minimize trades and transactions. I usaully adopt the role of watchmaker: creating my team and setting it in motion, intervening only when necessary.
 
-Even though fantasy football is random, there are still edges a gambler can gain over the system. Participants with more knowledge and deeper understanding of the current NFL dynamics will have an advantage over other players.
+Yet despite these challenges, patterns do emerge. Players with certain characteristics like favorable matchups, increasing snap counts, or specific team situations, tend to outperform expectations more often than pure chance would suggest. Participants who can identify these patterns and understand current NFL dynamics gain meaningful advantages.
 
-More specifically, I believe there are always undervalued players about to break out - players sitting on waivers who would be excellent replacements for injured or underperforming roster players. My hypothesis: every week, there are 3-5 available players who will outperform the lowest performer on your roster by at least 5 points. Of those possible 5 players, there is probably 1 who has a high potential for have a 10+ breakout performance that deserved a starting roster spot. The challenge is identifying them before they have a breakout performance. Let's test this hypothesis.
+More specifically, I am fascinated by finding undervalued players. I believe there are always players sitting on waivers who would be excellent replacements for injured or underperforming roster players. My hypothesis: every week, there are 3-5 available players who will outperform the lowest performer on your roster by at least 5 points. Of those possible 5 players, there is probably 1 who has a high potential for have a 10+ breakout performance that deserved a starting roster spot. The challenge is identifying them before they have a breakout performance. Let's test this hypothesis.
 
 This blog post explores building a hybrid predictive model that combines domain expertise with machine learning. I developed a composite scoring system based on fantasy football fundamentals, then used that score as a key feature in a machine learning model. Using a dataset from the 2024 NFL season focusing on second-year player breakout predictions, I'll show how this hybrid approach improved predictive accuracy over using composite scoring alone.
 
-## Results: The Hybrid Advantage
+## Analyzing 2024 for breakout performances
 
 We analyzed 243 second-year player performances across 15 weeks of the 2024 NFL season (weeks 3-17), focusing on running backs, wide receivers, and tight ends. Each week, we predicted the top 10 most likely breakout candidates (players exceeding 5+ point fantasy improvement).
 
@@ -43,6 +43,8 @@ The data tells a clear story of improvement:
 - **Week 17**: 4 hits (composite) vs 6 hits (hybrid)
 
 The consistency improvement is particularly significant - the hybrid model maintained more stable performance across weeks, with fewer volatile swings between high and low-performing weeks.
+
+## Predictive results from analyzing 15 weeks in 2024
 
 <WeeklyPerformanceChart width={1000} height={500} />
 
