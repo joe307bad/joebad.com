@@ -17,13 +17,14 @@ import "../../page.css";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import remarkSubSuper from "remark-supersub";
-import remarkMath from 'remark-math'
+import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import 'katex/dist/katex.min.css'
+import "katex/dist/katex.min.css";
 import { Sticky } from "@/components/Sticky";
 import { ScrollToHash } from "@/components/ScrollToHash";
-import { WeeklyPerformanceChart } from '@/components/02-fantasy-breakout-charts';
+import { WeeklyPerformanceChart } from "@/components/02-fantasy-breakout-charts";
 import { WeeklyDataTable } from "@/components/02-fantasy-breakout-charts/WeeklyDataTable";
+import Link from "next/link";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -129,15 +130,8 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: post.title,
-      description:  post.subTitle,
-      images: [
-        {
-          url: `https://joebad.com/joe.png`,
-          width: 1200,
-          height: 630,
-          alt: "Joe Badaczewski - Senior Software Engineer",
-        },
-      ],
+      description: post.subTitle,
+      images: [ `https://joebad.com/joe.png` ],
       creator: "@joe307bad",
       site: "joebad.com",
     },
@@ -182,7 +176,7 @@ export default async function PostPage({
     <>
       <ScrollToHash />
       <Main
-        title="Applied software research, a blog by Joe Badaczewski"
+        title="  Applied software research"
         isPage
         activePage={post.slug}
       >
@@ -193,16 +187,22 @@ export default async function PostPage({
               {post.frontmatter.title}
             </h1>
             <h2 className="font-mono text-lg">{post.frontmatter.subTitle}</h2>
-            <time
-              dateTime={post.frontmatter.publishedAt}
-              className="text-sm text-(--color-text)"
-            >
-              {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
-            </time>
+            <div className="flex">
+              <p className="text-sm text-(--color-text) font-mono pr-2">
+                Published on {" "}
+                <time
+                  dateTime={post.frontmatter.publishedAt}
+                  className="text-sm text-(--color-text)"
+                >
+                  {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
+                </time>
+                 {"  "}//  Written by <Link href="/cv">Joe Badaczewski</Link>
+              </p>
+            </div>
             <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
-            <MDXRemote 
-              source={post.content} 
-              components={{ 
+            <MDXRemote
+              source={post.content}
+              components={{
                 SectionHeading,
                 Chart,
                 ScatterPlot,
@@ -212,20 +212,23 @@ export default async function PostPage({
                 EnhancedScatterPlot,
                 Sticky,
                 WeeklyPerformanceChart,
-                WeeklyDataTable
-              }} 
+                WeeklyDataTable,
+              }}
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm, remarkSubSuper, remarkMath],
                   rehypePlugins: [
-                    rehypeSlug, 
+                    rehypeSlug,
                     rehypeKatex,
-                    [rehypeAutolinkHeadings, {
-                      behavior: "prepend",
-                      content: [{ type: 'text', value: '# ' }]
-                    }]
-                  ]
-                }
+                    [
+                      rehypeAutolinkHeadings,
+                      {
+                        behavior: "prepend",
+                        content: [{ type: "text", value: "# " }],
+                      },
+                    ],
+                  ],
+                },
               }}
             />
           </div>

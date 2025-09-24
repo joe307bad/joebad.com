@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Main } from "../components/Main";
 import RecentActivity from "../components/RecentActivity";
 import { SectionHeading } from "../components/SectionHeading";
@@ -65,7 +66,7 @@ export const metadata = {
         url: `${baseUrl}/joe.png`,
         width: 1200,
         height: 630,
-        alt: 'Joe Badaczewski - Senior Software Engineer',
+        alt: "Joe Badaczewski - Senior Software Engineer",
       },
     ],
     locale: "en_US",
@@ -116,14 +117,16 @@ async function getRSSData(): Promise<ActivityData[]> {
     const items = xmlDoc.rss?.channel?.item || [];
     const itemsArray = Array.isArray(items) ? items : [items];
 
-    const rss: ActivityData[] = itemsArray.map((item: Record<string, string>) => ({
-      id: item.guid || item.link || "",
-      contentType: item.contentType,
-      title: item.title || "",
-      description: item.description || "",
-      link: item.link || "",
-      pubDate: item.pubDate || "",
-    }));
+    const rss: ActivityData[] = itemsArray.map(
+      (item: Record<string, string>) => ({
+        id: item.guid || item.link || "",
+        contentType: item.contentType,
+        title: item.title || "",
+        description: item.description || "",
+        link: item.link || "",
+        pubDate: item.pubDate || "",
+      })
+    );
 
     rss.sort(
       (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
@@ -146,7 +149,10 @@ export default async function Index() {
       description: "machine learning + sports analytics",
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" },
-        { label: "research", href: "https://github.com/joe307bad/fastbreak/tree/main/server/src/Fastbreak.Research.Cli/Commands" },
+        {
+          label: "research",
+          href: "https://github.com/joe307bad/fastbreak/tree/main/server/src/Fastbreak.Research.Cli/Commands",
+        },
       ],
     },
     {
@@ -176,8 +182,18 @@ export default async function Index() {
     <Main activePage="index">
       <SectionHeading>intro</SectionHeading>
       <p className="font-mono">
-        I am a senior software engineer specializing in web
-        application performance, distributed systems, and user interface design.
+        I am a senior software engineer specializing in web application
+        performance, distributed systems, and user interface design.
+        </p>
+        <p className="font-mono">
+        I also
+        {" "}<a
+          className="border-b-2 border-(--color-secondary-500) no-underline italic"
+          href={"blog"}
+        >
+          blog
+        </a>{" "}
+        about machine learning, sports analytics, and my latest research into software engineering.
       </p>
       <SectionHeading>projects</SectionHeading>
       <ul className="font-mono flex flex-col gap-6 md:gap-4">

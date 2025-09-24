@@ -100,7 +100,7 @@ export default async function BlogPage() {
   const posts: Post[] = await getPosts();
 
   return (
-    <Main title="Welcome, my name is Joe Badaczewski" isPage activePage="blog">
+    <Main title="  Welcome, my name is Joe Badaczewski" isPage activePage="blog">
       <SectionHeading>posts</SectionHeading>
       <h2>Applied software research, a blog by Joe Badaczewski</h2>
       <div className="flex flex-col">

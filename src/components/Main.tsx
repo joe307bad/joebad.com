@@ -3,7 +3,9 @@
 import { ArrowUpRight } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
+import Image from "next/image";
 import { ReactNode, useEffect, useState } from "react";
+import { SmallLogo } from "./SmallLogo";
 
 function DarkModeSwitch() {
   const [mounted, setMounted] = useState(false);
@@ -47,7 +49,7 @@ export function Main(props: {
 }) {
   const title =
     !props.title || props.title?.trim() === ""
-      ? "Welcome, my name is Joe Badaczewski"
+      ? "  Welcome, my name is Joe Badaczewski"
       : props.title;
 
   const [isHome, isCv, isBlog] = (() => {
@@ -67,7 +69,8 @@ export function Main(props: {
   return (
     <div id={id} className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
       <div className=" gap-4 flex flex-col">
-        <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-xl">
+        <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-lg">
+          <SmallLogo />
           {title}
         </h1>
         <div className="flex gap-4 max-w-[100%] overflow-y-auto">
