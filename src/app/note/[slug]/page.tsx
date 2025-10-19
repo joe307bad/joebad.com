@@ -28,13 +28,13 @@ import Link from "next/link";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
-  const postsDirectory = path.join(process.cwd(), "src/content/post");
-  const filenames = fs.readdirSync(postsDirectory);
+  const notesDirectory = path.join(process.cwd(), "src/content/note");
+  const filenames = fs.readdirSync(notesDirectory);
 
   return filenames
     .filter((name) => name.endsWith(".mdx"))
     .map((name) => {
-      const fullPath = path.join(postsDirectory, name);
+      const fullPath = path.join(notesDirectory, name);
       const fileContents = fs.readFileSync(fullPath, "utf8");
       const { data } = matter(fileContents);
 
@@ -44,23 +44,23 @@ export async function generateStaticParams() {
     });
 }
 
-async function getPostBySlug(slug: string) {
-  const postsDirectory = path.join(process.cwd(), "src/content/post");
-  const filenames = fs.readdirSync(postsDirectory);
+async function getNoteBySlug(slug: string) {
+  const notesDirectory = path.join(process.cwd(), "src/content/note");
+  const filenames = fs.readdirSync(notesDirectory);
 
   for (const filename of filenames) {
     if (!filename.endsWith(".mdx")) continue;
 
-    const fullPath = path.join(postsDirectory, filename);
+    const fullPath = path.join(notesDirectory, filename);
     const fileContents = fs.readFileSync(fullPath, "utf8");
     const { data, content } = matter(fileContents);
-    const postSlug = data.slug || filename.replace(".mdx", "");
+    const noteSlug = data.slug || filename.replace(".mdx", "");
 
-    if (postSlug === slug) {
+    if (noteSlug === slug) {
       return {
         frontmatter: data,
         content: content,
-        slug: postSlug,
+        slug: noteSlug,
       };
     }
   }
@@ -74,63 +74,60 @@ export async function generateMetadata({
   params: Promise<Record<string, string>>;
 }) {
   const params = await p;
-  const post = await getPostBySlug(params.slug).then((p) => p?.frontmatter);
+  const note = await getNoteBySlug(params.slug).then((p) => p?.frontmatter);
 
-  if (!post) {
+  if (!note) {
     return {
       title: "Post Not Found",
-      description: "The requested blog post could not be found.",
+      description: "The requested blog note could not be found.",
     };
   }
 
   const baseUrl = "https://joebad.com";
-  const postUrl = `${baseUrl}/post/${params.slug}`;
-  // const imageUrl = post.featuredImage
-  //   ? `${baseUrl}${post.featuredImage}`
-  //   : `${baseUrl}/default-og-image.jpg`;
-
+  const noteUrl = `${baseUrl}/note/${params.slug}`;
+  
   return {
     // Basic metadata
-    title: `${post.title}`,
-    description: post.subTitle,
-    keywords: post.tags?.join(", "),
+    title: `${note.title}`,
+    description: note.subTitle,
+    keywords: note.tags?.join(", "),
     authors: [{ name: "Joe Badaczewski" }],
     creator: "Joe Badaczewski",
     publisher: "joebad.com",
 
     // Canonical URL
     alternates: {
-      canonical: postUrl,
+      canonical: noteUrl,
     },
 
     // Open Graph
     openGraph: {
       type: "article",
-      title: post.title,
-      description: post.subTitle,
-      url: postUrl,
+      title: note.title,
+      description: note.subTitle,
+      url: noteUrl,
       siteName: "https://joebad.com",
       images: [
         {
           url: `https://joebad.com/joe.png`,
           width: 1200,
           height: 630,
-          alt: post.title,
+          alt: note.title,
         },
       ],
       locale: "en_US",
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
+      publishedTime: note.publishedAt,
+      modifiedTime: note.updatedAt,
       authors: ["Joe Badaczewski"],
-      section: post.category,
-      tags: post.tags,
+      section: note.category,
+      tags: note.tags,
     },
 
     // Twitter Card
     twitter: {
       card: "summary_large_image",
-      title: post.title,
-      description: post.subTitle,
+      title: note.title,
+      description: note.subTitle,
       images: [ `https://joebad.com/joe.png` ],
       creator: "@joe307bad",
       site: "joebad.com",
@@ -151,11 +148,11 @@ export async function generateMetadata({
 
     // Schema.org structured data
     other: {
-      "article:published_time": post.publishedAt,
-      "article:modified_time": post.updatedAt,
+      "article:published_time": note.publishedAt,
+      "article:modified_time": note.updatedAt,
       "article:author": "Joe Badaczewski",
-      "article:section": post.category,
-      "article:tag": post.tags?.join(","),
+      "article:section": note.category,
+      "article:tag": note.tags?.join(","),
     },
   };
 }
@@ -166,9 +163,9 @@ export default async function PostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const post = await getPostBySlug((await params).slug);
+  const note = await getNoteBySlug((await params).slug);
 
-  if (!post) {
+  if (!note) {
     notFound();
   }
 
@@ -176,32 +173,32 @@ export default async function PostPage({
     <>
       <ScrollToHash />
       <Main
-        title="  An essay by Joe Badaczewski"
+        title="  A note by Joe Badaczewski"
         isPage
-        activePage={post.slug}
+        activePage="notebook"
       >
         <article>
           <div className="pb-20 flex gap-4 flex-col">
-            <SectionHeading>post</SectionHeading>
+            <SectionHeading>note</SectionHeading>
             <h1 className="text-2xl font-bold font-mono">
-              {post.frontmatter.title}
+              {note.frontmatter.title}
             </h1>
-            <h2 className="font-mono text-lg">{post.frontmatter.subTitle}</h2>
+            <h2 className="font-mono text-lg">{note.frontmatter.subTitle}</h2>
             <div className="flex">
               <p className="text-sm text-(--color-text) font-mono pr-2">
                 Published on {" "}
                 <time
-                  dateTime={post.frontmatter.publishedAt}
+                  dateTime={note.frontmatter.publishedAt}
                   className="text-sm text-(--color-text)"
                 >
-                  {format(post.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
+                  {format(note.frontmatter.publishedAt, "EEEE, MMMM dd, yyyy")}
                 </time>
                  {"  "}//  Written by <Link href="/cv">Joe Badaczewski</Link>
               </p>
             </div>
             <div className="border-t-2 border-dotted border-(--color-primary-500) py-2 mt-4"></div>
             <MDXRemote
-              source={post.content}
+              source={note.content}
               components={{
                 SectionHeading,
                 Chart,

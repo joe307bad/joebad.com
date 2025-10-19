@@ -52,16 +52,20 @@ export function Main(props: {
       ? "  Welcome, my name is Joe Badaczewski"
       : props.title;
 
-  const [isHome, isCv, isBlog] = (() => {
+  const [isHome, isCv, isBlog, isNotes] = (() => {
     if (props.activePage === "index") {
-      return [true, false, false];
+      return [true, false, false, false];
     }
 
     if (props.activePage === "cv") {
-      return [false, true, false];
+      return [false, true, false, false];
     }
 
-    return [false, false, true];
+    if (props.activePage === "notebook") {
+      return [false, false, false, true];
+    }
+
+    return [false, false, true, false];
   })();
 
   const id = props.isPage ? "page" : "";
@@ -106,6 +110,17 @@ export function Main(props: {
               </Link>
               <div className="text-(--color-primary-500)">
                 {isBlog ? "•" : ""}
+              </div>
+            </div>
+            <div className="flex flex-col items-center">
+              <Link
+                href="/notebook"
+                className="border-b-2 border-(--color-secondary-500)"
+              >
+                notebook
+              </Link>
+              <div className="text-(--color-primary-500)">
+                {isNotes ? "•" : ""}
               </div>
             </div>
             <div className="flex flex-col items-center">
