@@ -45,11 +45,14 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
       .then(jsonData => {
         setOverallStats(jsonData.overallStats);
 
+        // Sort weekly predictions by week to ensure continuous lines
+        const sortedPredictions = jsonData.weeklyPredictions.sort((a: WeeklyPrediction, b: WeeklyPrediction) => a.week - b.week);
+
         const transformedData: ChartData[] = [
           {
             name: 'Sleeper Score - Top 10 Hits',
             color: '#4a90e2',
-            values: jsonData.weeklyPredictions.map((d: WeeklyPrediction) => ({
+            values: sortedPredictions.map((d: WeeklyPrediction) => ({
               x: d.week,
               y: d.sleeperTop10Hits
             }))
@@ -57,7 +60,7 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
           {
             name: 'Sleeper Score - Top 3 Hits',
             color: '#ff6b6b',
-            values: jsonData.weeklyPredictions.map((d: WeeklyPrediction) => ({
+            values: sortedPredictions.map((d: WeeklyPrediction) => ({
               x: d.week,
               y: d.sleeperTop3Hits
             }))
@@ -65,7 +68,7 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
           {
             name: 'ML - Top 10 hits',
             color: '#51cf66',
-            values: jsonData.weeklyPredictions.map((d: WeeklyPrediction) => ({
+            values: sortedPredictions.map((d: WeeklyPrediction) => ({
               x: d.week,
               y: d.mlTop10Hits
             }))
@@ -73,7 +76,7 @@ export function WeeklyPerformanceChart({}: WeeklyPerformanceChartProps) {
           {
             name: 'ML - Top 3 hits',
             color: '#ffa726',
-            values: jsonData.weeklyPredictions.map((d: WeeklyPrediction) => ({
+            values: sortedPredictions.map((d: WeeklyPrediction) => ({
               x: d.week,
               y: d.mlTop3Hits
             }))

@@ -88,6 +88,7 @@ function WeeklyDataTableContent({ weekData }: { weekData: WeeklyPrediction }) {
 
   const predictions = React.useMemo(() => {
     const merged: PlayerPrediction[] = [...weekData.mlTop10Predictions];
+    debugger;
     const sleeperOnly = weekData.sleeperTop10Predictions.filter(
       s => !merged.some(p => p.player === s.player)
     );
@@ -170,10 +171,11 @@ export function WeeklyDataTable() {
       })
       .then(jsonData => {
         const predictions: WeeklyPrediction[] = jsonData.weeklyPredictions;
-        setWeeklyPredictions(predictions);
+        const sortedPredictions = predictions.sort((a, b) => a.week - b.week);
+        setWeeklyPredictions(sortedPredictions);
 
-        if (currentWeek === 0 && predictions.length > 0) {
-          setCurrentWeek(predictions[predictions.length - 1].week);
+        if (currentWeek === 0 && sortedPredictions.length > 0) {
+          setCurrentWeek(sortedPredictions[sortedPredictions.length - 1].week);
         }
 
         setLoading(false);

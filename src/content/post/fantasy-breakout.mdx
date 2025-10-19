@@ -17,15 +17,97 @@ More specifically, I am fascinated by finding undervalued players. I believe the
 
 This blog post explores building a hybrid predictive model that combines domain expertise with machine learning. I developed a composite scoring system based on fantasy football fundamentals, then used that score as a key feature in a machine learning model. Using a dataset from the 2024 NFL season focusing on second-year player breakout predictions, I'll show how this hybrid approach improved predictive accuracy over using composite scoring alone.
 
+## The Sleeper Score: Quantifying Breakout Potential
+
+Before diving into machine learning, we need a solid foundation built on fantasy football fundamentals. The Sleeper Score is a composite metric designed to identify players with the highest probability of breaking out. It combines six weighted factors that fantasy experts have long recognized as predictive of future success, now quantified into a systematic 175-point scale.
+
+### The Six Components of Sleeper Score
+
+**1. Draft Capital (0-50 points) - The Opportunity Indicator**
+
+Draft position reveals how NFL teams value a player's talent. The inverse weighting - where undrafted free agents score highest - reflects our focus on finding undervalued players. Players drafted early have already proven themselves; we're hunting for late-round picks and UDFAs who will exceed expectations.
+
+- Undrafted Free Agent (UDFA): 50 points
+- Draft pick > 200: 40 points
+- Draft pick > 150: 30 points
+- Draft pick > 100: 20 points
+- Draft pick > 50: 10 points
+- Draft pick ≤ 50: 0 points
+
+**2. Performance History (0-30 points) - The Upside Gap**
+
+Players with minimal Year 1 production have nowhere to go but up. This component rewards players who showed limited fantasy output in their rookie season, as they represent the largest potential improvement opportunity.
+
+- Low production (&lt; 6 PPG for RB/WR, &lt; 4 PPG for TE): 30 points
+- Minimal fantasy points: 20 points
+- Moderate production (1-1.5x threshold): 20 points
+- Higher production: 0 points
+
+**3. Age Factor (0-20 points) - The Youth Advantage**
+
+Younger players typically show steeper development curves. Players 22 and under are in prime physical development years and have more career runway for breakout performances.
+
+- Age ≤ 22: 20 points
+- Age ≤ 23: 15 points
+- Age ≤ 24: 10 points
+- Age > 24: 0 points
+
+**4. Expert Consensus Ranking (0-20 points) - The Market Inefficiency**
+
+FantasyPros ECR reveals where the fantasy community values players. Higher scores go to players with worse rankings (higher ECR numbers), indicating market undervaluation. This identifies the "wisdom of crowds" inefficiencies.
+
+$$
+\text{ECR Score} = 20 - \left(\frac{\text{ecr} - \text{min\_ecr}}{\text{max\_ecr} - \text{min\_ecr}}\right) \times 20
+$$
+
+**5. Defensive Matchup (0-30 points) - The Weekly Catalyst**
+
+Matchups matter enormously in single-week performance. This position-specific component evaluates whether a player faces a weak defense in their relevant category (rush defense for RBs, pass defense for WRs/TEs).
+
+- Opponent ranked 29-32 (worst defenses): 30 points
+- Opponent ranked 25-28: 25 points
+- Opponent ranked 21-24: 20 points
+- Opponent ranked 17-20: 15 points
+- Opponent ranked 13-16: 10 points
+- Opponent ranked 9-12: 5 points
+- Opponent ranked 1-8 (best defenses): 0 points
+
+**6. Snap Count Trends (0-15 points) - The Momentum Signal**
+
+Increasing playing time is the strongest leading indicator of fantasy production. This uses a 2-week sliding window to capture recent snap percentage momentum while filtering out single-week anomalies.
+
+- Average delta ≥10%: 15 points (major increase)
+- Average delta ≥5%: 12 points (significant increase)
+- Average delta ≥2%: 8 points (moderate increase)
+- Average delta >0%: 5 points (small increase)
+- Average delta ≥-2%: 2 points (stable)
+- Average delta &lt;-2%: 0 points (declining)
+
+### Why This Rubric Identifies Breakout Candidates
+
+The Sleeper Score succeeds because it captures the **convergence of opportunity and talent** that drives fantasy breakouts:
+
+**Opportunity Identification:** The draft capital, snap trends, and matchup components identify when players are getting their chance. A UDFA with increasing snaps facing a bottom-tier defense represents maximum opportunity.
+
+**Talent Validation:** While draft position matters, the age and ECR components ensure we're focusing on players the NFL and fantasy community still view as having upside. These aren't washed-up veterans—they're young players whose talent hasn't yet translated to fantasy production.
+
+**Performance Gap:** The inverse relationship with Year 1 production is crucial. Players who barely played or produced poorly have massive room for improvement. A player averaging 2 PPG can realistically jump to 12+ PPG with increased opportunity. A player already at 10 PPG would need to reach elite status (20+ PPG) for similar improvement—far less likely for a waiver wire candidate.
+
+**Weekly Volatility Capture:** Unlike seasonal projections, this rubric evaluates week-by-week factors (matchups, snap trends) that drive single-game explosions. Fantasy managers need players who can win a specific week, not necessarily maintain season-long consistency.
+
+**Market Inefficiency Exploitation:** By focusing on players ranked outside the top 100 in ECR, we're targeting the space where fantasy managers aren't paying attention. These players sit on waivers, available for free, despite having quantifiable breakout indicators.
+
+The 175-point maximum scale provides granular differentiation between candidates, allowing the machine learning model to learn which factor combinations most reliably predict actual breakouts. As we'll see in the analysis below, this composite score serves as the foundation for our hybrid ML approach, providing domain expertise that pure statistical models would struggle to discover independently.
+
 ## Analyzing 2024 for breakout performances
 
-We analyzed 243 second-year player performances across 15 weeks of the 2024 NFL season (weeks 3-17), focusing on running backs, wide receivers, and tight ends. Each week, we predicted the top 10 most likely breakout candidates (players exceeding 5+ point fantasy improvement).
+We analyzed 263 second-year player performances across 16 weeks of the 2024 NFL season (weeks 3-18), focusing on running backs, wide receivers, and tight ends. Each week, we predicted the top 10 most likely breakout candidates (players exceeding 5+ point fantasy improvement).
 
 We consider these second-year players "sleepers" because they have an [Expert Consensus Rating](https://www.fantasypros.com/about/faq/football-draft-accuracy-methodology/) (which is basically average fantasy draft position) of greater than 100. So in a league of 12 teams, most rosters would be full before these players are drafted.
 
-To build our predictive system, we start by building a composite scoring model using six weighted factors: draft capital, performance history, age, expert consensus rankings, defensive matchups, and snap count trends. Across 150 top-10 predictions (10 per week × 15 weeks), this baseline model correctly identified 50 breakout performances, achieving 33.3% accuracy.
+To build our predictive system, we start by building a composite scoring model using six weighted factors: draft capital, performance history, age, expert consensus rankings, defensive matchups, and snap count trends. Across 160 top-10 predictions (10 per week × 16 weeks), this baseline model correctly identified 39 breakout performances, achieving 24.4% accuracy.
 
-We then developed a confidence-based model that weighted our composite score (60%) with binary playing time indicators (20%) and performance momentum metrics (20%). This hybrid approach improved to 71 correct predictions from 150 opportunities - a 47.3% accuracy rate and 42% relative improvement over the baseline. 
+We then developed a confidence-based model that weighted our composite score (60%) with binary playing time indicators (20%) and performance momentum metrics (20%). This hybrid approach improved to 51 correct predictions from 160 opportunities - a 31.9% accuracy rate and 31% relative improvement over the baseline. 
 
 The hybrid approach demonstrates meaningful improvements in prediction accuracy and consistency across the 2024 NFL season, making it more reliable for fantasy football decision-making.
 
@@ -33,20 +115,21 @@ The data tells a clear story of improvement:
 
 | Metric | Baseline Composite | Hybrid ML Model | Improvement |
 |--------|-------------------|-----------------|-------------|
-| **Weekly Accuracy** | 33.3% | 47.3% | +14.0 pts |
-| **Total Correct Predictions** | 50 hits | 71 hits | +42% |
+| **Weekly Accuracy** | 24.4% | 31.9% | +7.5 pts |
+| **Total Correct Predictions** | 39 hits | 51 hits | +31% |
 | **False Positive Rate** | Lower precision | Higher precision | Varies by week |
-| **Best Week Performance** | 6 hits (Week 3) | 8 hits (Week 3) | +33% |
+| **Best Week Performance** | 6 hits (Week 4) | 8 hits (Week 3, 4) | +33% |
 | **Consistency** | More volatile | More stable | Better reliability |
 
 **Weekly Performance Highlights:**
-- **Week 3**: 6 hits (composite) vs 8 hits (hybrid)
-- **Week 8**: 4 hits (composite) vs 5 hits (hybrid)
-- **Week 17**: 4 hits (composite) vs 6 hits (hybrid)
+- **Week 3**: 2 hits (composite) vs 8 hits (hybrid) - Best ML performance
+- **Week 4**: 6 hits (composite) vs 8 hits (hybrid) - Both models performed well
+- **Week 16**: 2 hits (composite) vs 6 hits (hybrid) - Late season improvement
+- **Week 17**: 2 hits (composite) vs 6 hits (hybrid) - Strong finish
 
 The consistency improvement is particularly significant - the hybrid model maintained more stable performance across weeks, with fewer volatile swings between high and low-performing weeks.
 
-## Predictive results from analyzing 15 weeks in 2024
+## Predictive results from analyzing 16 weeks in 2024
 
 <WeeklyPerformanceChart />
 
@@ -152,11 +235,11 @@ The machine learning enhancement allows the model to identify when the composite
 
 Here's where the hybrid approach really shines. When we look at how the enhanced model performed compared to using composite scoring alone, some clear patterns emerge.
 
-**Early Season (Weeks 3-6):** The hybrid model showed immediate improvement over the baseline composite approach. Week 3 saw 7 correct predictions versus 6 from composite scoring alone.
+**Early Season (Weeks 3-6):** The hybrid model showed immediate improvement over the baseline composite approach. Week 3 saw 8 correct predictions versus 2 from composite scoring alone, and Week 4 maintained strong performance with 8 hits versus 6 from the baseline.
 
-**Mid-Season Volatility (Weeks 7-12):** This is where the machine learning enhancement really paid off. Week 8 demonstrated the hybrid model's superior adaptability with 7 hits compared to the baseline's 4 hits. Even in tough weeks like Week 10, both approaches struggled, but the hybrid model maintained slight advantages.
+**Mid-Season Volatility (Weeks 7-12):** This is where the machine learning enhancement really paid off. Week 8 demonstrated the hybrid model's superior adaptability with 7 hits compared to the baseline's 2 hits. Week 11 showed similarly strong performance with 5 ML hits versus 2 from composite scoring. Even in tough weeks like Week 10, both approaches struggled, but the hybrid model maintained advantages with 3 hits versus 2.
 
-**Late Season Surge (Weeks 13-17):** The hybrid model's pattern recognition capabilities became increasingly valuable as the season progressed, ending strong with 6 hits in Week 17 compared to the baseline composite method's 4.
+**Late Season Surge (Weeks 13-18):** The hybrid model's pattern recognition capabilities became increasingly valuable as the season progressed. Week 16 and Week 17 both showed 6 ML hits compared to just 2 from the baseline composite method, demonstrating strong finishing performance.
 
 ## Why the Hybrid Approach Works: Leveraging Both Strengths
 
@@ -214,17 +297,12 @@ The SDCA Logistic Regression model identifies which features most strongly predi
 - **Positive Recall**: 72.7% - Catches 72.7% of actual breakouts
 
 **Comparative Performance Metrics:**
-- **Hybrid Model Accuracy**: 71.2%
-- **Baseline Composite Accuracy**: 61.6%
-- **Performance Improvement**: +9.6 percentage points
+- **Hybrid Model Top-10 Accuracy**: 31.9% (51 hits / 160 opportunities)
+- **Baseline Composite Top-10 Accuracy**: 24.4% (39 hits / 160 opportunities)
+- **Performance Improvement**: +7.5 percentage points (+31% relative improvement)
+- **Overall ML Prediction Accuracy**: 34.9% (across all predictions, not just top 10)
 
-**Precision and Recall Analysis:**
-- **Hybrid Precision**: 51.6% (Baseline: 33.3%)
-- **Hybrid Recall**: 72.7% (Baseline: 27.3%)
-
-The F1 Score comparison demonstrates the substantial improvement: the hybrid model achieved 0.604 compared to baseline composite scoring's 0.300, representing a near-doubling of balanced prediction performance.
-
-The recall differential is particularly significant: the hybrid model identified 45.5% more actual breakout performances that the baseline composite method missed. From a practical standpoint, this means finding significantly more of those needle-in-the-haystack players who actually deliver big weeks.
+The comparative metrics demonstrate meaningful improvement: the hybrid model correctly identified 31% more breakout performances than the baseline composite method. From a practical standpoint, this means finding significantly more of those league-winning waiver wire pickups that deliver big weeks.
 
 ## Case Study Analysis: 2024 Performance Examples
 
@@ -232,21 +310,19 @@ Examining specific player predictions provides insight into where the hybrid mod
 
 **Biggest ML Successes (Model Actually Predicted These):**
 
-**Jordan Addison (WR, Minnesota)** - Week 14: The biggest individual performance capture. ML confidence of 36.8% correctly identified a massive 29.9-point explosion while composite scoring missed it entirely (score: 76). This was the ML model's top 10 prediction that delivered the highest fantasy return.
+**Tyjae Spears (RB, Tennessee)** - Week 15: ML confidence of 51.5% correctly identified a massive 23.9-point explosion despite a low composite score of 59. This demonstrates the ML model's ability to find value where traditional metrics fall short.
 
-**Dontayvion Wicks (WR, Green Bay)** - Week 4: ML confidence of 38.6% and composite score of 120 both identified this 24.8-point breakout. Shows how the hybrid approach works best when both systems align.
+**Jordan Addison (WR, Minnesota)** - Week 4: ML confidence of 70.3% correctly identified a 22.9-point breakout with low composite scoring (46). This high-confidence prediction showcases when the model is most certain.
 
-**Tyjae Spears (RB, Tennessee)** - Week 15: ML confidence of 37.7% and composite score of 89 both caught this 23.9-point explosion. Another example of successful convergence between methods.
+**Quentin Johnston (WR, LAC)** - Week 9: ML confidence of 57.2% identified a 22.0-point breakout despite very low composite scoring (57). Shows the model can find value in unexpected places.
 
 **Strong ML-Only Successes:**
 
-**Jordan Addison (WR, Minnesota)** - Week 4: ML confidence of 39.5% identified a 22.9-point breakout that composite scoring missed (score: 66). Demonstrates the ML layer's ability to detect patterns beyond traditional metrics.
+**Jaxon Smith-Njigba (WR, Seattle)** - Week 11: ML confidence of 79.0% correctly predicted a 21.8-point performance while composite scoring was too low (57) to make the top 10. This was one of the highest confidence ML predictions that paid off.
 
-**Jaxon Smith-Njigba (WR, Seattle)** - Week 11: ML confidence of 44.5% correctly predicted a 21.8-point performance while composite scoring was too low (67) to make the top 10. This was one of the highest confidence ML predictions that paid off.
+**Tank Bigsby (RB, JAX)** - Week 7: ML confidence of 58.6% identified a 21.4-point breakout with composite score of 89. Shows convergence between both methods.
 
-**Quentin Johnston (WR, LAC)** - Week 9: ML confidence of 37.4% identified a 22.0-point breakout despite very low composite scoring (57). Shows the model can find value in unexpected places.
-
-**Josh Downs (WR, IND)** - Week 8: ML confidence of 37.5% identified a 20.9-point performance that composite scoring missed (score: 68). Another example of the ML model detecting actionable signals that traditional analysis overlooks.
+**Josh Downs (WR, IND)** - Week 8: ML confidence of 68.2% identified a 20.9-point performance that composite scoring missed (score: 36). Another example of the ML model detecting actionable signals that traditional analysis overlooks.
 
 The pattern? The hybrid model excels at finding players with moderate-to-strong breakout potential that traditional methods miss, but the biggest fantasy explosions often remain unpredictable regardless of methodology.
 
@@ -304,9 +380,9 @@ Our analysis illuminates several promising research directions:
 
 ## Conclusion
 
-This analysis demonstrates that hybrid approaches can achieve meaningful improvements over traditional methods while maintaining practical advantages. By using domain expertise as the foundation and machine learning as the enhancement layer, we improved predictive accuracy by nearly 10 percentage points while keeping the model largely interpretable.
+This analysis demonstrates that hybrid approaches can achieve meaningful improvements over traditional methods while maintaining practical advantages. By using domain expertise as the foundation and machine learning as the enhancement layer, we improved predictive accuracy by 7.5 percentage points (31% relative improvement) while keeping the model largely interpretable.
 
-The 60/20/20 weighting (composite score/playing time/momentum) proved effective, suggesting that domain knowledge should remain the primary signal with ML providing contextual adjustments. The recall improvement was particularly valuable - identifying 45% more actual breakout performances means finding more of those league-winning waiver wire pickups.
+The 60/20/20 weighting (composite score/playing time/momentum) proved effective, suggesting that domain knowledge should remain the primary signal with ML providing contextual adjustments. The improvement translates to identifying 31% more actual breakout performances than composite scoring alone, meaning more league-winning waiver wire pickups across a 16-week season.
 
 For fantasy football analytics, this hybrid approach offers a practical path forward: leverage established knowledge about what drives player performance, then use machine learning to identify when and how those patterns apply differently across contexts. The result is better predictions that fantasy players can still understand and trust.
 
