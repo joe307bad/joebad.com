@@ -108,14 +108,36 @@ function ProjectLink({ href, children }: ProjectLinkProps) {
 
 async function getRSSData(): Promise<ActivityData[]> {
   try {
-    const response = await fetch("https://rss.joebad.com");
+    console.log('[RSS Feed] Fetching from rss.joebad.com...');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const response = await fetch("https://rss.joebad.com", {
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      console.error(`[RSS Feed] HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const xmlText = await response.text();
+    console.log(`[RSS Feed] Received XML, length: ${xmlText.length} characters`);
+
+    if (!xmlText || xmlText.length === 0) {
+      console.error('[RSS Feed] Received empty response');
+      throw new Error('Empty response from RSS feed');
+    }
 
     const parser = new XMLParser();
     const xmlDoc = parser.parse(xmlText);
 
     const items = xmlDoc.rss?.channel?.item || [];
     const itemsArray = Array.isArray(items) ? items : [items];
+
+    console.log(`[RSS Feed] Parsed ${itemsArray.length} items`);
 
     const rss: ActivityData[] = itemsArray.map(
       (item: Record<string, string>) => ({
@@ -132,9 +154,15 @@ async function getRSSData(): Promise<ActivityData[]> {
       (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
     );
 
+    console.log(`[RSS Feed] Successfully fetched and sorted ${rss.length} items`);
     return rss;
   } catch (error) {
-    console.error("Failed to fetch RSS data:", error);
+    console.error("[RSS Feed] Failed to fetch RSS data:", error);
+    console.error("[RSS Feed] Error details:", {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      name: error instanceof Error ? error.name : 'Unknown',
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     return [];
   }
 }
