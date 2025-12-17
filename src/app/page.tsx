@@ -195,8 +195,7 @@ export default async function Index() {
       title: "void",
       description: "a simple, intergalactic strategy game",
       links: [
-        { label: "source", href: "https://github.com/joe307bad/end" },
-        { label: "site", href: "https://void.joebad.com" },
+        { label: "source", href: "https://github.com/joe307bad/end" }
       ],
     },
     {
