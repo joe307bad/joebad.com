@@ -178,8 +178,8 @@ export default async function Index() {
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" },
         {
-          label: "research",
-          href: "https://github.com/joe307bad/fastbreak/tree/main/server/src/Fastbreak.Research.Cli/Commands",
+          label: "site",
+          href: "https://fastbreak.joebad.com",
         },
       ],
     },
