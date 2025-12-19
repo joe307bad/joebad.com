@@ -174,7 +174,7 @@ export default async function Index() {
   const projects = [
     {
       title: "fastbreak",
-      description: "machine learning + sports analytics",
+      description: "the fastest sports analytics dashboard",
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" },
         {
