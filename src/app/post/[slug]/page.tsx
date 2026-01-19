@@ -25,6 +25,8 @@ import { ScrollToHash } from "@/components/ScrollToHash";
 import { WeeklyPerformanceChart } from "@/components/02-fantasy-breakout-charts";
 import { WeeklyDataTable } from "@/components/02-fantasy-breakout-charts/WeeklyDataTable";
 import Link from "next/link";
+import FastbreakArchitectureFlow from "@/components/FastbreakArchitectureFlow";
+import NumberLabel from "@/components/NumberLabel";
 
 // Generate static params for all MDX files
 export async function generateStaticParams() {
@@ -85,9 +87,7 @@ export async function generateMetadata({
 
   const baseUrl = "https://joebad.com";
   const postUrl = `${baseUrl}/post/${params.slug}`;
-  // const imageUrl = post.featuredImage
-  //   ? `${baseUrl}${post.featuredImage}`
-  //   : `${baseUrl}/default-og-image.jpg`;
+  const ogImageUrl = `${baseUrl}/og/${params.slug}.png`;
 
   return {
     // Basic metadata
@@ -105,16 +105,16 @@ export async function generateMetadata({
 
     // Open Graph
     openGraph: {
-      type: "article",
+      type: "website",
       title: post.title,
       description: post.subTitle,
       url: postUrl,
       siteName: "https://joebad.com",
       images: [
         {
-          url: `https://joebad.com/joe.png`,
-          width: 1200,
-          height: 630,
+          url: ogImageUrl,
+          width: 516,
+          height: 270,
           alt: post.title,
         },
       ],
@@ -131,9 +131,9 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: post.title,
       description: post.subTitle,
-      images: [ `https://joebad.com/joe.png` ],
+      images: [ogImageUrl],
       creator: "@joe307bad",
-      site: "joebad.com",
+      site: "@joe307bad",
     },
 
     // Additional SEO
@@ -213,6 +213,8 @@ export default async function PostPage({
                 Sticky,
                 WeeklyPerformanceChart,
                 WeeklyDataTable,
+                FastbreakArchitectureFlow,
+                NumberLabel
               }}
               options={{
                 mdxOptions: {

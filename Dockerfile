@@ -7,9 +7,10 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies with yarn
+# Install dependencies with yarn (excluding canvas which is only for local OG generation)
 COPY package.json yarn.lock ./
-RUN yarn --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-scripts || true
+RUN rm -rf node_modules/canvas
 
 # Rebuild the source code only when needed
 FROM base AS builder

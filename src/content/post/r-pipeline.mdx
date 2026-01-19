@@ -1,0 +1,76 @@
+---
+title: Building an automated R pipeline for sports analytics
+category: architecture
+publishedAt: 2026-01-19
+subTitle: Using R, cron, and docker to generate advanced sports analytics
+tags:
+  - sports analytics
+  - docker
+---
+
+import FastbreakArchitectureFlow from '@/components/FastbreakArchitectureFlow';
+
+## Building systems that are fast
+
+I have a lot of fun building systems that are fast, automated, and user friendly. My latest system/side-project is a web/mobile app called [fastbreak](https://fastbreak.joebad.com/docs) that collects sports analytics from various sources and aggregates it into visualizations that tell a story. The code that powers fastbreak can be [viewed in GitHub](https://github.com/joe307bad/fastbreak). 
+
+I am fascinated by using data to tell a story. But to get to the story we need the data and to get to the data we want a system to extract and transform efficiently. 
+
+## The fastbreak architecture
+
+<FastbreakArchitectureFlow />
+
+<Sticky header="Enjoy sports analytics? Download fastbreak!">
+Fastbreak is a dashboard that highlights advanced sports statistics across multiple leagues. Fastbreak is built to be fast, free, and full of mobile-friendly, interactive charts. It is in early development, but you can join the beta with these links.
+<br />
+iOS - [Download iOS (download TestFlight)](https://testflight.apple.com/join/NnxqNunM)<br />
+Android - [Download Android (join Google Group)](https://groups.google.com/g/fastbreak-beta-testers)<br />
+Web - https://fastbreak.joebad.com
+</Sticky>
+
+First, let's explain fastbreak as simply as possible: a mobile-friendly set of charts (scatter plots, line charts, etc.) that uses data extracted from R packages. The above diagram shows the essential parts of fastbreak: generating/aggregating the data and delivering it to the client as fast as possible. Let's dive deep into each section and how data flows through the system:
+
+### Client applications
+
+[The client applications use Kotlin Multiplatform](https://github.com/joe307bad/fastbreak/tree/main/kmp) which builds native iOS and Android apps. And the web version is built using NextJS.
+
+I love mobile development and have been building React Native apps professionally since it came out in 2015. I chose Kotlin Multiplatform to experiment with something new. I tried building the web version with Kotlin Multiplatform but it lacked accessibility and charting features. I have a lot of experience with NextJS and it is very easy to build visualization heavy, statically generated websites with NextJS.
+
+The primary objective of the client applications is to be offline-first and load/render as quickly as possible. For iOS and Android this means caching heavily and only relying on a network connection when the user explicitly desires to update cached data. For NextJS, I am leaning heavily on generating charts statically. In the future, I would like to make the web version more offline-first by using client side database libraries and sync engines; for this first iteration, static content with aggressive cacheing will be sufficient.
+
+When a user first opens fastbreak, they request the "chart registry". The chart registry is just a list of charts and the last time each chart has been updated. We cache this registry until the user manually initiates another request to get the updated registry. When a user manually requests an updated registry, <span id="1"><NumberLabel number={1} href="#the-fastbreak-architecture" /></span> we make a GET request to a Lambda function that returns the list of charts from Dynamo DB. The registry is just a blueprint of what charts are available and where to download them; the registry does not store the data needed to render charts.
+
+This registry concept creates a rudimentary, offline-first mobile application. Once the data is downloaded intially, there is no need for an internet connection. Even if future data is incompatible with a client's user interface, we show an error and maintain the working user experience.
+
+### AWS S3
+
+After the client application parses the chart registry and determines which charts to download, <span id="2"><NumberLabel number={2} href="#the-fastbreak-architecture" /></span> the application will make seperate parallel requests to an S3 bucket that is storing all of the JSON files representing each chart. The data is then cached client-side using a [cross platform Settings library](https://github.com/russhwolf/multiplatform-settings) to store key values. Each chart is stored by its key and the response from S3.
+
+The S3 bucket is served behind a CloudFront proxy.
+
+### Backend: Lambda and Dynamo DB
+
+As stated above, the chart registry is a set of rows in DynamoDB. Those rows are retrieved using a Lambda function that serves a single GET request. Each chart meta data adheres to this schema:
+
+```
+{ 
+  file_key: string // a unique name for the chart e.g. dev/nhl__team_efficiency.json
+  interval: daily | weekly // when does this chart get regenerated
+  title: string // display title of the chart e.g. NHL Team Efficiency - 2025-26
+  updatedAt: Date // the last time this chart was generated
+}
+```
+
+This endpoint is one part of the system that we don't want to cache. Everytime a client requests the registry, we should be making a brand new request to Dynamo DB so we get the most up to date registry. A future enhancment to this would be to add redundancy to the Lambda endpoint serving the registry. Reducing the latency for this request by replicating the Lambda and Dynamo DB across regions would make registry retrieval extremely fast for all humans across the planet.
+
+### Docker/cron
+
+The heart and brain of this system is built on [Docker, R, and cron](https://github.com/joe307bad/fastbreak/tree/main/pipeline/04-fastbreak-charts), hosted on fly.io, and provisioned using Terraform. We use these tools to make it easy to write a script in the R programming language, copy that script to a Docker container, and run that script inside the Docker container on a set interval (using cron).
+
+Every script written in R is designed to be isolated, self-managing, and representitive of a single chart. On a weekly or daily interval, each script will run, generate the JSON needed to render a chart, <span id="4"><NumberLabel number={4} href="#the-fastbreak-architecture" /></span> upload the JSON file to an S3 bucket, and finally, <span id="3"><NumberLabel number={3} href="#the-fastbreak-architecture" /></span> update Dynamo DB so the registry reflects that this chart has been recently regenerated.
+
+At first I considered building an F# API using a proven .NET job handler like Hangfire. I have experience in building enterprise job handlers in Hangfire. After a couple of design iterations I decided that Hangfire was overkill. I decided to design the simplest system possible: packaging all of the needed R packages into a docker image and use cron to run daily and weekly data extraction jobs using S3 as storage and CloudFront to serve static JSON files.
+
+## Conclusion
+
+ Philosophically, offline-first applications are the pinnacle of application architecture. This outlined structure demonstrates how easy it is to prioritize speed and user experience using simple offline-first principles. For this type of application, generating static content at an interval is the best way to build the fastest user experience. And that's what is most exciting about building software: delivering information as fast as humanly possible.
