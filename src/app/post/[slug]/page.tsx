@@ -87,7 +87,10 @@ export async function generateMetadata({
 
   const baseUrl = "https://joebad.com";
   const postUrl = `${baseUrl}/post/${params.slug}`;
-  const ogImageUrl = `${baseUrl}/og/${params.slug}.png`;
+
+  // Use generated SVG OG image with cache busting
+  const cacheBuster = Date.now();
+  const ogImageUrl = `${baseUrl}/og/${params.slug}.png?v=${cacheBuster}`;
 
   return {
     // Basic metadata
@@ -110,14 +113,11 @@ export async function generateMetadata({
       description: post.subTitle,
       url: postUrl,
       siteName: "https://joebad.com",
-      images: [
-        {
-          url: ogImageUrl,
-          width: 516,
-          height: 270,
-          alt: post.title,
-        },
-      ],
+      images: [{
+        url: ogImageUrl,
+        type: 'image/png',
+        alt: post.title,
+      }],
       locale: "en_US",
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt,
