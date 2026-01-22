@@ -231,7 +231,7 @@ function S3Node() {
       <Handle type="source" position={Position.Top} id="top" />
       <Handle type="target" position={Position.Right} id="right" />
       <div className="px-2 py-1.5 border border-gray-400 dark:border-gray-600 rounded bg-transparent text-[10px]">
-        <div className="font-semibold">S3 Bucket behind Cloudfront</div>
+        <div className="font-semibold">S3 Bucket behind CloudFront</div>
         <div className="text-[9px]">(JSON Charts)</div>
         <div className="border-t border-gray-300 dark:border-gray-600 pt-1 mt-1">
           <div className="flex items-center gap-1 mb-0.5">
