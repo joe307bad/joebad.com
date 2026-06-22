@@ -13,23 +13,35 @@ interface ActivityData {
   relativeDate?: string;
 }
 
+interface Project {
+  title: string;
+  description: string;
+  links: { label: string; href: string }[];
+}
+
 interface ProjectItemProps {
   title: string;
   description: string;
-  children?: React.ReactNode;
+  links: { label: string; href: string }[];
 }
 
-function ProjectItem({ title, description, children }: ProjectItemProps) {
+function ProjectItem({ title, description, links }: ProjectItemProps) {
   return (
-    <li className="flex flex-wrap flex-row gap-2">
-      <div className="truncate order-first md:order-none flex-1 md:flex-none md:w-[100px] font-bold mb-[-10px]">
+    <li className="flex flex-nowrap items-baseline gap-2">
+      <div className="shrink-0 md:w-[100px] font-bold">
         <p>{title}</p>
       </div>
-      <div className="w-full order-last md:order-none md:w-auto md:flex-1">
-        <p>
-          {description} {children}
-        </p>
-      </div>
+      <span className="min-w-0 truncate">{description}</span>
+      <span className="shrink-0 whitespace-nowrap">
+        (
+        {links.map((link, index) => (
+          <span key={link.label}>
+            {index > 0 && " | "}
+            <ProjectLink href={link.href}>{link.label}</ProjectLink>
+          </span>
+        ))}
+        )
+      </span>
     </li>
   );
 }
@@ -171,7 +183,7 @@ export const revalidate = 43200; // 12 hours
 
 export default async function Index() {
   const rss = await getRSSData();
-  const projects = [
+  const projects: Project[] = [
     {
       title: "fastbreak",
       description: "the fastest sports analytics dashboard",
@@ -184,24 +196,9 @@ export default async function Index() {
       ],
     },
     {
-      title: "cards",
-      description: "free, cozy card games",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/cards" },
-        { label: "site", href: "https://cards.joebad.com" },
-      ],
-    },
-    {
-      title: "void",
-      description: "a simple, intergalactic strategy game",
-      links: [
-        { label: "source", href: "https://github.com/joe307bad/end" }
-      ],
-    },
-    {
-      title: "act",
-      description: "a general purpose achievement tracking and todo app",
-      links: [{ label: "source", href: "https://github.com/joe307bad/act" }],
+      title: "topspin",
+      description: "a chat assistant for sports analytics research",
+      links: [{ label: "site", href: "https://topspin.joebad.com" }],
     },
   ];
 
@@ -229,16 +226,8 @@ export default async function Index() {
             key={project.title}
             title={project.title}
             description={project.description}
-          >
-            (
-            {project.links.map((link, index) => (
-              <span key={link.label}>
-                {index > 0 && " | "}
-                <ProjectLink href={link.href}>{link.label}</ProjectLink>
-              </span>
-            ))}
-            )
-          </ProjectItem>
+            links={project.links}
+          />
         ))}
       </ul>
       <SectionHeading color="accent">feed</SectionHeading>
