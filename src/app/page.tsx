@@ -27,21 +27,23 @@ interface ProjectItemProps {
 
 function ProjectItem({ title, description, links }: ProjectItemProps) {
   return (
-    <li className="flex flex-nowrap items-baseline gap-2">
+    <li className="flex flex-col gap-1 md:flex-row md:flex-nowrap md:items-baseline md:gap-2">
       <div className="shrink-0 md:w-[100px] font-bold">
         <p>{title}</p>
       </div>
-      <span className="min-w-0 truncate">{description}</span>
-      <span className="shrink-0 whitespace-nowrap">
-        (
-        {links.map((link, index) => (
-          <span key={link.label}>
-            {index > 0 && " | "}
-            <ProjectLink href={link.href}>{link.label}</ProjectLink>
-          </span>
-        ))}
-        )
-      </span>
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 min-w-0">
+        <span className="min-w-0 md:truncate">{description}</span>
+        <span className="shrink-0 whitespace-nowrap">
+          (
+          {links.map((link, index) => (
+            <span key={link.label}>
+              {index > 0 && " | "}
+              <ProjectLink href={link.href}>{link.label}</ProjectLink>
+            </span>
+          ))}
+          )
+        </span>
+      </div>
     </li>
   );
 }
