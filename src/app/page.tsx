@@ -202,6 +202,14 @@ export default async function Index() {
       description: "a chat assistant for sports analytics research",
       links: [{ label: "site", href: "https://topspin.joebad.com" }],
     },
+    {
+      title: "cards",
+      description: "cozy free-to-play card games",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/cards" },
+        { label: "site", href: "https://cards.joebad.com" },
+      ],
+    },
   ];
 
   return (
