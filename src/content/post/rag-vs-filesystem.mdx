@@ -20,7 +20,7 @@ In any large software engineering team, there are several sources of truth for d
 
 Earlier this year, [LlamaIndex wrote a blog post](https://www.llamaindex.ai/blog/did-filesystem-tools-kill-vector-search) trying to understand a similar problem. A year ago, RAG (retrieval-augmented generation) pipelines were a really good option for searching large sets of data quickly and accurately. But since then, the filesystem tools built into modern agent harnesses (like Claude Code) have advanced far enough that a RAG pipeline may be unnecessary. They benchmarked a vector search (RAG) against filesystem tools (fs-explorer) and found that filesystem tools can outperform a traditional vector search. I wanted to recreate these benchmarks with a real data set to confirm this study, and also add more benchmarks to dive deeper into what other options we have.
 
-To take this benchmark to a higher level of real-world application, I built a [small benchmarking tool](https://github.com/joe307bad/rag-vs-vector) that covers the basics of what we are going to be testing.
+To take this benchmark to a higher level of real-world application, I built a [small benchmarking tool](https://github.com/joe307bad/rag-vs-filesystem) that covers the basics of what we are going to be testing.
 
 First, we want to test against a real-world scenario. At my company, we have approximately 1,700 documents spread across our wiki, docs in the code itself, and a full history of our escalation channel in Teams. All of this information is sensitive and lives outside of the benchmark code, so you can recreate the benchmarks against your own corpus if you'd like.
 
@@ -32,7 +32,7 @@ Split each document into chunks, store them as embeddings in a vector database, 
 
 2) File system agent
 
-A file system agent is a harness and an LLM working together to use system tools to search the available corpus. I ported LlamaIndex's fs-explorer to Claude. It does no indexing and explores the files one step at a time: opens a folder, searches a file, reads a page, and stops once it has the answer.
+A file system agent is a harness (a small loop that asks the model for one action at a time and runs it against the files) and an LLM (Claude Haiku) working together to use system tools to search the available corpus. I ported LlamaIndex's fs-explorer to Claude. It does no indexing and explores the files one step at a time: opens a folder, searches a file, reads a page, and stops once it has the answer.
 
 3) Claude Code
 
@@ -53,9 +53,11 @@ I ran all four approaches against the same 36 questions, drawn from all 13 sourc
 | Claude Code | 8.78 | 8.47 | 11.1 s | 48k |
 | File system agent | 7.69 | 7.28 | 21.9 s | 170k |
 
-The RAG pipeline is the fastest and cheapest, and tied for the most accurate according to this benchmark. But a pure RAG approach has a lot of drawbacks, like keeping an index up to date and hosting a vector database. If the RAG search never surfaces the document with the answer, the model doesn't have the correct information and returns the wrong answer. That happened on 3 of the 36 questions. Common causes include poor chunking, vocabulary mismatch between the question and the document, and a stale index.
+The RAG pipeline is the fastest and cheapest, and tied for the most accurate according to this benchmark. But a pure RAG approach has a lot of drawbacks, like keeping an index up to date and hosting a vector database. If the RAG search never surfaces the document with the answer, the model doesn't have the correct information and returns the wrong answer. That happened on 3 of the 36 questions.
 
-Even though this benchmark favors a RAG pipeline for a large corpus, I don't think that's a better option than providing a support agent with just a handful of MCPs connected to Codex or Claude. What did we actually gain here? This benchmark demonstrates that, given enough fine-tuning and ahead-of-time compilation, we can optimize for read time over a large corpus. If the support agent required an answer and a confidence score for whether system behavior is "working as intended," "a bug with a workaround," or "a bug with no workaround," we would need some labeled data from the unstructured tickets, escalation channels, and support tickets.
+Even though this benchmark favors a RAG pipeline for a large corpus, I don't think that's a better option than providing a support agent with just a handful of MCPs connected to Codex or Claude. 
+
+What did we actually gain with this benchmark? It demonstrates that, given enough fine-tuning and ahead-of-time compilation, we can optimize for read time over a large corpus. If the support agent required an answer and a confidence score for whether system behavior is "working as intended," "a bug with a workaround," or "a bug with no workaround," we would need some labeled data from the unstructured tickets, escalation channels, and support tickets.
 
 To expand on this idea of an optimized pipeline for searching the intent of the system as quickly as possible, this seems like the ideal process for such a system:
 
