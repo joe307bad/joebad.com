@@ -191,10 +191,6 @@ export default async function Index() {
       description: "the fastest sports analytics dashboard",
       links: [
         { label: "source", href: "https://github.com/joe307bad/fastbreak" },
-        {
-          label: "site",
-          href: "https://fastbreak.joebad.com",
-        },
       ],
     },
     {
