@@ -67,7 +67,10 @@ export function Main(props: {
   const id = props.isPage ? "page" : "";
 
   return (
-    <div id={id} className="gap-4 w-full md:max-w-3xl flex flex-col mb-20">
+    <div
+      id={id}
+      className={`gap-4 w-full ${isHome ? "md:max-w-4xl" : "md:max-w-3xl"} flex flex-col mb-20`}
+    >
       <div className=" gap-4 flex flex-col">
         <h1 className="font-mono font-bold text-(--color-primary-500) mt-10 md:text-2xl text-lg">
           <SmallLogo />
