@@ -201,6 +201,14 @@ export default async function Index() {
         { label: "site", href: "https://cards.joebad.com" },
       ],
     },
+    {
+      title: "plaintextpantry",
+      description: "a local-first, minimalist recipe and grocery list manager",
+      links: [
+        { label: "source", href: "https://github.com/joe307bad/plaintextpantry" },
+        { label: "site", href: "https://plaintextpantry.com" },
+      ],
+    },
   ];
 
   return (
