@@ -196,7 +196,7 @@ export default async function Index() {
     },
     {
       title: "topspin",
-      description: "a chat assistant for sports analytics research",
+      description: "a strongly typed query language for sports stats",
       links: [{ label: "site", href: "https://topspin.joebad.com" }],
     },
     {
